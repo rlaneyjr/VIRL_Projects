@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
     <extensions>
-        <entry key="management_network" type="String">flat</entry>
+        <entry key="management_network" type="String">flat1</entry>
     </extensions>
-    <node name="palo_alto-1" type="SIMPLE" subtype="Palo_alto" location="313,156" vmImage="Palo_alto-7.0.1 [a4d90657-8fdc-4fc7-bcf6-8ce99cbf1ed0]">
+    <node name="palo_alto-1" type="SIMPLE" subtype="Palo_alto" location="313,156" vmImage="Palo_alto-7.0.1">
         <extensions>
             <entry key="config" type="string"> </entry>
         </extensions>
@@ -76,11 +76,18 @@ interface GigabitEthernet0/0
 interface GigabitEthernet0/1
   description to palo_alto-1
   ip address 10.0.0.9 255.255.255.252
-  ip ospf cost 1
+  ip ospf cost 10
   duplex full
   speed auto
   no shutdown
 !
+interface GigabitEthernet0/2
+  description to outside
+  ip address 10.10.30.2 255.255.0.0
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
 !
 !
 router ospf 1
@@ -88,14 +95,17 @@ router ospf 1
   log-adjacency-changes
   passive-interface Loopback0
   network 10.0.0.8 0.0.0.3 area 0
+  network 10.0.0.8 0.0.0.3 area 0
 !
 !
+ip default-gateway 10.10.30.1
+ip route 0.0.0.0 0.0.0.0 10.10.30.1
 end
 </entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"/>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.9" netPrefixLenV4="30"/>
-        <interface id="1" name="GigabitEthernet0/2" ipv4="10.10.10.2" netPrefixLenV4="16"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.10.30.2" netPrefixLenV4="16"/>
     </node>
     <node name="iosvl2-1" type="SIMPLE" subtype="IOSvL2" location="513,163">
         <extensions>
@@ -206,7 +216,7 @@ control-plane
 !
 end
         </entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"/>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1"/>
         <interface id="1" name="GigabitEthernet0/2"/>
@@ -251,20 +261,16 @@ write_files:
   permissions: '0755'
   content: |-
     #!/bin/sh
+    route add default gw 10.0.0.6
     ifconfig eth1 up 10.0.0.5 netmask 255.255.255.252
+    ifconfig eth2 up 10.200.2.5 netmask 255.255.255.0
     exit 0
 </entry>
         </extensions>
         <interface id="0" name="eth1" ipv4="10.0.0.5" netPrefixLenV4="30"/>
-    </node>
-    <node name="flat-1" type="ASSET" subtype="FLAT" location="83,75">
-        <extensions>
-            <entry key="host_network" type="String">ext-net1</entry>
-        </extensions>
-        <interface id="0" name="link0" ipv4="10.10.10.1" netPrefixLenV4="16"/>
+        <interface id="1" name="eth2" ipv4="10.200.2.5" netPrefixLenV4="24"/>
     </node>
     <connection dst="/virl:topology/virl:node[1]/virl:interface[1]" src="/virl:topology/virl:node[2]/virl:interface[1]"/>
     <connection dst="/virl:topology/virl:node[3]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[2]"/>
     <connection dst="/virl:topology/virl:node[4]/virl:interface[1]" src="/virl:topology/virl:node[3]/virl:interface[2]"/>
-    <connection dst="/virl:topology/virl:node[2]/virl:interface[2]" src="/virl:topology/virl:node[5]/virl:interface[1]"/>
 </topology>

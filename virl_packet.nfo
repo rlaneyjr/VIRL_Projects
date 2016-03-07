@@ -1,0 +1,6 @@
+OpenVPN          = Your OpenVPN client connection file is now available at ./client.ovpn
+guest login      = login guest password guest
+ip               = 147.75.194.139
+uwm              = http://147.75.194.139:19400
+uwm login        = login uwmadmin password ralrox22
+uwm over OpenVPN = http://172.16.11.254:19400

@@ -4,27 +4,25 @@
         <entry key="AutoNetkit.address_family" type="String">v4</entry>
         <entry key="AutoNetkit.enable_cdp" type="Boolean">true</entry>
         <entry key="AutoNetkit.enable_mpls_oam" type="Boolean">false</entry>
-        <entry key="management_network" type="String">flat</entry>
-        <entry key="management_lxc" type="Boolean">false</entry>
         <entry key="AutoNetkit.ipv4_infra_subnet" type="String">10.0.0.0</entry>
         <entry key="AutoNetkit.ipv4_infra_prefix" type="String">8</entry>
+        <entry key="management_network" type="String">flat</entry>
+        <entry key="management_lxc" type="Boolean">true</entry>
+        <entry key="AutoNetkit.IGP" type="String">ospf</entry>
     </extensions>
     <node name="DC4-CORE1" type="SIMPLE" subtype="NX-OSv" location="235,285" ipv4="192.168.0.8">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
-            <entry key="config" type="String">!Command: show running-config
-!Time: Wed Dec 30 14:40:27 2015
-
-version 7.2(0)D1(1)
-power redundancy-mode redundant
+            <entry key="config" type="String">! NX-OSv Config generated on 2016-03-18 15:42
+! by autonetkit_0.21.4
+!
+version 6.2(1)
 license grace-period
-
+!
 hostname DC4-CORE1
 vdc DC4-CORE1 id 1
-  limit-resource module-type m1 m1xl m2xl f2e 
   allocate interface Ethernet2/1-48
   allocate interface Ethernet3/1-48
-  allocate interface Ethernet4/1-48
   limit-resource vlan minimum 16 maximum 4094
   limit-resource vrf minimum 2 maximum 4096
   limit-resource port-channel minimum 0 maximum 768
@@ -34,810 +32,123 @@ vdc DC4-CORE1 id 1
   limit-resource m6route-mem minimum 8 maximum 8
 
 feature telnet
+
 feature ospf
 feature bgp
 
-username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51  role network-admin
-username adminbackup password 5 !  role network-operator
-username adminbackup passphrase  lifetime 99999 warntime 14 gracetime 3
-username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
+username adminbackup password 5 ! role network-operator
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1 role network-operator
 username cisco role network-admin
-username cisco passphrase  lifetime 99999 warntime 14 gracetime 3
-username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
-username lab passphrase  lifetime 99999 warntime 14 gracetime 3
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00 role network-admin
 no password strength-check
 ip domain-lookup
-vlan dot1Q tag native
-system default switchport
-system jumbomtu 0
-no logging event trunk-status enable
 copp profile strict
 snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
 snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
-snmp-server user cisco network-admin auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
-snmp-server user cisco network-operator
-snmp-server user admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey engineID 128:0:0:9:3:0:0:0:0:0:0
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-admin
 rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
 rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
 rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
-snmp-server enable traps link
+
 
 vlan 1
 
 vrf context management
 hardware forwarding unicast trace
 
-
-interface mgmt0
-  description OOB Management
-  duplex full
-  vrf member management
-  ip address 10.200.1.153/24
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.8/32
+  ip router ospf 1 area 0
 
 interface Ethernet2/1
   description to iosv-1
-  no switchport
-  mac-address fa16.3e00.0001
   ip address 10.0.0.17/30
-  ip router ospf 1 area 0.0.0.0
+  ip router ospf 1 area 0
+  duplex full
+  mac-address fa16.3e00.0001
   no shutdown
 
 interface Ethernet2/2
   description to server-1
-  no switchport
-  mac-address fa16.3e00.0002
   ip address 10.0.0.25/30
-  ip router ospf 1 area 0.0.0.0
+  ip router ospf 1 area 0
+  duplex full
+  mac-address fa16.3e00.0002
   no shutdown
 
 interface Ethernet2/3
   description to DC4-CORE2
-  no switchport
-  mac-address fa16.3e00.0003
   ip address 10.0.0.49/30
-  ip router ospf 1 area 0.0.0.0
+  ip router ospf 1 area 0
+  duplex full
+  mac-address fa16.3e00.0003
   no shutdown
 
 interface Ethernet2/4
   description to lxc-ostinato-1
-  no switchport
-  mac-address fa16.3e00.0004
   ip address 10.0.0.21/30
-  ip router ospf 1 area 0.0.0.0
+  ip router ospf 1 area 0
+  duplex full
+  mac-address fa16.3e00.0004
   no shutdown
 
 interface Ethernet2/5
   description to iosv-2
-  no switchport
-  mac-address fa16.3e00.0005
   ip address 10.0.0.37/30
-  ip router ospf 1 area 0.0.0.0
+  ip router ospf 1 area 0
+  duplex full
+  mac-address fa16.3e00.0005
   no shutdown
 
-interface Ethernet2/6
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
+interface mgmt0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  duplex full
+  mac-address fa16.3e00.0006
+  no shutdown
+  vrf member management
 
-interface Ethernet2/7
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
 
-interface Ethernet2/8
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/9
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/10
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/11
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/12
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/13
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/14
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/15
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/16
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/17
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/18
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/19
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/20
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/21
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/22
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/23
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/24
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/25
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/26
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/27
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/28
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/29
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/30
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/31
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/32
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/33
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/34
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/35
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/36
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/37
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/38
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/39
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/40
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/41
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/42
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/43
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/44
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/45
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/46
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/47
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/48
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/1
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/2
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/3
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/4
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/5
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/6
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/7
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/8
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/9
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/10
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/11
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/12
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/13
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/14
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/15
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/16
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/17
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/18
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/19
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/20
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/21
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/22
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/23
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/24
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/25
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/26
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/27
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/28
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/29
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/30
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/31
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/32
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/33
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/34
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/35
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/36
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/37
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/38
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/39
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/40
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/41
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/42
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/43
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/44
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/45
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/46
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/47
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/48
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/1
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/2
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/3
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/4
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/5
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/6
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/7
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/8
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/9
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/10
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/11
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/12
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/13
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/14
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/15
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/16
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/17
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/18
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/19
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/20
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/21
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/22
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/23
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/24
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/25
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/26
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/27
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/28
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/29
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/30
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/31
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/32
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/33
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/34
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/35
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/36
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/37
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/38
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/39
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/40
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/41
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/42
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/43
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/44
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/45
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/46
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/47
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/48
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface loopback0
-  description Loopback
-  ip address 192.168.0.8/32
-  ip router ospf 1 area 0.0.0.0
 line console
 line vty
-boot kickstart bootflash:/titanium-d1-kickstart.7.2.0.D1.1.bin sup-1
-boot system bootflash:/titanium-d1.7.2.0.D1.1.bin sup-1
 router ospf 1
   router-id 192.168.0.8
 router bgp 1
   router-id 192.168.0.8
   address-family ipv4 unicast
     network 192.168.0.8/32
-  neighbor 192.168.0.2 remote-as 1
-    description iBGP peer iosv-1
-    update-source loopback0
-    address-family ipv4 unicast
-  neighbor 192.168.0.7 remote-as 1
-    description iBGP peer iosv-2
-    update-source loopback0
-    address-family ipv4 unicast
+  !
+! iBGP
+!
+! iBGP peers
+  !
   neighbor 192.168.0.9 remote-as 1
     description iBGP peer DC4-CORE2
-    update-source loopback0
+    update-source Loopback0
     address-family ipv4 unicast
-no system default switchport shutdown</entry>
+    !
+    !
+  !
+  neighbor 192.168.0.2 remote-as 1
+    description iBGP peer iosv-1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.7 remote-as 1
+    description iBGP peer iosv-2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+        </entry>
         </extensions>
         <interface id="0" name="Ethernet2/1" ipv4="10.0.0.17" netPrefixLenV4="30"/>
         <interface id="1" name="Ethernet2/2" ipv4="10.0.0.25" netPrefixLenV4="30"/>
@@ -848,19 +159,16 @@ no system default switchport shutdown</entry>
     <node name="DC4-CORE2" type="SIMPLE" subtype="NX-OSv" location="564,282" ipv4="192.168.0.9">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
-            <entry key="config" type="String">!Command: show running-config
-!Time: Wed Dec 30 14:40:28 2015
-
-version 7.2(0)D1(1)
-power redundancy-mode redundant
+            <entry key="config" type="String">! NX-OSv Config generated on 2016-03-18 15:42
+! by autonetkit_0.21.4
+!
+version 6.2(1)
 license grace-period
-
+!
 hostname DC4-CORE2
 vdc DC4-CORE2 id 1
-  limit-resource module-type m1 m1xl m2xl f2e 
   allocate interface Ethernet2/1-48
   allocate interface Ethernet3/1-48
-  allocate interface Ethernet4/1-48
   limit-resource vlan minimum 16 maximum 4094
   limit-resource vrf minimum 2 maximum 4096
   limit-resource port-channel minimum 0 maximum 768
@@ -870,810 +178,123 @@ vdc DC4-CORE2 id 1
   limit-resource m6route-mem minimum 8 maximum 8
 
 feature telnet
+
 feature ospf
 feature bgp
 
-username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51  role network-admin
-username adminbackup password 5 !  role network-operator
-username adminbackup passphrase  lifetime 99999 warntime 14 gracetime 3
-username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
+username adminbackup password 5 ! role network-operator
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1 role network-operator
 username cisco role network-admin
-username cisco passphrase  lifetime 99999 warntime 14 gracetime 3
-username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
-username lab passphrase  lifetime 99999 warntime 14 gracetime 3
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00 role network-admin
 no password strength-check
 ip domain-lookup
-vlan dot1Q tag native
-system default switchport
-system jumbomtu 0
-no logging event trunk-status enable
 copp profile strict
 snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
 snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
-snmp-server user cisco network-admin auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
-snmp-server user cisco network-operator
-snmp-server user admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey engineID 128:0:0:9:3:0:0:0:0:0:0
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-admin
 rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
 rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
 rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
-snmp-server enable traps link
+
 
 vlan 1
 
 vrf context management
 hardware forwarding unicast trace
 
-
-interface mgmt0
-  description OOB Management
-  duplex full
-  vrf member management
-  ip address 10.200.1.154/24
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.9/32
+  ip router ospf 1 area 0
 
 interface Ethernet2/1
   description to iosv-2
-  no switchport
-  mac-address fa16.3e00.0007
   ip address 10.0.0.41/30
-  ip router ospf 1 area 0.0.0.0
+  ip router ospf 1 area 0
+  duplex full
+  mac-address fa16.3e00.0007
   no shutdown
 
 interface Ethernet2/2
   description to server-2
-  no switchport
-  mac-address fa16.3e00.0008
   ip address 10.0.0.45/30
-  ip router ospf 1 area 0.0.0.0
+  ip router ospf 1 area 0
+  duplex full
+  mac-address fa16.3e00.0008
   no shutdown
 
 interface Ethernet2/3
   description to DC4-CORE1
-  no switchport
-  mac-address fa16.3e00.0009
   ip address 10.0.0.50/30
-  ip router ospf 1 area 0.0.0.0
+  ip router ospf 1 area 0
+  duplex full
+  mac-address fa16.3e00.0009
   no shutdown
 
 interface Ethernet2/4
   description to lxc-routem-1
-  no switchport
-  mac-address fa16.3e00.000a
   ip address 10.0.0.33/30
-  ip router ospf 1 area 0.0.0.0
+  ip router ospf 1 area 0
+  duplex full
+  mac-address fa16.3e00.000a
   no shutdown
 
 interface Ethernet2/5
   description to iosv-1
-  no switchport
-  mac-address fa16.3e00.000b
   ip address 10.0.0.29/30
-  ip router ospf 1 area 0.0.0.0
+  ip router ospf 1 area 0
+  duplex full
+  mac-address fa16.3e00.000b
   no shutdown
 
-interface Ethernet2/6
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
+interface mgmt0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  duplex full
+  mac-address fa16.3e00.000c
+  no shutdown
+  vrf member management
 
-interface Ethernet2/7
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
 
-interface Ethernet2/8
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/9
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/10
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/11
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/12
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/13
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/14
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/15
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/16
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/17
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/18
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/19
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/20
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/21
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/22
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/23
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/24
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/25
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/26
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/27
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/28
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/29
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/30
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/31
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/32
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/33
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/34
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/35
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/36
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/37
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/38
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/39
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/40
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/41
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/42
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/43
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/44
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/45
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/46
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/47
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet2/48
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/1
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/2
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/3
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/4
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/5
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/6
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/7
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/8
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/9
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/10
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/11
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/12
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/13
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/14
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/15
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/16
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/17
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/18
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/19
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/20
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/21
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/22
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/23
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/24
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/25
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/26
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/27
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/28
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/29
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/30
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/31
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/32
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/33
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/34
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/35
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/36
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/37
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/38
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/39
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/40
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/41
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/42
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/43
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/44
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/45
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/46
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/47
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet3/48
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/1
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/2
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/3
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/4
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/5
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/6
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/7
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/8
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/9
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/10
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/11
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/12
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/13
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/14
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/15
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/16
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/17
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/18
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/19
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/20
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/21
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/22
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/23
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/24
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/25
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/26
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/27
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/28
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/29
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/30
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/31
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/32
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/33
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/34
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/35
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/36
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/37
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/38
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/39
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/40
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/41
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/42
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/43
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/44
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/45
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/46
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/47
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface Ethernet4/48
-  shutdown
-  no switchport
-  mac-address 0000.0000.002f
-
-interface loopback0
-  description Loopback
-  ip address 192.168.0.9/32
-  ip router ospf 1 area 0.0.0.0
 line console
 line vty
-boot kickstart bootflash:/titanium-d1-kickstart.7.2.0.D1.1.bin sup-1
-boot system bootflash:/titanium-d1.7.2.0.D1.1.bin sup-1
 router ospf 1
   router-id 192.168.0.9
 router bgp 1
   router-id 192.168.0.9
   address-family ipv4 unicast
     network 192.168.0.9/32
-  neighbor 192.168.0.2 remote-as 1
-    description iBGP peer iosv-1
-    update-source loopback0
-    address-family ipv4 unicast
-  neighbor 192.168.0.7 remote-as 1
-    description iBGP peer iosv-2
-    update-source loopback0
-    address-family ipv4 unicast
+  !
+! iBGP
+!
+! iBGP peers
+  !
   neighbor 192.168.0.8 remote-as 1
     description iBGP peer DC4-CORE1
-    update-source loopback0
+    update-source Loopback0
     address-family ipv4 unicast
-no system default switchport shutdown</entry>
+    !
+    !
+  !
+  neighbor 192.168.0.2 remote-as 1
+    description iBGP peer iosv-1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.7 remote-as 1
+    description iBGP peer iosv-2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+        </entry>
         </extensions>
         <interface id="0" name="Ethernet2/1" ipv4="10.0.0.41" netPrefixLenV4="30"/>
         <interface id="1" name="Ethernet2/2" ipv4="10.0.0.45" netPrefixLenV4="30"/>
@@ -1698,7 +319,7 @@ runcmd:
 - service sshd restart
 users:
 - default
-- gecos: User configured by VIRL Configuration Engine 0.20.22
+- gecos: User configured by VIRL Configuration Engine 0.21.6
   lock-passwd: false
   name: cisco
   plain-text-passwd: cisco
@@ -1735,8 +356,14 @@ write_files:
   content: |-
     #!/bin/sh
     ifconfig eth1 up 10.0.0.26 netmask 255.255.255.252
-    route add -net 10.0.0.0/8 gw 10.0.0.25 dev eth1
-    route add -net 192.168.0.0/28 gw 10.0.0.25 dev eth1
+    route add -host 192.168.0.2 gw 10.0.0.25 dev eth1
+    route add -host 192.168.0.7 gw 10.0.0.25 dev eth1
+    route add -net 10.0.0.4/30 gw 10.0.0.25 dev eth1
+    route add -net 10.0.0.8/29 gw 10.0.0.25 dev eth1
+    route add -net 10.0.0.16/28 gw 10.0.0.25 dev eth1
+    route add -net 10.0.0.32/28 gw 10.0.0.25 dev eth1
+    route add -net 10.0.0.48/30 gw 10.0.0.25 dev eth1
+    route add -net 192.168.0.8/31 gw 10.0.0.25 dev eth1
     exit 0
 </entry>
         </extensions>
@@ -1759,7 +386,7 @@ runcmd:
 - service sshd restart
 users:
 - default
-- gecos: User configured by VIRL Configuration Engine 0.20.22
+- gecos: User configured by VIRL Configuration Engine 0.21.6
   lock-passwd: false
   name: cisco
   plain-text-passwd: cisco
@@ -1796,8 +423,14 @@ write_files:
   content: |-
     #!/bin/sh
     ifconfig eth1 up 10.0.0.46 netmask 255.255.255.252
-    route add -net 10.0.0.0/8 gw 10.0.0.45 dev eth1
-    route add -net 192.168.0.0/28 gw 10.0.0.45 dev eth1
+    route add -host 192.168.0.2 gw 10.0.0.45 dev eth1
+    route add -host 192.168.0.7 gw 10.0.0.45 dev eth1
+    route add -net 10.0.0.4/30 gw 10.0.0.45 dev eth1
+    route add -net 10.0.0.8/29 gw 10.0.0.45 dev eth1
+    route add -net 10.0.0.16/28 gw 10.0.0.45 dev eth1
+    route add -net 10.0.0.32/28 gw 10.0.0.45 dev eth1
+    route add -net 10.0.0.48/30 gw 10.0.0.45 dev eth1
+    route add -net 192.168.0.8/31 gw 10.0.0.45 dev eth1
     exit 0
 </entry>
         </extensions>
@@ -1818,7 +451,7 @@ runcmd:
 - service sshd restart
 users:
 - default
-- gecos: User configured by VIRL Configuration Engine 0.20.22
+- gecos: User configured by VIRL Configuration Engine 0.21.6
   lock-passwd: false
   name: cisco
   plain-text-passwd: cisco
@@ -1844,8 +477,14 @@ write_files:
   content: |-
     #!/bin/sh
     ifconfig eth1 up 10.0.0.22 netmask 255.255.255.252
-    route add -net 10.0.0.0/8 gw 10.0.0.21 dev eth1
-    route add -net 192.168.0.0/28 gw 10.0.0.21 dev eth1
+    route add -host 192.168.0.2 gw 10.0.0.21 dev eth1
+    route add -host 192.168.0.7 gw 10.0.0.21 dev eth1
+    route add -net 10.0.0.4/30 gw 10.0.0.21 dev eth1
+    route add -net 10.0.0.8/29 gw 10.0.0.21 dev eth1
+    route add -net 10.0.0.16/28 gw 10.0.0.21 dev eth1
+    route add -net 10.0.0.32/28 gw 10.0.0.21 dev eth1
+    route add -net 10.0.0.48/30 gw 10.0.0.21 dev eth1
+    route add -net 192.168.0.8/31 gw 10.0.0.21 dev eth1
     exit 0
 </entry>
         </extensions>
@@ -1866,7 +505,7 @@ runcmd:
 - service sshd restart
 users:
 - default
-- gecos: User configured by VIRL Configuration Engine 0.20.22
+- gecos: User configured by VIRL Configuration Engine 0.21.6
   lock-passwd: false
   name: cisco
   plain-text-passwd: cisco
@@ -1892,8 +531,14 @@ write_files:
   content: |-
     #!/bin/sh
     ifconfig eth1 up 10.0.0.34 netmask 255.255.255.252
-    route add -net 10.0.0.0/8 gw 10.0.0.33 dev eth1
-    route add -net 192.168.0.0/28 gw 10.0.0.33 dev eth1
+    route add -host 192.168.0.2 gw 10.0.0.33 dev eth1
+    route add -host 192.168.0.7 gw 10.0.0.33 dev eth1
+    route add -net 10.0.0.4/30 gw 10.0.0.33 dev eth1
+    route add -net 10.0.0.8/29 gw 10.0.0.33 dev eth1
+    route add -net 10.0.0.16/28 gw 10.0.0.33 dev eth1
+    route add -net 10.0.0.32/28 gw 10.0.0.33 dev eth1
+    route add -net 10.0.0.48/30 gw 10.0.0.33 dev eth1
+    route add -net 192.168.0.8/31 gw 10.0.0.33 dev eth1
     exit 0
 </entry>
         </extensions>
@@ -1902,203 +547,147 @@ write_files:
     <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="253,140" ipv4="192.168.0.2">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
-            <entry key="config" type="String">!
-! Last configuration change at 14:40:33 UTC Wed Dec 30 2015
-!
-version 15.6
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
+            <entry key="config" type="String">! IOS Config generated on 2016-03-18 15:42
+! by autonetkit_0.21.4
 !
 hostname iosv-1
-!
 boot-start-marker
 boot-end-marker
 !
-!
 vrf definition Mgmt-intf
- !
+!
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-enable password cisco
+!
 !
 no aaa new-model
-ethernet lmi ce
 !
 !
-!
-mmi polling-interval 60
-no mmi auto-configure
-no mmi pvc
-mmi snmp-timeout 180
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-no ip domain lookup
-ip domain name virl.info
 ip cef
 ipv6 unicast-routing
 ipv6 cef
 !
-multilink bundle-name authenticated
 !
-!
-!
-!
-username cisco privilege 15 secret 5 $1$XVDV$wL1IzEdcmiuHPdZ.eZZgO/
-!
-redundancy
-!
-!
-! 
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-interface Loopback0
- description Loopback
- ip address 192.168.0.2 255.255.255.255
-!
-interface GigabitEthernet0/0
- description OOB Management
- vrf forwarding Mgmt-intf
- ip address 10.200.1.156 255.255.255.0
- duplex full
- speed auto
- media-type rj45
-!
-interface GigabitEthernet0/1
- description to lxc-1
- ip address 10.0.0.5 255.255.255.252
- ip ospf cost 1
- duplex full
- speed auto
- media-type rj45
-!
-interface GigabitEthernet0/2
- description to DC4-CORE1
- ip address 10.0.0.18 255.255.255.252
- ip ospf cost 1
- duplex full
- speed auto
- media-type rj45
-!
-interface GigabitEthernet0/3
- description to iosv-2
- ip address 10.0.0.13 255.255.255.252
- ip ospf cost 1
- duplex full
- speed auto
- media-type rj45
-!
-interface GigabitEthernet0/4
- description to DC4-CORE2
- ip address 10.0.0.30 255.255.255.252
- ip ospf cost 1
- duplex full
- speed auto
- media-type rj45
-!
-router ospf 1
- passive-interface Loopback0
- network 10.0.0.4 0.0.0.3 area 0
- network 10.0.0.12 0.0.0.3 area 0
- network 10.0.0.16 0.0.0.3 area 0
- network 10.0.0.28 0.0.0.3 area 0
- network 192.168.0.2 0.0.0.0 area 0
-!
-router bgp 1
- bgp router-id 192.168.0.2
- bgp log-neighbor-changes
- neighbor 192.168.0.7 remote-as 1
- neighbor 192.168.0.7 description iBGP peer iosv-2
- neighbor 192.168.0.7 update-source Loopback0
- neighbor 192.168.0.8 remote-as 1
- neighbor 192.168.0.8 description iBGP peer DC4-CORE1
- neighbor 192.168.0.8 update-source Loopback0
- neighbor 192.168.0.9 remote-as 1
- neighbor 192.168.0.9 description iBGP peer DC4-CORE2
- neighbor 192.168.0.9 update-source Loopback0
- !
- address-family ipv4
-  network 192.168.0.2 mask 255.255.255.255
-  neighbor 192.168.0.7 activate
-  neighbor 192.168.0.8 activate
-  neighbor 192.168.0.9 activate
- exit-address-family
-!
-ip forward-protocol nd
-!
-!
-no ip http server
-no ip http secure-server
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+ip domain name virl.info
+crypto key generate rsa modulus 768
 ip ssh server algorithm authentication password
-!
-!
-!
-!
-control-plane
-!
-banner exec `
-**************************************************************************
-* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
-* education. IOSv is provided as-is and is not supported by Cisco's      *
-* Technical Advisory Center. Any use or disclosure, in whole or in part, *
-* of the IOSv Software or Documentation to any third party for any       *
-* purposes is expressly prohibited except as otherwise authorized by     *
-* Cisco in writing.                                                      *
-**************************************************************************`
-banner incoming `
-**************************************************************************
-* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
-* education. IOSv is provided as-is and is not supported by Cisco's      *
-* Technical Advisory Center. Any use or disclosure, in whole or in part, *
-* of the IOSv Software or Documentation to any third party for any       *
-* purposes is expressly prohibited except as otherwise authorized by     *
-* Cisco in writing.                                                      *
-**************************************************************************`
-banner login `
-**************************************************************************
-* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
-* education. IOSv is provided as-is and is not supported by Cisco's      *
-* Technical Advisory Center. Any use or disclosure, in whole or in part, *
-* of the IOSv Software or Documentation to any third party for any       *
-* purposes is expressly prohibited except as otherwise authorized by     *
-* Cisco in writing.                                                      *
-**************************************************************************`
-!
-line con 0
- password cisco
-line aux 0
+username cisco privilege 15 secret cisco
 line vty 0 4
+ transport input ssh telnet
  exec-timeout 720 0
  password cisco
  login local
- transport input telnet ssh
+line con 0
+ password cisco
 !
-no scheduler allocate
+cdp run
 !
-end</entry>
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.2 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  vrf forwarding Mgmt-intf
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to lxc-1
+  ip address 10.0.0.5 255.255.255.252
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to DC4-CORE1
+  ip address 10.0.0.18 255.255.255.252
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/3
+  description to iosv-2
+  ip address 10.0.0.13 255.255.255.252
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/4
+  description to DC4-CORE2
+  ip address 10.0.0.30 255.255.255.252
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+!
+!
+router ospf 1
+  network 192.168.0.2 0.0.0.0 area 0
+  log-adjacency-changes
+  passive-interface Loopback0
+  network 10.0.0.4 0.0.0.3 area 0
+  network 10.0.0.16 0.0.0.3 area 0
+  network 10.0.0.12 0.0.0.3 area 0
+  network 10.0.0.28 0.0.0.3 area 0
+!
+!
+router bgp 1
+  bgp router-id 192.168.0.2
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.8 remote-as 1
+  neighbor 192.168.0.8 description iBGP peer DC4-CORE1
+  neighbor 192.168.0.8 update-source Loopback0
+  !
+  neighbor 192.168.0.9 remote-as 1
+  neighbor 192.168.0.9 description iBGP peer DC4-CORE2
+  neighbor 192.168.0.9 update-source Loopback0
+  !
+  neighbor 192.168.0.7 remote-as 1
+  neighbor 192.168.0.7 description iBGP peer iosv-2
+  neighbor 192.168.0.7 update-source Loopback0
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.2 mask 255.255.255.255
+  neighbor 192.168.0.8 activate
+  neighbor 192.168.0.9 activate
+  neighbor 192.168.0.7 activate
+ exit-address-family
+!
+!
+!
+end
+</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.5" netPrefixLenV4="30"/>
         <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.18" netPrefixLenV4="30"/>
@@ -2108,203 +697,147 @@ end</entry>
     <node name="iosv-2" type="SIMPLE" subtype="IOSv" location="573,140" ipv4="192.168.0.7">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
-            <entry key="config" type="String">!
-! Last configuration change at 14:40:33 UTC Wed Dec 30 2015
-!
-version 15.6
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
+            <entry key="config" type="String">! IOS Config generated on 2016-03-18 15:42
+! by autonetkit_0.21.4
 !
 hostname iosv-2
-!
 boot-start-marker
 boot-end-marker
 !
-!
 vrf definition Mgmt-intf
- !
+!
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-enable password cisco
+!
 !
 no aaa new-model
-ethernet lmi ce
 !
 !
-!
-mmi polling-interval 60
-no mmi auto-configure
-no mmi pvc
-mmi snmp-timeout 180
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-no ip domain lookup
-ip domain name virl.info
 ip cef
 ipv6 unicast-routing
 ipv6 cef
 !
-multilink bundle-name authenticated
 !
-!
-!
-!
-username cisco privilege 15 secret 5 $1$9MN9$BNG.qtVjow4JhVQff8rHY0
-!
-redundancy
-!
-!
-! 
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-interface Loopback0
- description Loopback
- ip address 192.168.0.7 255.255.255.255
-!
-interface GigabitEthernet0/0
- description OOB Management
- vrf forwarding Mgmt-intf
- ip address 10.200.1.155 255.255.255.0
- duplex full
- speed auto
- media-type rj45
-!
-interface GigabitEthernet0/1
- description to lxc-1
- ip address 10.0.0.9 255.255.255.252
- ip ospf cost 1
- duplex full
- speed auto
- media-type rj45
-!
-interface GigabitEthernet0/2
- description to iosv-1
- ip address 10.0.0.14 255.255.255.252
- ip ospf cost 1
- duplex full
- speed auto
- media-type rj45
-!
-interface GigabitEthernet0/3
- description to DC4-CORE2
- ip address 10.0.0.42 255.255.255.252
- ip ospf cost 1
- duplex full
- speed auto
- media-type rj45
-!
-interface GigabitEthernet0/4
- description to DC4-CORE1
- ip address 10.0.0.38 255.255.255.252
- ip ospf cost 1
- duplex full
- speed auto
- media-type rj45
-!
-router ospf 1
- passive-interface Loopback0
- network 10.0.0.8 0.0.0.3 area 0
- network 10.0.0.12 0.0.0.3 area 0
- network 10.0.0.36 0.0.0.3 area 0
- network 10.0.0.40 0.0.0.3 area 0
- network 192.168.0.7 0.0.0.0 area 0
-!
-router bgp 1
- bgp router-id 192.168.0.7
- bgp log-neighbor-changes
- neighbor 192.168.0.2 remote-as 1
- neighbor 192.168.0.2 description iBGP peer iosv-1
- neighbor 192.168.0.2 update-source Loopback0
- neighbor 192.168.0.8 remote-as 1
- neighbor 192.168.0.8 description iBGP peer DC4-CORE1
- neighbor 192.168.0.8 update-source Loopback0
- neighbor 192.168.0.9 remote-as 1
- neighbor 192.168.0.9 description iBGP peer DC4-CORE2
- neighbor 192.168.0.9 update-source Loopback0
- !
- address-family ipv4
-  network 192.168.0.7 mask 255.255.255.255
-  neighbor 192.168.0.2 activate
-  neighbor 192.168.0.8 activate
-  neighbor 192.168.0.9 activate
- exit-address-family
-!
-ip forward-protocol nd
-!
-!
-no ip http server
-no ip http secure-server
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+ip domain name virl.info
+crypto key generate rsa modulus 768
 ip ssh server algorithm authentication password
-!
-!
-!
-!
-control-plane
-!
-banner exec `
-**************************************************************************
-* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
-* education. IOSv is provided as-is and is not supported by Cisco's      *
-* Technical Advisory Center. Any use or disclosure, in whole or in part, *
-* of the IOSv Software or Documentation to any third party for any       *
-* purposes is expressly prohibited except as otherwise authorized by     *
-* Cisco in writing.                                                      *
-**************************************************************************`
-banner incoming `
-**************************************************************************
-* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
-* education. IOSv is provided as-is and is not supported by Cisco's      *
-* Technical Advisory Center. Any use or disclosure, in whole or in part, *
-* of the IOSv Software or Documentation to any third party for any       *
-* purposes is expressly prohibited except as otherwise authorized by     *
-* Cisco in writing.                                                      *
-**************************************************************************`
-banner login `
-**************************************************************************
-* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
-* education. IOSv is provided as-is and is not supported by Cisco's      *
-* Technical Advisory Center. Any use or disclosure, in whole or in part, *
-* of the IOSv Software or Documentation to any third party for any       *
-* purposes is expressly prohibited except as otherwise authorized by     *
-* Cisco in writing.                                                      *
-**************************************************************************`
-!
-line con 0
- password cisco
-line aux 0
+username cisco privilege 15 secret cisco
 line vty 0 4
+ transport input ssh telnet
  exec-timeout 720 0
  password cisco
  login local
- transport input telnet ssh
+line con 0
+ password cisco
 !
-no scheduler allocate
+cdp run
 !
-end</entry>
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.7 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  vrf forwarding Mgmt-intf
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to lxc-1
+  ip address 10.0.0.9 255.255.255.252
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to iosv-1
+  ip address 10.0.0.14 255.255.255.252
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/3
+  description to DC4-CORE2
+  ip address 10.0.0.42 255.255.255.252
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/4
+  description to DC4-CORE1
+  ip address 10.0.0.38 255.255.255.252
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+!
+!
+router ospf 1
+  network 192.168.0.7 0.0.0.0 area 0
+  log-adjacency-changes
+  passive-interface Loopback0
+  network 10.0.0.8 0.0.0.3 area 0
+  network 10.0.0.12 0.0.0.3 area 0
+  network 10.0.0.40 0.0.0.3 area 0
+  network 10.0.0.36 0.0.0.3 area 0
+!
+!
+router bgp 1
+  bgp router-id 192.168.0.7
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.8 remote-as 1
+  neighbor 192.168.0.8 description iBGP peer DC4-CORE1
+  neighbor 192.168.0.8 update-source Loopback0
+  !
+  neighbor 192.168.0.9 remote-as 1
+  neighbor 192.168.0.9 description iBGP peer DC4-CORE2
+  neighbor 192.168.0.9 update-source Loopback0
+  !
+  neighbor 192.168.0.2 remote-as 1
+  neighbor 192.168.0.2 description iBGP peer iosv-1
+  neighbor 192.168.0.2 update-source Loopback0
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.7 mask 255.255.255.255
+  neighbor 192.168.0.8 activate
+  neighbor 192.168.0.9 activate
+  neighbor 192.168.0.2 activate
+ exit-address-family
+!
+!
+!
+end
+</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.9" netPrefixLenV4="30"/>
         <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.14" netPrefixLenV4="30"/>
@@ -2326,7 +859,7 @@ runcmd:
 - service sshd restart
 users:
 - default
-- gecos: User configured by VIRL Configuration Engine 0.20.22
+- gecos: User configured by VIRL Configuration Engine 0.21.6
   lock-passwd: false
   name: cisco
   plain-text-passwd: cisco
@@ -2353,17 +886,33 @@ write_files:
     #!/bin/sh
     ifconfig eth1 up 10.0.0.6 netmask 255.255.255.252
     ifconfig eth2 up 10.0.0.10 netmask 255.255.255.252
-    route add -net 10.0.0.0/8 gw 10.0.0.5 dev eth1
-    route add -net 192.168.0.0/28 gw 10.0.0.5 dev eth1
-    route add -net 10.0.0.0/8 gw 10.0.0.9 dev eth2
-    route add -net 192.168.0.0/28 gw 10.0.0.9 dev eth2
+    route add -host 192.168.0.2 gw 10.0.0.5 dev eth1
+    route add -host 192.168.0.7 gw 10.0.0.5 dev eth1
+    route add -net 10.0.0.4/30 gw 10.0.0.5 dev eth1
+    route add -net 10.0.0.8/29 gw 10.0.0.5 dev eth1
+    route add -net 10.0.0.16/28 gw 10.0.0.5 dev eth1
+    route add -net 10.0.0.32/28 gw 10.0.0.5 dev eth1
+    route add -net 10.0.0.48/30 gw 10.0.0.5 dev eth1
+    route add -net 192.168.0.8/31 gw 10.0.0.5 dev eth1
+    route add -host 192.168.0.2 gw 10.0.0.9 dev eth2
+    route add -host 192.168.0.7 gw 10.0.0.9 dev eth2
+    route add -net 10.0.0.4/30 gw 10.0.0.9 dev eth2
+    route add -net 10.0.0.8/29 gw 10.0.0.9 dev eth2
+    route add -net 10.0.0.16/28 gw 10.0.0.9 dev eth2
+    route add -net 10.0.0.32/28 gw 10.0.0.9 dev eth2
+    route add -net 10.0.0.48/30 gw 10.0.0.9 dev eth2
+    route add -net 192.168.0.8/31 gw 10.0.0.9 dev eth2
     exit 0
 </entry>
         </extensions>
         <interface id="0" name="eth1" ipv4="10.0.0.6" netPrefixLenV4="30"/>
         <interface id="1" name="eth2" ipv4="10.0.0.10" netPrefixLenV4="30"/>
     </node>
-    <node name="ns-1" type="SIMPLE" subtype="NS" location="166,75" vmImage="NS-VPX-10.5 [bd25ddfe-55bd-4c3a-a947-2604693a7552]" vmFlavor="NS [b1a2edf3-6ab6-4ca8-a871-48c8f64523a1]"/>
+    <node name="ns-1" type="SIMPLE" subtype="NS" location="166,78" vmImage="NS-VPX-10.5 [bd25ddfe-55bd-4c3a-a947-2604693a7552]" vmFlavor="NS [b1a2edf3-6ab6-4ca8-a871-48c8f64523a1]">
+        <extensions>
+            <entry key="config" type="string"> </entry>
+        </extensions>
+    </node>
     <connection dst="/virl:topology/virl:node[3]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[2]"/>
     <connection dst="/virl:topology/virl:node[4]/virl:interface[1]" src="/virl:topology/virl:node[2]/virl:interface[2]"/>
     <connection dst="/virl:topology/virl:node[2]/virl:interface[3]" src="/virl:topology/virl:node[1]/virl:interface[3]"/>

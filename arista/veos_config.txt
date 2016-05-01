@@ -1,0 +1,26 @@
+! device: veos-1 (vEOS, EOS-4.14.2F)
+!
+! boot system flash:/vEOS.swi
+!
+transceiver qsfp default-mode 4x10G
+!
+hostname veos-1
+!
+spanning-tree mode mstp
+!
+no aaa root
+!
+username admin role network-admin secret 5 $1$93LlZesx$MSqS1D/8NGTSY724FGx1K0
+username cisco role network-admin secret 5 $1$rQS0W9wP$ZUzVG2XoGCCZCJopFp1aV/
+!
+interface Ethernet1
+!
+interface Ethernet2
+!
+interface Management1
+  ! ip of ma1 configured on launch
+!
+no ip routing
+!
+!
+end

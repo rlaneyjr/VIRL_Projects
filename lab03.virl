@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+    <extensions>
+        <entry key="AutoNetkit.enable_cdp" type="Boolean">true</entry>
+        <entry key="AutoNetkit.enable_OnePK" type="Boolean">true</entry>
+        <entry key="AutoNetkit.ipv4_infra_subnet" type="String">10.10.0.0</entry>
+        <entry key="AutoNetkit.ipv4_infra_prefix" type="String">16</entry>
+        <entry key="AutoNetkit.ipv4_vrf_loopback_subnet" type="String">172.16.1.0</entry>
+        <entry key="AutoNetkit.ipv4_loopback_subnet" type="String">172.16.2.0</entry>
+        <entry key="AutoNetkit.ipv4_loopback_prefix" type="String">24</entry>
+        <entry key="management_network" type="String">exclusive</entry>
+    </extensions>
+</topology>

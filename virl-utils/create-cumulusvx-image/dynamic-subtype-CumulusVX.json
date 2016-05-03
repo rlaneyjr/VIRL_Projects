@@ -1,0 +1,22 @@
+{
+  "dynamic-subtypes": [
+    {
+      "config_file": "/cumulusvx.sh", 
+      "gui_icon": "iosvl2", 
+      "plugin_base": "generic", 
+      "interface_management": "eth0", 
+      "interface_pattern": "swp{0}", 
+      "interface_range": 25, 
+      "cli_protocol": "ssh", 
+      "baseline_flavor": "CumulusVX.small", 
+      "plugin_name": "CumulusVX", 
+      "interface_first": 1, 
+      "cli_serial": 1, 
+      "plugin_desc": "CumulusVX", 
+      "config_disk_type": "disk", 
+      "hw_vm_extra": "", 
+      "baseline_image": "CumulusVX", 
+      "gui_visible": true
+    }
+  ]
+}

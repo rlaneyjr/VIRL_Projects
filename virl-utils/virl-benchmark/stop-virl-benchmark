@@ -1,0 +1,27 @@
+#!/bin/bash
+# stop-virl-topology-benchmark.sh
+# HS-Fulda - sebastian.rieger@informatik.hs-fulda.de
+#
+# changelog:
+# V1.0   initial version
+
+# usage
+if [ ! $# -eq 2 ] ; then
+  echo -e "usage: $0 <username> <password>, e.g.,\n"
+  echo "$0 guest password"
+  exit -1
+fi
+
+USERNAME=$1
+PASSWORD=$2
+
+# get all running benchmark simulations
+RUNNING_BENCHMARKS=$(virl_std_client --username $USERNAME --password $PASSWORD --quiet --json \
+  simengine-list | egrep -o -e "VIRLBENCH(.*)@(.*)-[_a-zA-Z0-9]{6}")
+
+# stop each benchmark simulation
+for BENCHMARK in $RUNNING_BENCHMARKS; do
+  echo "Stopping $BENCHMARK"
+  virl_std_client --username $USERNAME --password $PASSWORD --quiet \
+    simengine-stop --session-id $BENCHMARK
+done

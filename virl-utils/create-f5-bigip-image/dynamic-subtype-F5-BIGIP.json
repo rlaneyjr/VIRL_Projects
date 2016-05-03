@@ -1,0 +1,25 @@
+{
+  "dynamic-subtypes": [
+    {
+      "config_file": "/bigip-config.sh", 
+      "gui_icon": "application_control_engine", 
+      "plugin_base": "generic", 
+      "interface_management": "eth0", 
+      "interface_pattern": "eth{0}", 
+      "hw_ram": 4096, 
+      "cli_protocol": "ssh", 
+      "hw_disk_bus": "virtio", 
+      "baseline_flavor": "F5-BIGIP.small", 
+      "plugin_name": "F5-BIGIP", 
+      "hw_vcpus": 2, 
+      "interface_first": 1, 
+      "cli_serial": 1, 
+      "plugin_desc": "F5-BIGIP", 
+      "config_disk_type": "disk", 
+      "hw_vm_extra": "", 
+      "hw_vif_model": "virtio", 
+      "baseline_image": "F5-BIGIP", 
+      "gui_visible": true
+    }
+  ]
+}

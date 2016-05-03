@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# Check reachability of all running VIRL VMs by logging in on the telnet console port and expect a prompt that includes the host name
+
+# usage
+if [ ! $# -gt 2 ] ; then
+  echo -e "usage: $0 <username> <timeout for telnet connection to each node> <simulation> [debug level], e.g.,\n"
+  echo "$0 guest VIRLBENCH-223721@smb-WaZLhH 5"
+  exit -1
+fi
+
+# get the IP address of eth0
+IP=$(ip addr show | grep eth0 | grep inet | tr -s " " | cut -d " " -f 3 | cut -d "/" -f 1)
+
+RUNNING=true
+
+USERNAME=$1
+TIMEOUT=$2
+SIMULATION=$3
+if [ $4 ]; then 
+  DEBUG=$4
+else
+  DEBUG=0
+fi
+
+while $RUNNING = true
+do
+# Check if all nodes are ready-to-use using expect
+
+  # get the telnet ports of all nodes in all simulations
+  VM_PORTS=$(./ports-vms.py $USERNAME $SIMULATION)
+  
+  # connect to every telnet port of each node and expect the hostname in the prompt
+  VMS_UNUSABLE=0
+  for VM_PORT in $VM_PORTS
+  do
+    VM_TELNET_PORT=$(echo $VM_PORT | cut -d "=" -f 2)
+    VM_NAME=$(echo $VM_PORT | cut -d "=" -f 1)
+    # connect to every telnet port and check whether it can be used by pressing return
+    # twice and expecting the hostname to appear in the resulting prompt each time
+    if [ $DEBUG -lt 2 ]; then
+    	./test-virl-telnet-connection $IP $VM_TELNET_PORT $VM_NAME $TIMEOUT >/dev/null
+    else
+    	./test-virl-telnet-connection $IP $VM_TELNET_PORT $VM_NAME $TIMEOUT
+    fi
+    EXPECT_EXITCODE=$?
+    if [ $EXPECT_EXITCODE -eq 5 ] ; then
+      VMS_UNUSABLE=$(expr $VMS_UNUSABLE + 1)
+      if [ $DEBUG -gt 0 ]; then echo "$VM_NAME ($VM_TELNET_PORT) still unusable"; fi
+    fi
+  done
+  
+  if [ $VMS_UNUSABLE -gt 0 ]; then
+    if [ $DEBUG -gt 0 ]; then echo "$VMS_UNUSABLE VMs are still unusable"; fi
+  else
+    RUNNING=false
+  fi
+
+  sleep 1
+
+done
+
+DATE=$(date)
+echo "Finished at $DATE"

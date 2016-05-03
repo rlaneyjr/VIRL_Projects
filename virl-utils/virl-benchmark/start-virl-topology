@@ -1,0 +1,126 @@
+#!/bin/bash
+# start-virl-topology-benchmark.sh
+# HS-Fulda - sebastian.rieger@informatik.hs-fulda.de
+#
+# changelog:
+# V1.0   initial version
+
+# usage
+if [ ! $# -gt 4 ] ; then
+  echo -e "usage: $0 <my-topology.virl> <number of concurrent simulations> <username> <password> <timeout> [debug level], e.g.,\n"
+  echo "$0 /home/virl/git-virl-hs-fulda/GIT-VIRL-HS-Fulda/advcompnet-lab2-dcn-fabricpath.virl 6 guest password"
+  exit -1
+fi
+
+TOPOLOGY=$1
+RUNCOUNT=$2
+USERNAME=$3
+PASSWORD=$4
+TIMEOUT=$5
+if [ $6 ]; then
+  DEBUG=$6
+else
+  DEBUG=0
+fi
+
+TOPOLOGYFILENAME=$(basename $TOPOLOGY)
+TIMESTAMP=$(date +%H%M%S)
+FILENAME="VIRLBENCH-$TIMESTAMP@$TOPOLOGYFILENAME"
+
+DATE=$(date)
+echo "Script started at $DATE"
+
+# start the simulations
+RUN=0
+while [ $RUN -lt $RUNCOUNT ]
+do
+  # use simengine-launch to start the simulation
+  if [ $DEBUG -lt 2 ]; then
+    virl_std_client --username $USERNAME --password $PASSWORD simengine-launch \
+      --virl-file $TOPOLOGY --file-name $FILENAME >/dev/null 2>&1
+  else
+    virl_std_client --username $USERNAME --password $PASSWORD simengine-launch \
+      --virl-file $TOPOLOGY --file-name $FILENAME
+  fi
+  RUN=$(expr $RUN + 1)
+done
+
+DATE=$(date)
+echo "Started at $DATE"
+
+RUNNING=true
+
+# wait for simulations to start
+sleep 5
+
+# get all running benchmark simulations
+SIMS=$(virl_std_client --username $USERNAME --password $PASSWORD --quiet --json simengine-list 2>&1 | egrep -o -e "VIRLBENCH-$TIMESTAMP@(.*)-[_a-zA-Z0-9]{6}")
+if [ $DEBUG -gt 1 ]; then
+  echo "Running simulations:"
+  for SIM in $SIMS; do
+    echo $SIM
+  done
+  echo
+fi
+        
+# count nodes in the running benchmark simulations
+NODE_COUNT=0
+for SIM in $SIMS; do
+  SIM_NODE_COUNT=$(virl_std_client --username $USERNAME --password $PASSWORD simengine-nodes --session-id $SIM 2>&1 | grep -c state)
+  if [ $DEBUG -gt 1 ]; then
+    echo "$SIM has $SIM_NODE_COUNT nodes"
+  fi
+  NODE_COUNT=$(expr $NODE_COUNT + $SIM_NODE_COUNT)
+done
+if [ $DEBUG -gt 0 ] ; then echo "$NODE_COUNT nodes"; fi
+
+# continuously count all ACTIVE nodes in running benchmark simulations until all nodes are ACTIVE
+ACTIVE_COUNT=0
+while [ $ACTIVE_COUNT -lt $NODE_COUNT ]
+do
+  ACTIVE_COUNT=0
+  for SIM in $SIMS; do
+    SIM_NODE_ACTIVE_COUNT=$(virl_std_client --username $USERNAME --password $PASSWORD simengine-nodes --session-id $SIM 2>&1 | grep -c ACTIVE)
+    if [ $DEBUG -gt 1 ]; then
+      echo "$SIM has $SIM_NODE_ACTIVE_COUNT active nodes"
+    fi
+    ACTIVE_COUNT=$(expr $ACTIVE_COUNT + $SIM_NODE_ACTIVE_COUNT)
+  done
+
+  if [ $DEBUG -gt 0 ] ; then echo "$ACTIVE_COUNT of $NODE_COUNT are ACTIVE"; fi
+  sleep 1
+done
+
+DATE=$(date)
+echo "Active at $DATE"
+
+# Check if the nodes are ready-for-use using expect
+./check-reachability $USERNAME $TIMEOUT "VIRLBENCH-$TIMESTAMP" $DEBUG
+
+# Check using load
+
+# Alternative to check if nodes are ready, use CPU load threshold for VMs (IOSv and IOSvL2 have a high CPU load during initial boot)
+#THRESHOLD="70.0"
+
+#while $RUNNING = true
+#do
+#  VM_LOADS=$(top -n 1 | grep kvm.real | tr -s " " | cut -d " " -f 9)
+#
+#  VMS_WITH_HIGH_CPU_LOAD=0
+#  for VM_LOAD in $VM_LOADS
+#  do
+#    if [ $(echo "$VM_LOAD > $THRESHOLD" | bc) -eq 1 ] ; then 
+#      VMS_WITH_HIGH_CPU_LOAD=$(expr $VMS_WITH_HIGH_CPU_LOAD + 1)
+#      echo "$VM_LOAD > 6x0.0"
+#    fi
+#  done
+#  
+#  if [ $VMS_WITH_HIGH_CPU_LOAD -gt 0 ]; then
+#    echo "cpu load = high"
+#  else
+#    RUNNING=false
+#  fi
+#done
+
+DATE=$(date)
+echo "Finished at $DATE"

@@ -1,0 +1,17 @@
+#!/usr/bin/expect
+
+# connect to telnet port, press return and expect argv 2 (hostname) in
+# prompt, press return again and expect to receive argv 2 again 
+
+set timeout [lindex $argv 3]
+spawn telnet [lindex $argv 0] [lindex $argv 1]
+send "\r"
+expect { 
+  [lindex $argv 2]
+}
+send "\r"
+expect { 
+  [lindex $argv 2]
+  { exit 0 }
+}
+exit 5

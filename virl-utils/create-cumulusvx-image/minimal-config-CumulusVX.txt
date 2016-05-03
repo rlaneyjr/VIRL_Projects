@@ -1,0 +1,5 @@
+#!/bin/bash
+touch /tmp/cumulusvx-config
+useradd -m cisco -s /bin/bash
+echo "cisco:cisco" | chpasswd
+addgroup cisco sudo

@@ -10,4 +10,9 @@
         <entry key="AutoNetkit.ipv4_loopback_prefix" type="String">24</entry>
         <entry key="management_network" type="String">exclusive</entry>
     </extensions>
+    <node name="iosxrv64-1" type="SIMPLE" subtype="IOS XRv64" location="203,96"/>
+    <node name="iosxrv9000-1" type="SIMPLE" subtype="IOS XRv 9000" location="439,98"/>
+    <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="222,198"/>
+    <node name="nx-osv9000-1" type="SIMPLE" subtype="NX-OSv 9000" location="465,206"/>
+    <node name="veos-1" type="SIMPLE" subtype="vEOS" location="360,289"/>
 </topology>

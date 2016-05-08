@@ -19,7 +19,7 @@ hostname: GNS3-lab01
 manage_etc_hosts: true
 runcmd:
  - systemctl start rc-local
- - [ sh, -xc, "sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config" ]
+ - sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/" /etc/ssh/sshd_config
  - echo "UseDNS no" &gt;&gt; /etc/ssh/sshd_config
  - service ssh restart
  - service sshd restart
@@ -51,12 +51,16 @@ write_files:
     exit 0</entry>
         </extensions>
         <interface id="0" name="eth1" ipv4="10.10.0.25" netPrefixLenV4="16"/>
-        <interface id="1" name="eth2" ipv4="10.0.25.10" netPrefixLenV4="24"/>
+        <interface id="1" name="eth2" ipv4="10.0.25.10" netPrefixLenV4="24">
+            <extensions>
+                <entry key="AutoNetkit.vlan" type="Integer">25</entry>
+            </extensions>
+        </interface>
     </node>
     <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="207,215" ipv4="192.168.0.1">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
-            <entry key="config" type="String">! IOS Config generated on 2016-05-08 11:18
+            <entry key="config" type="String">! IOS Config generated on 2016-05-08 14:02
 ! by autonetkit_0.21.4
 !
 hostname iosv-1
@@ -205,7 +209,7 @@ end
     <node name="iosv-2" type="SIMPLE" subtype="IOSv" location="206,99" ipv4="192.168.0.3">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
-            <entry key="config" type="String">! IOS Config generated on 2016-05-08 11:18
+            <entry key="config" type="String">! IOS Config generated on 2016-05-08 14:02
 ! by autonetkit_0.21.4
 !
 hostname iosv-2
@@ -344,7 +348,7 @@ end
     <node name="iosv-3" type="SIMPLE" subtype="IOSv" location="392,216" ipv4="192.168.0.4">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
-            <entry key="config" type="String">! IOS Config generated on 2016-05-08 11:18
+            <entry key="config" type="String">! IOS Config generated on 2016-05-08 14:02
 ! by autonetkit_0.21.4
 !
 hostname iosv-3
@@ -483,7 +487,7 @@ end
     <node name="iosv-4" type="SIMPLE" subtype="IOSv" location="387,100" ipv4="192.168.0.5">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
-            <entry key="config" type="String">! IOS Config generated on 2016-05-08 11:18
+            <entry key="config" type="String">! IOS Config generated on 2016-05-08 14:02
 ! by autonetkit_0.21.4
 !
 hostname iosv-4
@@ -680,17 +684,10 @@ write_files:
         </extensions>
         <interface id="0" name="eth1" ipv4="10.10.0.14" netPrefixLenV4="16"/>
     </node>
-    <node name="vlan25" type="ASSET" subtype="FLAT" location="293,322">
-        <extensions>
-            <entry key="host_network" type="String">vlan25</entry>
-        </extensions>
-        <interface id="0" name="link0" ipv4="10.0.25.2" netPrefixLenV4="24"/>
-    </node>
     <connection dst="/virl:topology/virl:node[2]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[1]"/>
     <connection dst="/virl:topology/virl:node[3]/virl:interface[1]" src="/virl:topology/virl:node[2]/virl:interface[2]"/>
     <connection dst="/virl:topology/virl:node[4]/virl:interface[1]" src="/virl:topology/virl:node[2]/virl:interface[3]"/>
     <connection dst="/virl:topology/virl:node[5]/virl:interface[1]" src="/virl:topology/virl:node[4]/virl:interface[2]"/>
     <connection dst="/virl:topology/virl:node[5]/virl:interface[2]" src="/virl:topology/virl:node[3]/virl:interface[2]"/>
     <connection dst="/virl:topology/virl:node[6]/virl:interface[1]" src="/virl:topology/virl:node[5]/virl:interface[3]"/>
-    <connection dst="/virl:topology/virl:node[7]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[2]"/>
 </topology>

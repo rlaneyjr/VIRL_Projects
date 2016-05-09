@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
     <extensions>
+        <entry key="host_network" type="String">flat2</entry>
         <entry key="AutoNetkit.enable_cdp" type="Boolean">true</entry>
         <entry key="AutoNetkit.enable_OnePK" type="Boolean">true</entry>
         <entry key="AutoNetkit.ipv4_infra_subnet" type="String">10.10.0.0</entry>
@@ -9,7 +10,7 @@
         <entry key="management_network" type="String">flat</entry>
         <entry key="management_lxc" type="Boolean">true</entry>
     </extensions>
-    <node name="gns3-server-1" type="SIMPLE" subtype="GNS3-server" location="86,315" vmImage="GNS3-server-15.10 [8c2d7b5c-6491-4357-8a88-2013f809860b]" vmFlavor="m1.large [4]">
+    <node name="gns3-server-1" type="SIMPLE" subtype="GNS3-server" location="86,315" vmImage="GNS3-server-15.10 [8c2d7b5c-6491-4357-8a88-2013f809860b]" vmFlavor="m1.large [4]" ipv4="192.168.0.10">
         <extensions>
             <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">#cloud-config
@@ -40,27 +41,25 @@ write_files:
   permissions: '0755'
   content: |-
     #!/bin/sh
-    ifconfig eth1 up 10.10.0.25 netmask 255.255.0.0
-    ifconfig eth2 up 10.0.25.10 netmask 255.255.255.0
+    ifconfig lo0 up 192.168.0.10 netmask 255.255.255.255
+    ifconfig eth1 up 10.10.0.10 netmask 255.255.0.0
+    ifconfig eth2 up 10.20.0.10 netmask 255.255.0.0
     route add -host 192.168.0.2 gw 10.10.0.26 dev eth1
     route add -host 192.168.0.3 gw 10.10.0.26 dev eth1
     route add -host 192.168.0.4 gw 10.10.0.26 dev eth1
     route add -host 192.168.0.5 gw 10.10.0.26 dev eth1
     route add -net 10.10.0.0/16 gw 10.10.0.26 dev eth1
     route add -net 192.168.0.0/24 gw 10.10.0.26 dev eth1
+    route add default gw 10.20.0.1 dev eth2
     exit 0</entry>
         </extensions>
         <interface id="0" name="eth1" ipv4="10.10.0.25" netPrefixLenV4="16"/>
-        <interface id="1" name="eth2" ipv4="10.0.25.10" netPrefixLenV4="24">
-            <extensions>
-                <entry key="AutoNetkit.vlan" type="Integer">25</entry>
-            </extensions>
-        </interface>
+        <interface id="1" name="eth2" ipv4="10.20.0.10" netPrefixLenV4="16"/>
     </node>
-    <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="207,215" ipv4="192.168.0.1">
+    <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="207,215" ipv4="192.168.0.2">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
-            <entry key="config" type="String">! IOS Config generated on 2016-05-08 14:02
+            <entry key="config" type="String">! IOS Config generated on 2016-05-08 22:15
 ! by autonetkit_0.21.4
 !
 hostname iosv-1
@@ -121,7 +120,7 @@ username cisco privilege 15 password 0 cisco
 !
 interface Loopback0
   description Loopback
-  ip address 192.168.0.1 255.255.255.255
+  ip address 192.168.0.2 255.255.255.255
 !
 interface GigabitEthernet0/0
   description OOB Management
@@ -163,14 +162,14 @@ interface GigabitEthernet0/3
 !
 !
 router ospf 1
-  network 192.168.0.1 0.0.0.0 area 0
+  network 192.168.0.2 0.0.0.0 area 0
   log-adjacency-changes
   passive-interface Loopback0
   network 10.10.0.0 0.0.255.255 area 0
 !
 !
 router bgp 1
-  bgp router-id 192.168.0.1
+  bgp router-id 192.168.0.2
   no synchronization
 ! ibgp
   ! ibgp peers
@@ -190,7 +189,7 @@ router bgp 1
 !
  !
  address-family ipv4
-  network 192.168.0.1 mask 255.255.255.255
+  network 192.168.0.2 mask 255.255.255.255
   neighbor 192.168.0.3 activate
   neighbor 192.168.0.4 activate
   neighbor 192.168.0.5 activate
@@ -209,7 +208,7 @@ end
     <node name="iosv-2" type="SIMPLE" subtype="IOSv" location="206,99" ipv4="192.168.0.3">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
-            <entry key="config" type="String">! IOS Config generated on 2016-05-08 14:02
+            <entry key="config" type="String">! IOS Config generated on 2016-05-08 22:15
 ! by autonetkit_0.21.4
 !
 hostname iosv-2
@@ -315,9 +314,9 @@ router bgp 1
 ! ibgp
   ! ibgp peers
   !
-  neighbor 192.168.0.1 remote-as 1
-  neighbor 192.168.0.1 description iBGP peer iosv-1
-  neighbor 192.168.0.1 update-source Loopback0
+  neighbor 192.168.0.2 remote-as 1
+  neighbor 192.168.0.2 description iBGP peer iosv-1
+  neighbor 192.168.0.2 update-source Loopback0
   !
   neighbor 192.168.0.4 remote-as 1
   neighbor 192.168.0.4 description iBGP peer iosv-3
@@ -331,7 +330,7 @@ router bgp 1
  !
  address-family ipv4
   network 192.168.0.3 mask 255.255.255.255
-  neighbor 192.168.0.1 activate
+  neighbor 192.168.0.2 activate
   neighbor 192.168.0.4 activate
   neighbor 192.168.0.5 activate
  exit-address-family
@@ -348,7 +347,7 @@ end
     <node name="iosv-3" type="SIMPLE" subtype="IOSv" location="392,216" ipv4="192.168.0.4">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
-            <entry key="config" type="String">! IOS Config generated on 2016-05-08 14:02
+            <entry key="config" type="String">! IOS Config generated on 2016-05-08 22:15
 ! by autonetkit_0.21.4
 !
 hostname iosv-3
@@ -454,9 +453,9 @@ router bgp 1
 ! ibgp
   ! ibgp peers
   !
-  neighbor 192.168.0.1 remote-as 1
-  neighbor 192.168.0.1 description iBGP peer iosv-1
-  neighbor 192.168.0.1 update-source Loopback0
+  neighbor 192.168.0.2 remote-as 1
+  neighbor 192.168.0.2 description iBGP peer iosv-1
+  neighbor 192.168.0.2 update-source Loopback0
   !
   neighbor 192.168.0.3 remote-as 1
   neighbor 192.168.0.3 description iBGP peer iosv-2
@@ -470,7 +469,7 @@ router bgp 1
  !
  address-family ipv4
   network 192.168.0.4 mask 255.255.255.255
-  neighbor 192.168.0.1 activate
+  neighbor 192.168.0.2 activate
   neighbor 192.168.0.3 activate
   neighbor 192.168.0.5 activate
  exit-address-family
@@ -487,7 +486,7 @@ end
     <node name="iosv-4" type="SIMPLE" subtype="IOSv" location="387,100" ipv4="192.168.0.5">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
-            <entry key="config" type="String">! IOS Config generated on 2016-05-08 14:02
+            <entry key="config" type="String">! IOS Config generated on 2016-05-08 22:15
 ! by autonetkit_0.21.4
 !
 hostname iosv-4
@@ -578,15 +577,6 @@ interface GigabitEthernet0/2
   speed auto
   no shutdown
 !
-interface GigabitEthernet0/3
-  description to lxc-sshd-1
-  ip address 10.10.0.13 255.255.0.0
-  cdp enable
-  ip ospf cost 1
-  duplex full
-  speed auto
-  no shutdown
-!
 !
 !
 router ospf 1
@@ -602,9 +592,9 @@ router bgp 1
 ! ibgp
   ! ibgp peers
   !
-  neighbor 192.168.0.1 remote-as 1
-  neighbor 192.168.0.1 description iBGP peer iosv-1
-  neighbor 192.168.0.1 update-source Loopback0
+  neighbor 192.168.0.2 remote-as 1
+  neighbor 192.168.0.2 description iBGP peer iosv-1
+  neighbor 192.168.0.2 update-source Loopback0
   !
   neighbor 192.168.0.3 remote-as 1
   neighbor 192.168.0.3 description iBGP peer iosv-2
@@ -618,7 +608,7 @@ router bgp 1
  !
  address-family ipv4
   network 192.168.0.5 mask 255.255.255.255
-  neighbor 192.168.0.1 activate
+  neighbor 192.168.0.2 activate
   neighbor 192.168.0.3 activate
   neighbor 192.168.0.4 activate
  exit-address-family
@@ -631,63 +621,10 @@ end
         </extensions>
         <interface id="0" name="GigabitEthernet0/1" ipv4="10.10.0.22" netPrefixLenV4="16"/>
         <interface id="1" name="GigabitEthernet0/2" ipv4="10.10.0.18" netPrefixLenV4="16"/>
-        <interface id="2" name="GigabitEthernet0/3" ipv4="10.10.0.13" netPrefixLenV4="16"/>
-    </node>
-    <node name="lxc-sshd-1" type="SIMPLE" subtype="lxc-sshd" location="505,16">
-        <extensions>
-            <entry key="config" type="String">#cloud-config
-bootcmd:
-- ln -s -t /etc/rc.d /etc/rc.local
-hostname: lxc-sshd-1
-manage_etc_hosts: true
-runcmd:
-- systemctl start rc-local
-- sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
-- echo "UseDNS no" &gt;&gt; /etc/ssh/sshd_config
-- service ssh restart
-- service sshd restart
-users:
-- default
-- gecos: User configured by VIRL Configuration Engine 0.21.7
-  lock-passwd: false
-  name: cisco
-  plain-text-passwd: cisco
-  shell: /bin/bash
-  ssh-authorized-keys:
-  - VIRL-USER-SSH-PUBLIC-KEY
-  sudo: ALL=(ALL) ALL
-write_files:
-- path: /etc/systemd/system/dhclient@.service
-  content: |
-    [Unit]
-    Description=Run dhclient on %i interface
-    After=network.target
-    [Service]
-    Type=oneshot
-    ExecStart=/sbin/dhclient %i -pf /var/run/dhclient.%i.pid -lf /var/lib/dhclient/dhclient.%i.lease
-    RemainAfterExit=yes
-  owner: root:root
-  permissions: '0644'
-- path: /etc/rc.local
-  owner: root:root
-  permissions: '0755'
-  content: |-
-    #!/bin/sh
-    ifconfig eth1 up 10.10.0.14 netmask 255.255.0.0
-    route add -host 192.168.0.1 gw 10.10.0.13 dev eth1
-    route add -host 192.168.0.3 gw 10.10.0.13 dev eth1
-    route add -net 10.10.0.0/16 gw 10.10.0.13 dev eth1
-    route add -net 192.168.0.4/31 gw 10.10.0.13 dev eth1
-    exit 0
-</entry>
-            <entry key="Auto-generate config" type="Boolean">false</entry>
-        </extensions>
-        <interface id="0" name="eth1" ipv4="10.10.0.14" netPrefixLenV4="16"/>
     </node>
     <connection dst="/virl:topology/virl:node[2]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[1]"/>
     <connection dst="/virl:topology/virl:node[3]/virl:interface[1]" src="/virl:topology/virl:node[2]/virl:interface[2]"/>
     <connection dst="/virl:topology/virl:node[4]/virl:interface[1]" src="/virl:topology/virl:node[2]/virl:interface[3]"/>
     <connection dst="/virl:topology/virl:node[5]/virl:interface[1]" src="/virl:topology/virl:node[4]/virl:interface[2]"/>
     <connection dst="/virl:topology/virl:node[5]/virl:interface[2]" src="/virl:topology/virl:node[3]/virl:interface[2]"/>
-    <connection dst="/virl:topology/virl:node[6]/virl:interface[1]" src="/virl:topology/virl:node[5]/virl:interface[3]"/>
 </topology>

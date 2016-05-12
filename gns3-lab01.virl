@@ -13,7 +13,6 @@
     </extensions>
     <node name="gns3-server-1" type="SIMPLE" subtype="GNS3-server" location="86,315" vmImage="lab01-GNS3-server-gns3-server-1 [3ddcfe04-919f-42a8-82a6-e83457b33db1]" vmFlavor="m1.large [4]" ipv4="192.168.0.10">
         <extensions>
-            <entry key="static_ip" type="String">172.16.1.10</entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">#cloud-config
 bootcmd:

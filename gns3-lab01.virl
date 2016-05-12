@@ -11,7 +11,7 @@
         <entry key="management_lxc" type="Boolean">true</entry>
         <entry key="AutoNetkit.IGP" type="String">ospf</entry>
     </extensions>
-    <node name="gns3-server-1" type="SIMPLE" subtype="GNS3-server" location="86,315" vmImage="lab01-GNS3-server-gns3-server-1 [95ad86cc-9929-40e1-b8f3-550d94a3e892]" vmFlavor="m1.large [4]" ipv4="192.168.0.10">
+    <node name="gns3-server-1" type="SIMPLE" subtype="GNS3-server" location="86,315" vmImage="lab01-GNS3-server-gns3-server-1 [22262a49-d7ac-4a07-9997-4736a4e17bdd]" vmFlavor="m1.large [4]" ipv4="192.168.0.10">
         <extensions>
             <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">#cloud-config
@@ -50,8 +50,8 @@ write_files:
     route add -host 192.168.0.4 gw 10.10.0.6 dev eth1
     route add -host 192.168.0.5 gw 10.10.0.6 dev eth1
     route add -net 10.10.0.0/16 gw 10.10.0.6 dev eth1
+    route add -net 10.20.0.0/16 gw 10.20.0.1 dev eth2
     route add -net 192.168.0.0/24 gw 10.10.0.6 dev eth1
-    route add default gw 10.20.0.1 dev eth2
     exit 0</entry>
         </extensions>
         <interface id="0" name="eth1" ipv4="10.10.0.10" netPrefixLenV4="24"/>

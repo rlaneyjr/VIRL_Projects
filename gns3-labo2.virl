@@ -3,14 +3,14 @@
     <extensions>
         <entry key="AutoNetkit.enable_cdp" type="Boolean">true</entry>
         <entry key="AutoNetkit.enable_OnePK" type="Boolean">true</entry>
-        <entry key="AutoNetkit.ipv4_infra_subnet" type="String">10.10.0.0</entry>
         <entry key="AutoNetkit.ipv4_infra_prefix" type="String">16</entry>
-        <entry key="management_network" type="String">flat1</entry>
+        <entry key="AutoNetkit.ipv4_infra_subnet" type="String">10.0.0.0</entry>
+        <entry key="management_network" type="String">flat2</entry>
     </extensions>
-    <node name="GNS3-lab02" type="SIMPLE" subtype="GNS3-server" location="585,396" coordinate="43.357138222110535,-104.5458984375" vmImage="lab01-GNS3-server-gns3-server-1 [3ddcfe04-919f-42a8-82a6-e83457b33db1]" vmFlavor="m1.large [4]">
+    <node name="GNS3-lab02" type="SIMPLE" subtype="GNS3-server" location="585,396" coordinate="43.357138222110535,-104.5458984375" vmImage="lab01-GNS3-server-gns3-server-1 [22262a49-d7ac-4a07-9997-4736a4e17bdd]" vmFlavor="m1.large [4]">
         <extensions>
             <entry key="Auto-generate config" type="Boolean">false</entry>
-            <entry key="config" type="String"> #cloud-config
+            <entry key="config" type="String">#cloud-config
 bootcmd:
  - ln -s -t /etc/rc.d /etc/rc.local
 hostname: GNS3-lab02
@@ -25,7 +25,7 @@ groups:
  - admin
 users:  
  - default  
-   name: rlaney  
+ - name: rlaney  
    ssh-authorized-keys:
      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDeVHRNg9ey4eFRzZIECFio/LWooVGc+p7439+Lf+4E1IQNQ/lIPo0QFcNcWbDAXSiuS6ViNOx/9uvfvFtmRpMQLe8EClern0/uRLdq17iL0wCtm1HzLMXOAtNwiXgFJJ0BktZ71pGtjr/u1uoivG1ZjK8qh7ydVpA0GiL39d4ZcXyYvF2EE8Kp6KrwrqAyaBS8pp7OTwNT8U0UOAzSIZbCm5BS0GssyF/Skx6Q98ovlUZNs++2cxZB9rPozZwKEvcT8QiFH519QcNYlYpaeLiLOgntmWAqQ+c7P+UWWaDB9npEZsVGc4PPrprVfDM6cvMQPnJxJDPnL78uvD+oxfnNdJ9z70DS2Fvop8ipOKL4aQW128YNp91KrSBsVULUVHlQKluq58tPdwovu1a97J2kCTS8uhFxGzU+VIwm72r9v9orq9gKNGVkcMM5hyzD7AB8Dq+PGmv/47urllut2HgVe+DylB/dVlfQtv6DAsTa24ag8Z9hlThJoR3eHlBzPrH4A+2Yk9kjGsw2yAnyYm3e4I/zSr5Guvb1YTCNfEZEfGSz3t4Yh1bEvyCsjKPk7PF9d2MKC1GRAm6qBqOsNAYJ9Ra7nV5bmnDOSaB+iDkbU7k+TTOBO0sTeAjAr7J1hux1/cGn7QLL+jbX4oIcWf3qSYSUgcLSLE5D2I6uNS9+cw== rlaney@MonsterMacBook.local
    lock_passwd: false  
@@ -50,7 +50,7 @@ write_files:
      #!/bin/sh
      ifconfig eth1 up 10.0.25.10 netmask 255.255.255.0
      ifconfig eth2 up 10.20.0.10 netmask 255.255.0.0
-     route add -net 10.10.0.0/16 gw 10.0.25.11 dev eth1
+     route add -net 10.0.0.0/16 gw 10.0.25.11 dev eth1
      route add -net 192.168.0.0/24 gw 10.0.25.11 dev eth1
      exit 0
 </entry>
@@ -60,7 +60,7 @@ write_files:
     </node>
     <node name="rtr1" type="SIMPLE" subtype="IOSv" location="264,192" coordinate="49.46812406733164,-109.2919921875" ipv4="192.168.0.1">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-05-12 12:51
+            <entry key="config" type="string">! IOS Config generated on 2016-05-12 21:12
 ! by autonetkit_0.21.4
 !
 hostname rtr1
@@ -97,7 +97,6 @@ ip domain name virl.info
 crypto key generate rsa modulus 768
 ip ssh server algorithm authentication password
 username cisco privilege 15 secret cisco
-username rlaney privilege 15 secret ralrox22
 line vty 0 4
  transport input ssh telnet
  exec-timeout 720 0
@@ -133,7 +132,7 @@ interface GigabitEthernet0/0
 !
 interface GigabitEthernet0/1
   description to xrv1-9k
-  ip address 10.10.0.13 255.255.255.252
+  ip address 10.0.0.13 255.255.255.252
   cdp enable
   ip ospf cost 1
   duplex full
@@ -142,7 +141,7 @@ interface GigabitEthernet0/1
 !
 interface GigabitEthernet0/2
   description to lxc-routem-1
-  ip address 10.10.0.9 255.255.255.252
+  ip address 10.0.0.9 255.255.255.252
   cdp enable
   ip ospf cost 1
   duplex full
@@ -163,8 +162,8 @@ router ospf 1
   network 192.168.0.1 0.0.0.0 area 0
   log-adjacency-changes
   passive-interface Loopback0
-  network 10.10.0.12 0.0.0.3 area 0
-  network 10.10.0.8 0.0.0.3 area 0
+  network 10.0.0.12 0.0.0.3 area 0
+  network 10.0.0.8 0.0.0.3 area 0
 !
 !
 router bgp 1
@@ -195,13 +194,13 @@ end
 </entry>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
         </extensions>
-        <interface id="0" name="GigabitEthernet0/1" ipv4="10.10.0.13" netPrefixLenV4="30"/>
-        <interface id="1" name="GigabitEthernet0/2" ipv4="10.10.0.9" netPrefixLenV4="30"/>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.13" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.9" netPrefixLenV4="30"/>
         <interface id="2" name="GigabitEthernet0/3"/>
     </node>
     <node name="rtr2" type="SIMPLE" subtype="IOSv" location="681,194" coordinate="49.35375571830991,-100.01953125" ipv4="192.168.0.4">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-05-12 12:51
+            <entry key="config" type="string">! IOS Config generated on 2016-05-12 21:12
 ! by autonetkit_0.21.4
 !
 hostname rtr2
@@ -238,7 +237,6 @@ ip domain name virl.info
 crypto key generate rsa modulus 768
 ip ssh server algorithm authentication password
 username cisco privilege 15 secret cisco
-username rlaney privilege 15 secret ralrox22
 line vty 0 4
  transport input ssh telnet
  exec-timeout 720 0
@@ -283,7 +281,7 @@ interface GigabitEthernet0/1
 !
 interface GigabitEthernet0/2
   description to xrv1-9k
-  ip address 10.10.128.1 255.255.255.252
+  ip address 10.0.128.1 255.255.255.252
   cdp enable
   ip ospf cost 1
   duplex full
@@ -304,8 +302,8 @@ router ospf 1
   network 192.168.0.4 0.0.0.0 area 0
   log-adjacency-changes
   passive-interface Loopback0
-  network 10.10.0.0 0.0.0.7 area 0
-  network 10.10.128.0 0.0.0.3 area 0
+  network 10.0.25.0 0.0.0.255 area 0
+  network 10.0.128.0 0.0.0.3 area 0
 !
 !
 router bgp 1
@@ -337,13 +335,13 @@ end
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.25.11" netPrefixLenV4="24"/>
-        <interface id="1" name="GigabitEthernet0/2" ipv4="10.10.128.1" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.128.1" netPrefixLenV4="30"/>
         <interface id="2" name="GigabitEthernet0/3"/>
     </node>
     <node name="networktools-server02" type="SIMPLE" subtype="NetworkTools-server" location="741,392" coordinate="52.988337253395414,-105.8203125" vmImage="NetworkTools-server [7829d1aa-e795-44fb-99de-70124b42971b]" vmFlavor="m1.medium [3]">
         <extensions>
             <entry key="Auto-generate config" type="Boolean">false</entry>
-            <entry key="config" type="String"> #cloud-config
+            <entry key="config" type="String">#cloud-config
 bootcmd:
  - ln -s -t /etc/rc.d /etc/rc.local
 hostname: networktools-server02
@@ -358,7 +356,7 @@ groups:
  - admin
 users:  
  - default  
-   name: rlaney  
+ - name: rlaney  
    ssh-authorized-keys:
      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDeVHRNg9ey4eFRzZIECFio/LWooVGc+p7439+Lf+4E1IQNQ/lIPo0QFcNcWbDAXSiuS6ViNOx/9uvfvFtmRpMQLe8EClern0/uRLdq17iL0wCtm1HzLMXOAtNwiXgFJJ0BktZ71pGtjr/u1uoivG1ZjK8qh7ydVpA0GiL39d4ZcXyYvF2EE8Kp6KrwrqAyaBS8pp7OTwNT8U0UOAzSIZbCm5BS0GssyF/Skx6Q98ovlUZNs++2cxZB9rPozZwKEvcT8QiFH519QcNYlYpaeLiLOgntmWAqQ+c7P+UWWaDB9npEZsVGc4PPrprVfDM6cvMQPnJxJDPnL78uvD+oxfnNdJ9z70DS2Fvop8ipOKL4aQW128YNp91KrSBsVULUVHlQKluq58tPdwovu1a97J2kCTS8uhFxGzU+VIwm72r9v9orq9gKNGVkcMM5hyzD7AB8Dq+PGmv/47urllut2HgVe+DylB/dVlfQtv6DAsTa24ag8Z9hlThJoR3eHlBzPrH4A+2Yk9kjGsw2yAnyYm3e4I/zSr5Guvb1YTCNfEZEfGSz3t4Yh1bEvyCsjKPk7PF9d2MKC1GRAm6qBqOsNAYJ9Ra7nV5bmnDOSaB+iDkbU7k+TTOBO0sTeAjAr7J1hux1/cGn7QLL+jbX4oIcWf3qSYSUgcLSLE5D2I6uNS9+cw== rlaney@MonsterMacBook.local
    lock_passwd: false  
@@ -383,7 +381,7 @@ write_files:
      #!/bin/sh
      ifconfig eth1 up 10.0.25.12 netmask 255.255.255.0
      ifconfig eth2 up 10.20.0.12 netmask 255.255.0.0
-     route add -net 10.10.0.0/16 gw 10.0.25.11 dev eth1
+     route add -net 10.0.0.0/16 gw 10.0.25.11 dev eth1
      route add -net 192.168.0.0/24 gw 10.0.25.11 dev eth1
      exit 0
  </entry>
@@ -393,14 +391,15 @@ write_files:
     </node>
     <node name="lxc-routem-1" type="SIMPLE" subtype="lxc-routem" location="60,192" coordinate="49.23912083246699,-116.4990234375">
         <extensions>
-            <entry key="config" type="string">#cloud-config
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">#cloud-config
 bootcmd:
 - ln -s -t /etc/rc.d /etc/rc.local
 hostname: lxc-routem-1
 manage_etc_hosts: true
 runcmd:
  - systemctl start rc-local
-  - sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/" /etc/ssh/sshd_config
+ - sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/" /etc/ssh/sshd_config
  - echo "UseDNS no" &gt;&gt; /etc/ssh/sshd_config
  - service ssh restart
  - service sshd restart
@@ -408,7 +407,7 @@ groups:
  - admin
 users:  
  - default  
-   name: rlaney  
+ - name: rlaney  
    ssh-authorized-keys:
      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDeVHRNg9ey4eFRzZIECFio/LWooVGc+p7439+Lf+4E1IQNQ/lIPo0QFcNcWbDAXSiuS6ViNOx/9uvfvFtmRpMQLe8EClern0/uRLdq17iL0wCtm1HzLMXOAtNwiXgFJJ0BktZ71pGtjr/u1uoivG1ZjK8qh7ydVpA0GiL39d4ZcXyYvF2EE8Kp6KrwrqAyaBS8pp7OTwNT8U0UOAzSIZbCm5BS0GssyF/Skx6Q98ovlUZNs++2cxZB9rPozZwKEvcT8QiFH519QcNYlYpaeLiLOgntmWAqQ+c7P+UWWaDB9npEZsVGc4PPrprVfDM6cvMQPnJxJDPnL78uvD+oxfnNdJ9z70DS2Fvop8ipOKL4aQW128YNp91KrSBsVULUVHlQKluq58tPdwovu1a97J2kCTS8uhFxGzU+VIwm72r9v9orq9gKNGVkcMM5hyzD7AB8Dq+PGmv/47urllut2HgVe+DylB/dVlfQtv6DAsTa24ag8Z9hlThJoR3eHlBzPrH4A+2Yk9kjGsw2yAnyYm3e4I/zSr5Guvb1YTCNfEZEfGSz3t4Yh1bEvyCsjKPk7PF9d2MKC1GRAm6qBqOsNAYJ9Ra7nV5bmnDOSaB+iDkbU7k+TTOBO0sTeAjAr7J1hux1/cGn7QLL+jbX4oIcWf3qSYSUgcLSLE5D2I6uNS9+cw== rlaney@MonsterMacBook.local
    lock_passwd: false  
@@ -441,19 +440,19 @@ write_files:
    permissions: '0755'
    content: |-
      #!/bin/sh
-     ifconfig eth1 up 10.10.0.10 netmask 255.255.255.252
-     route add -host 192.168.0.1 gw 10.10.0.9 dev eth1
-     route add -net 10.10.0.0/28 gw 10.10.0.9 dev eth1
-     route add -net 10.10.128.0/30 gw 10.10.0.9 dev eth1
-     route add -net 192.168.0.4/31 gw 10.10.0.9 dev eth1
+     ifconfig eth1 up 10.0.0.10 netmask 255.255.255.252
+     route add -host 192.168.0.1 gw 10.0.0.9 dev eth1
+     route add -net 10.0.0.0/28 gw 10.0.0.9 dev eth1
+     route add -net 10.0.128.0/30 gw 10.0.0.9 dev eth1
+     route add -net 192.168.0.4/31 gw 10.0.0.9 dev eth1
      exit 0
 </entry>
         </extensions>
-        <interface id="0" name="eth1" ipv4="10.10.0.10" netPrefixLenV4="30"/>
+        <interface id="0" name="eth1" ipv4="10.0.0.10" netPrefixLenV4="30"/>
     </node>
     <node name="xrv1-9k" type="SIMPLE" subtype="IOS XRv" location="466,196" coordinate="48.86471476180279,-90.5712890625" ipv4="192.168.0.5">
         <extensions>
-            <entry key="config" type="string">!  IOS-XR Config generated on 2016-05-12 12:51
+            <entry key="config" type="string">!  IOS-XR Config generated on 2016-05-12 21:12
 ! by autonetkit_0.21.4
 !
 hostname xrv1-9k
@@ -502,13 +501,13 @@ interface Loopback0
 !
 interface GigabitEthernet0/0/0/0
   description to rtr2
-  ipv4 address 10.10.128.2 255.255.255.252
+  ipv4 address 10.0.128.2 255.255.255.252
   cdp
   no shutdown
 !
 interface GigabitEthernet0/0/0/1
   description to rtr1
-  ipv4 address 10.10.0.14 255.255.255.252
+  ipv4 address 10.0.0.14 255.255.255.252
   cdp
   no shutdown
 !
@@ -571,12 +570,12 @@ router bgp 1
         </entry>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
         </extensions>
-        <interface id="0" name="GigabitEthernet0/0/0/0" ipv4="10.10.128.2" netPrefixLenV4="30"/>
-        <interface id="1" name="GigabitEthernet0/0/0/1" ipv4="10.10.0.14" netPrefixLenV4="30"/>
+        <interface id="0" name="GigabitEthernet0/0/0/0" ipv4="10.0.128.2" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/0/0/1" ipv4="10.0.0.14" netPrefixLenV4="30"/>
     </node>
     <node name="L2-ios" type="SIMPLE" subtype="IOSvL2" location="678,301">
         <extensions>
-            <entry key="config" type="string">! IOSvL2 Config generated on 2016-05-12 12:51
+            <entry key="config" type="string">! IOSvL2 Config generated on 2016-05-12 21:12
 ! by autonetkit_0.21.4
 !
 version 15.2
@@ -611,8 +610,8 @@ no aaa new-model
 vtp domain virl.lab
 vtp mode transparent
 !
-vlan 25
-  name ank_vlan25
+vlan 2
+  name ank_vlan2
 !
 !
 !
@@ -658,19 +657,19 @@ interface GigabitEthernet0/0
 !
 interface GigabitEthernet0/1
   description to rtr2
-  switchport access vlan 25
+  switchport access vlan 2
   switchport mode access
   no shutdown
 !
 interface GigabitEthernet0/2
-  description to gns3-server-1
-  switchport access vlan 25
+  description to GNS3-lab02
+  switchport access vlan 2
   switchport mode access
   no shutdown
 !
 interface GigabitEthernet0/3
-  description to networktools-server-1
-  switchport access vlan 25
+  description to networktools-server02
+  switchport access vlan 2
   switchport mode access
   no shutdown
 !

@@ -19,15 +19,26 @@ users:
    lock_passwd: false  
    groups: admin  
    passwd: ralrox22
-   sudo: ["ALL=(ALL) NOPASSWD:ALL"]   
+   sudo: ALL=(ALL) NOPASSWD:ALL
+manage-resolv-conf: true
+resolv_conf:
+  nameservers: ['10.0.10.5', '10.0.10.6']
+  searchdomains:
+    - icloudmon.local
+    - icloudmon.com
+  domain: icloudmon.local
+  options:
+    rotate: true
+    timeout: 1
+locale: en_US.UTF-8 
 write_files:
 - path: /etc/rc.local
   owner: root:root
   permissions: '0755'
   content: |-
     #!/bin/sh
-    ifconfig eth1 up 10.10.0.25 netmask 255.255.0.0
-    ifconfig eth2 up 10.0.25.10 netmask 255.255.255.0
+    ifconfig eth1 up 10.0.25.10 netmask 255.255.255.0
+    ifconfig eth2 up 10.20.0.10 netmask 255.255.0.0
     route add -host 192.168.0.2 gw 10.10.0.26 dev eth1
     route add -host 192.168.0.3 gw 10.10.0.26 dev eth1
     route add -host 192.168.0.4 gw 10.10.0.26 dev eth1

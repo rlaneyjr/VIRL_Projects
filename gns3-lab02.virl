@@ -60,127 +60,138 @@ write_files:
     </node>
     <node name="rtr1" type="SIMPLE" subtype="IOSv" location="264,192" coordinate="49.46812406733164,-109.2919921875" ipv4="192.168.0.1">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-05-12 21:12
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 01:23:57 UTC Fri May 13 2016
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
 !
 hostname rtr1
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
+enable password cisco
 !
 no aaa new-model
+ethernet lmi ce
 !
 !
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
 ip cef
 ipv6 unicast-routing
 ipv6 cef
 !
-!
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
-!
-cdp run
+multilink bundle-name authenticated
 !
 !
-username cisco privilege 15 password 0 cisco
- !
- onep
- transport type tls disable-remotecert-validation
-  start
- service set vty
+!
+crypto pki trustpoint TP-self-signed-4294967295
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-4294967295
+ revocation-check none
+ rsakeypair TP-self-signed-4294967295
+!
+!
+crypto pki certificate chain TP-self-signed-4294967295
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+username cisco privilege 15 secret 5 $1$RGIR$vL4T5P6l/QwnqBarj8Xxq1
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
 !
 !
 interface Loopback0
-  description Loopback
-  ip address 192.168.0.1 255.255.255.255
+ description Loopback
+ ip address 192.168.0.1 255.255.255.255
 !
 interface GigabitEthernet0/0
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  cdp enable
-  duplex full
-  speed auto
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.10.0.71 255.255.0.0
+ duplex full
+ speed auto
+ media-type rj45
 !
 interface GigabitEthernet0/1
-  description to xrv1-9k
-  ip address 10.0.0.13 255.255.255.252
-  cdp enable
-  ip ospf cost 1
-  duplex full
-  speed auto
-  no shutdown
+ description to xrv1-9k
+ ip address 10.0.0.13 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
 !
 interface GigabitEthernet0/2
-  description to lxc-routem-1
-  ip address 10.0.0.9 255.255.255.252
-  cdp enable
-  ip ospf cost 1
-  duplex full
-  speed auto
-  no shutdown
+ description to lxc-routem-1
+ ip address 10.0.0.9 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
 !
 interface GigabitEthernet0/3
-  description GigabitEthernet0/3
-  no ip address
-  cdp enable
-  duplex full
-  speed auto
-  no shutdown
-!
-!
+ description GigabitEthernet0/3
+ no ip address
+ duplex full
+ speed auto
+ media-type rj45
 !
 router ospf 1
-  network 192.168.0.1 0.0.0.0 area 0
-  log-adjacency-changes
-  passive-interface Loopback0
-  network 10.0.0.12 0.0.0.3 area 0
-  network 10.0.0.8 0.0.0.3 area 0
-!
+ passive-interface Loopback0
+ network 10.0.0.8 0.0.0.3 area 0
+ network 10.0.0.12 0.0.0.3 area 0
+ network 192.168.0.1 0.0.0.0 area 0
 !
 router bgp 1
-  bgp router-id 192.168.0.1
-  no synchronization
-! ibgp
-  ! ibgp peers
-  !
-  neighbor 192.168.0.4 remote-as 1
-  neighbor 192.168.0.4 description iBGP peer rtr2
-  neighbor 192.168.0.4 update-source Loopback0
-  !
-  neighbor 192.168.0.5 remote-as 1
-  neighbor 192.168.0.5 description iBGP peer xrv1-9k
-  neighbor 192.168.0.5 update-source Loopback0
-!
-!
+ bgp router-id 192.168.0.1
+ bgp log-neighbor-changes
+ neighbor 192.168.0.4 remote-as 1
+ neighbor 192.168.0.4 description iBGP peer rtr2
+ neighbor 192.168.0.4 update-source Loopback0
+ neighbor 192.168.0.5 remote-as 1
+ neighbor 192.168.0.5 description iBGP peer xrv1-9k
+ neighbor 192.168.0.5 update-source Loopback0
  !
  address-family ipv4
   network 192.168.0.1 mask 255.255.255.255
@@ -188,11 +199,62 @@ router bgp 1
   neighbor 192.168.0.5 activate
  exit-address-family
 !
+ip forward-protocol nd
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+no ip http server
+no ip http secure-server
+ip ssh server algorithm authentication password
+!
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ password cisco
+line aux 0
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+no scheduler allocate
+onep
+ tls
+  trustpoint server-identity TP-self-signed-4294967295
+ service set vty
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.13" netPrefixLenV4="30"/>
         <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.9" netPrefixLenV4="30"/>
@@ -200,127 +262,138 @@ end
     </node>
     <node name="rtr2" type="SIMPLE" subtype="IOSv" location="681,194" coordinate="49.35375571830991,-100.01953125" ipv4="192.168.0.4">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2016-05-12 21:12
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 01:23:50 UTC Fri May 13 2016
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
 !
 hostname rtr2
+!
 boot-start-marker
 boot-end-marker
 !
-vrf definition Mgmt-intf
 !
+vrf definition Mgmt-intf
+ !
  address-family ipv4
  exit-address-family
  !
  address-family ipv6
  exit-address-family
 !
-!
+enable password cisco
 !
 no aaa new-model
+ethernet lmi ce
 !
 !
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
 ip cef
 ipv6 unicast-routing
 ipv6 cef
 !
-!
-service timestamps debug datetime msec
-service timestamps log datetime msec
-no service password-encryption
-no service config
-enable password cisco
-ip classless
-ip subnet-zero
-no ip domain lookup
-ip domain name virl.info
-crypto key generate rsa modulus 768
-ip ssh server algorithm authentication password
-username cisco privilege 15 secret cisco
-line vty 0 4
- transport input ssh telnet
- exec-timeout 720 0
- password cisco
- login local
-line con 0
- password cisco
-!
-cdp run
+multilink bundle-name authenticated
 !
 !
-username cisco privilege 15 password 0 cisco
- !
- onep
- transport type tls disable-remotecert-validation
-  start
- service set vty
+!
+crypto pki trustpoint TP-self-signed-4294967295
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-4294967295
+ revocation-check none
+ rsakeypair TP-self-signed-4294967295
+!
+!
+crypto pki certificate chain TP-self-signed-4294967295
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+username cisco privilege 15 secret 5 $1$ywCz$G1Rxcyl85B5/kdvrZOqr91
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
 !
 !
 interface Loopback0
-  description Loopback
-  ip address 192.168.0.4 255.255.255.255
+ description Loopback
+ ip address 192.168.0.4 255.255.255.255
 !
 interface GigabitEthernet0/0
-  description OOB Management
-  vrf forwarding Mgmt-intf
-  ! Configured on launch
-  no ip address
-  cdp enable
-  duplex full
-  speed auto
-  no shutdown
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.10.0.69 255.255.0.0
+ duplex full
+ speed auto
+ media-type rj45
 !
 interface GigabitEthernet0/1
-  description to L2-ios
-  ip address 10.0.25.11 255.255.255.0
-  cdp enable
-  ip ospf cost 1
-  duplex full
-  speed auto
-  no shutdown
+ description to L2-ios
+ ip address 10.0.25.11 255.255.255.0
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
 !
 interface GigabitEthernet0/2
-  description to xrv1-9k
-  ip address 10.0.128.1 255.255.255.252
-  cdp enable
-  ip ospf cost 1
-  duplex full
-  speed auto
-  no shutdown
+ description to xrv1-9k
+ ip address 10.0.128.1 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
 !
 interface GigabitEthernet0/3
-  description GigabitEthernet0/3
-  no ip address
-  cdp enable
-  duplex full
-  speed auto
-  no shutdown
-!
-!
+ description GigabitEthernet0/3
+ no ip address
+ duplex full
+ speed auto
+ media-type rj45
 !
 router ospf 1
-  network 192.168.0.4 0.0.0.0 area 0
-  log-adjacency-changes
-  passive-interface Loopback0
-  network 10.0.25.0 0.0.0.255 area 0
-  network 10.0.128.0 0.0.0.3 area 0
-!
+ passive-interface Loopback0
+ network 10.0.25.0 0.0.0.255 area 0
+ network 10.0.128.0 0.0.0.3 area 0
+ network 192.168.0.4 0.0.0.0 area 0
 !
 router bgp 1
-  bgp router-id 192.168.0.4
-  no synchronization
-! ibgp
-  ! ibgp peers
-  !
-  neighbor 192.168.0.1 remote-as 1
-  neighbor 192.168.0.1 description iBGP peer rtr1
-  neighbor 192.168.0.1 update-source Loopback0
-  !
-  neighbor 192.168.0.5 remote-as 1
-  neighbor 192.168.0.5 description iBGP peer xrv1-9k
-  neighbor 192.168.0.5 update-source Loopback0
-!
-!
+ bgp router-id 192.168.0.4
+ bgp log-neighbor-changes
+ neighbor 192.168.0.1 remote-as 1
+ neighbor 192.168.0.1 description iBGP peer rtr1
+ neighbor 192.168.0.1 update-source Loopback0
+ neighbor 192.168.0.5 remote-as 1
+ neighbor 192.168.0.5 description iBGP peer xrv1-9k
+ neighbor 192.168.0.5 update-source Loopback0
  !
  address-family ipv4
   network 192.168.0.4 mask 255.255.255.255
@@ -328,11 +401,62 @@ router bgp 1
   neighbor 192.168.0.5 activate
  exit-address-family
 !
+ip forward-protocol nd
 !
 !
-end
-</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+no ip http server
+no ip http secure-server
+ip ssh server algorithm authentication password
+!
+!
+!
+!
+control-plane
+!
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ password cisco
+line aux 0
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+no scheduler allocate
+onep
+ tls
+  trustpoint server-identity TP-self-signed-4294967295
+ service set vty
+!
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.25.11" netPrefixLenV4="24"/>
         <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.128.1" netPrefixLenV4="30"/>
@@ -452,34 +576,35 @@ write_files:
     </node>
     <node name="xrv1-9k" type="SIMPLE" subtype="IOS XRv" location="466,196" coordinate="48.86471476180279,-90.5712890625" ipv4="192.168.0.5">
         <extensions>
-            <entry key="config" type="string">!  IOS-XR Config generated on 2016-05-12 21:12
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!! IOS XR Configuration 6.0.0
+!! Last configuration change at Fri May 13 01:26:25 2016 by CVAC
 !
+!  IOS-XR Config generated on 2016-05-12 21:12
+! by autonetkit_0.21.4
 hostname xrv1-9k
 service timestamps log datetime msec
 service timestamps debug datetime msec
 telnet vrf default ipv4 server max-servers 10
 telnet vrf Mgmt-intf ipv4 server max-servers 10
+domain name virl.info
 domain lookup disable
+cdp
 vrf Mgmt-intf
  address-family ipv4 unicast
  !
  address-family ipv6 unicast
  !
 !
-domain name virl.info
-ssh server v2
-ssh server vrf Mgmt-intf
-!
 line template vty
-timestamp
-exec-timeout 720 0
+ timestamp
+ exec-timeout 720 0
 !
 line console
-exec-timeout 0 0
+ exec-timeout 0 0
 !
 line default
-exec-timeout 720 0
+ exec-timeout 720 0
 !
 vty-pool default 0 50
 control-plane
@@ -491,48 +616,26 @@ control-plane
   !
  !
 !
-!
-cdp
-!
-!
 interface Loopback0
-  description Loopback
-  ipv4 address 192.168.0.5 255.255.255.255
+ description Loopback
+ ipv4 address 192.168.0.5 255.255.255.255
+!
+interface MgmtEth0/0/CPU0/0
+ description OOB Management
+ cdp
+ ! Configured on launch
+ vrf Mgmt-intf
+ ipv4 address 10.10.0.75 255.255.0.0
 !
 interface GigabitEthernet0/0/0/0
-  description to rtr2
-  ipv4 address 10.0.128.2 255.255.255.252
-  cdp
-  no shutdown
+ description to rtr2
+ cdp
+ ipv4 address 10.0.128.2 255.255.255.252
 !
 interface GigabitEthernet0/0/0/1
-  description to rtr1
-  ipv4 address 10.0.0.14 255.255.255.252
-  cdp
-  no shutdown
-!
-interface mgmteth0/0/CPU0/0
-  description OOB Management
-  ! Configured on launch
-  vrf Mgmt-intf
-  no ipv4 address
-  cdp
-  no shutdown
-!
-!
-router ospf 1
-  log adjacency changes
-  area 0
-    interface GigabitEthernet0/0/0/0
-      cost 1
-    !
-    interface GigabitEthernet0/0/0/1
-      cost 1
-    !
-    interface Loopback0
-      passive enable
-    !
-  !
+ description to rtr1
+ cdp
+ ipv4 address 10.0.0.14 255.255.255.252
 !
 route-policy bgp_in
   pass
@@ -542,61 +645,60 @@ route-policy bgp_out
   pass
 end-policy
 !
+router ospf 1
+ log adjacency changes
+ area 0
+  interface Loopback0
+   passive enable
+  !
+  interface GigabitEthernet0/0/0/0
+   cost 1
+  !
+  interface GigabitEthernet0/0/0/1
+   cost 1
+  !
+ !
+!
 router bgp 1
-  bgp router-id 192.168.0.5
+ bgp router-id 192.168.0.5
+ address-family ipv4 unicast
+  network 192.168.0.5/32
+ !
+ ! iBGP
+ ! iBGP peers
+ neighbor 192.168.0.1
+  remote-as 1
+  description iBGP peer rtr1
+  update-source Loopback0
   address-family ipv4 unicast
-    network 192.168.0.5/32
   !
-! iBGP
+ !
+ neighbor 192.168.0.4
+  remote-as 1
+  description iBGP peer rtr2
+  update-source Loopback0
+  address-family ipv4 unicast
+  !
+ !
 !
-! iBGP peers
-  !
-  neighbor 192.168.0.1
-    description iBGP peer rtr1
-    remote-as 1
-    update-source Loopback0
-    address-family ipv4 unicast
-    !
-    !
-  !
-  neighbor 192.168.0.4
-    description iBGP peer rtr2
-    remote-as 1
-    update-source Loopback0
-    address-family ipv4 unicast
-    !
-    !
-!
-        </entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+ssh server v2
+ssh server vrf Mgmt-intf
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/0/0/0" ipv4="10.0.128.2" netPrefixLenV4="30"/>
         <interface id="1" name="GigabitEthernet0/0/0/1" ipv4="10.0.0.14" netPrefixLenV4="30"/>
     </node>
     <node name="L2-ios" type="SIMPLE" subtype="IOSvL2" location="678,301">
         <extensions>
-            <entry key="config" type="string">! IOSvL2 Config generated on 2016-05-12 21:12
-! by autonetkit_0.21.4
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">!
+! Last configuration change at 01:24:00 UTC Fri May 13 2016
 !
 version 15.2
 service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 service compress-config
-no service config
-enable password cisco
-ip classless
-ip subnet-zero
-no ip domain lookup
-!
-line vty 0 4
-transport input ssh telnet
-exec-timeout 720 0
-password cisco
-login
-!
-line con 0
-password cisco
 !
 hostname L2-ios
 !
@@ -604,24 +706,31 @@ boot-start-marker
 boot-end-marker
 !
 !
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable password cisco
 !
 no aaa new-model
+!
+!
+!
+!
 !
 vtp domain virl.lab
 vtp mode transparent
 !
-vlan 2
-  name ank_vlan2
 !
 !
-!
-!
-cdp run
-!
-!
-!
+no ip domain-lookup
 ip cef
 no ipv6 cef
+!
 !
 !
 spanning-tree mode pvst
@@ -629,50 +738,53 @@ spanning-tree extend system-id
 !
 vlan internal allocation policy ascending
 !
+vlan 2
+ name ank_vlan2
+!
+! 
 !
 !
 !
-vrf definition Mgmt-intf
 !
- address-family ipv4
- exit-address-family
- !
- address-family ipv6
- exit-address-family
+!
+!
+!
 !
 !
 !
 !
 !
 interface Loopback0
-  description Loopback
-!
-interface GigabitEthernet0/0
-  description OOB management
-  ! Configured on launch
-  no switchport
-  vrf forwarding Mgmt-intf
-  no ip address
-  no shutdown
+ description Loopback
+ no ip address
 !
 interface GigabitEthernet0/1
-  description to rtr2
-  switchport access vlan 2
-  switchport mode access
-  no shutdown
+ description to rtr2
+ switchport access vlan 2
+ switchport mode access
+ media-type rj45
+ negotiation auto
 !
 interface GigabitEthernet0/2
-  description to GNS3-lab02
-  switchport access vlan 2
-  switchport mode access
-  no shutdown
+ description to GNS3-lab02
+ switchport access vlan 2
+ switchport mode access
+ media-type rj45
+ negotiation auto
 !
 interface GigabitEthernet0/3
-  description to networktools-server02
-  switchport access vlan 2
-  switchport mode access
-  no shutdown
+ description to networktools-server02
+ switchport access vlan 2
+ switchport mode access
+ media-type rj45
+ negotiation auto
 !
+interface GigabitEthernet0/0
+ description OOB management
+ no switchport
+ vrf forwarding Mgmt-intf
+ ip address 10.10.0.73 255.255.0.0
+ negotiation auto
 !
 ip forward-protocol nd
 !
@@ -686,11 +798,45 @@ no ip http secure-server
 !
 control-plane
 !
+banner exec `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner incoming `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+banner login `
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************`
+!
+line con 0
+ password cisco
+line aux 0
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login
+ transport input telnet ssh
 !
 !
-end
-        </entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1"/>
         <interface id="1" name="GigabitEthernet0/2"/>

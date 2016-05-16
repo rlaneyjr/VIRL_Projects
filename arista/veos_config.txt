@@ -1,4 +1,4 @@
-! device: veos-1 (vEOS, EOS-4.14.2F)
+! device: veos-1 (vEOS, EOS-4.15.5M)
 !
 ! boot system flash:/vEOS.swi
 !
@@ -12,6 +12,7 @@ no aaa root
 !
 username admin role network-admin secret 5 $1$93LlZesx$MSqS1D/8NGTSY724FGx1K0
 username cisco role network-admin secret 5 $1$rQS0W9wP$ZUzVG2XoGCCZCJopFp1aV/
+username rlaney role network-admin secret 0 ralrox
 !
 interface Ethernet1
 !

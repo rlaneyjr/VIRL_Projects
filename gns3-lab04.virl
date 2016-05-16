@@ -4,7 +4,7 @@
         <entry key="management_network" type="String">flat</entry>
         <entry key="AutoNetkit.enable_cdp" type="Boolean">true</entry>
     </extensions>
-    <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="321,223" ipv4="192.168.0.1">
+    <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="158,145" ipv4="192.168.0.1">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.12</entry>
             <entry key="AutoNetkit.custom_config_global" type="String">username rlaney privilege 15 secret 0 ralrox</entry>
@@ -212,7 +212,7 @@ end</entry>
         <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.0.9" netPrefixLenV4="30"/>
         <interface id="3" name="GigabitEthernet0/4"/>
     </node>
-    <node name="iosv-2" type="SIMPLE" subtype="IOSv" location="501,223" ipv4="192.168.0.4">
+    <node name="iosv-2" type="SIMPLE" subtype="IOSv" location="338,145" ipv4="192.168.0.4">
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.13</entry>
             <entry key="AutoNetkit.IGP" type="String">ospf</entry>
@@ -420,7 +420,7 @@ end</entry>
         <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.0.13" netPrefixLenV4="30"/>
         <interface id="3" name="GigabitEthernet0/4"/>
     </node>
-    <node name="veos-2" type="SIMPLE" subtype="vEOS" location="501,367" vmImage="vEOS [dcd0d9fe-cbcd-4cdd-8cc8-c045ba4928c6]" vmFlavor="vEOS-4.15.5M.medium [8a04f019-5001-4cf3-8436-24f7f6c25856]">
+    <node name="veos-2" type="SIMPLE" subtype="vEOS" location="338,289" vmImage="vEOS [dcd0d9fe-cbcd-4cdd-8cc8-c045ba4928c6]" vmFlavor="vEOS-4.15.5M.medium [8a04f019-5001-4cf3-8436-24f7f6c25856]">
         <extensions>
             <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">! device: veos-2 (vEOS, EOS-4.15.5M)
@@ -461,7 +461,7 @@ end
         <interface id="0" name="Ethernet1" ipv4="10.0.0.18" netPrefixLenV4="30"/>
         <interface id="1" name="Ethernet2" ipv4="10.0.0.10" netPrefixLenV4="30"/>
     </node>
-    <node name="veos-1" type="SIMPLE" subtype="vEOS" location="321,367" vmImage="vEOS [dcd0d9fe-cbcd-4cdd-8cc8-c045ba4928c6]" vmFlavor="vEOS-4.15.5M.medium [8a04f019-5001-4cf3-8436-24f7f6c25856]">
+    <node name="veos-1" type="SIMPLE" subtype="vEOS" location="158,289" vmImage="vEOS [dcd0d9fe-cbcd-4cdd-8cc8-c045ba4928c6]" vmFlavor="vEOS-4.15.5M.medium [8a04f019-5001-4cf3-8436-24f7f6c25856]">
         <extensions>
             <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">! device: veos-1 (vEOS, EOS-4.15.5M)
@@ -502,8 +502,9 @@ end
         <interface id="0" name="Ethernet1" ipv4="10.0.0.6" netPrefixLenV4="30"/>
         <interface id="1" name="Ethernet2" ipv4="10.0.0.14" netPrefixLenV4="30"/>
     </node>
-    <node name="iosxrv-1" type="SIMPLE" subtype="IOS XRv" location="399,103" ipv4="192.168.0.3">
+    <node name="iosxrv-1" type="SIMPLE" subtype="IOS XRv" location="236,25" ipv4="192.168.0.3">
         <extensions>
+            <entry key="static_ip" type="String">172.16.1.14</entry>
             <entry key="AutoNetkit.custom_config_global" type="String">username rlaney privilege 15 secret 0 ralrox</entry>
             <entry key="AutoNetkit.IGP" type="String">ospf</entry>
             <entry key="AutoNetkit.ospf_area" type="String">1</entry>

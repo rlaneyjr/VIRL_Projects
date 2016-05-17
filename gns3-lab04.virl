@@ -6,6 +6,7 @@
     </extensions>
     <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="158,145" ipv4="192.168.0.1">
         <extensions>
+            <entry key="static_ip" type="String">172.16.1.12</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.12</entry>
             <entry key="AutoNetkit.custom_config_global" type="String">username rlaney privilege 15 secret 0 ralrox</entry>
             <entry key="AutoNetkit.IGP" type="String">ospf</entry>
@@ -214,6 +215,7 @@ end</entry>
     </node>
     <node name="iosv-2" type="SIMPLE" subtype="IOSv" location="338,145" ipv4="192.168.0.4">
         <extensions>
+            <entry key="static_ip" type="String">172.16.1.13</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.13</entry>
             <entry key="AutoNetkit.IGP" type="String">ospf</entry>
             <entry key="AutoNetkit.ospf_area" type="String">1</entry>
@@ -422,6 +424,7 @@ end</entry>
     </node>
     <node name="veos-2" type="SIMPLE" subtype="vEOS" location="338,289" vmImage="vEOS [dcd0d9fe-cbcd-4cdd-8cc8-c045ba4928c6]" vmFlavor="vEOS-4.15.5M.medium [8a04f019-5001-4cf3-8436-24f7f6c25856]">
         <extensions>
+            <entry key="static_ip" type="String">172.16.1.11</entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">! device: veos-2 (vEOS, EOS-4.15.5M)
 !
@@ -463,6 +466,7 @@ end
     </node>
     <node name="veos-1" type="SIMPLE" subtype="vEOS" location="158,289" vmImage="vEOS [dcd0d9fe-cbcd-4cdd-8cc8-c045ba4928c6]" vmFlavor="vEOS-4.15.5M.medium [8a04f019-5001-4cf3-8436-24f7f6c25856]">
         <extensions>
+            <entry key="static_ip" type="String">172.16.1.10</entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">! device: veos-1 (vEOS, EOS-4.15.5M)
 !

@@ -8,13 +8,16 @@
         <extensions>
             <entry key="static_ip" type="String">172.16.1.12</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.12</entry>
-            <entry key="AutoNetkit.custom_config_global" type="String">username rlaney privilege 15 secret 0 ralrox</entry>
+            <entry key="AutoNetkit.custom_config_global" type="String">username rlaney privilege 15 secret 0 ralrox
+                crypto key generate rsa general-keys
+                768
+            </entry>
             <entry key="AutoNetkit.IGP" type="String">ospf</entry>
             <entry key="AutoNetkit.ospf_area" type="String">1</entry>
             <entry key="AutoNetkit.ibgp_role" type="String">Peer</entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">!
-! Last configuration change at 01:12:11 UTC Tue May 17 2016 by rlaney
+! Last configuration change at 01:46:17 UTC Tue May 17 2016
 !
 version 15.6
 service timestamps debug datetime msec
@@ -218,11 +221,14 @@ end</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.13</entry>
             <entry key="AutoNetkit.IGP" type="String">ospf</entry>
             <entry key="AutoNetkit.ospf_area" type="String">1</entry>
-            <entry key="AutoNetkit.custom_config_global" type="String">username rlaney privilege 15 secret 0 ralrox</entry>
+            <entry key="AutoNetkit.custom_config_global" type="String">username rlaney privilege 15 secret 0 ralrox
+                crypto key generate rsa general-keys
+                768
+            </entry>
             <entry key="AutoNetkit.ibgp_role" type="String">Peer</entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">!
-! Last configuration change at 01:15:35 UTC Tue May 17 2016 by rlaney
+! Last configuration change at 01:46:13 UTC Tue May 17 2016
 !
 version 15.6
 service timestamps debug datetime msec
@@ -507,14 +513,25 @@ end
     <node name="iosxrv-1" type="SIMPLE" subtype="IOS XRv" location="236,25" ipv4="192.168.0.3">
         <extensions>
             <entry key="static_ip" type="String">172.16.1.14</entry>
-            <entry key="AutoNetkit.custom_config_global" type="String">username rlaney privilege 15 secret 0 ralrox</entry>
+            <entry key="AutoNetkit.custom_config_global" type="String">username rlaney privilege 15 secret 0 ralrox
+                username rlaney group netadmin
+                username rlaney group root-system
+                username rlaney group sysadmin
+                username rlaney group root-lr
+                username rlaney secret 0 ralrox
+                commit
+                exit
+                crypto key generate rsa general-keys
+                1024
+
+            </entry>
             <entry key="AutoNetkit.IGP" type="String">ospf</entry>
             <entry key="AutoNetkit.ospf_area" type="String">1</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.14</entry>
             <entry key="AutoNetkit.ibgp_role" type="String">Peer</entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">!! IOS XR Configuration 6.0.0
-!! Last configuration change at Tue May 17 01:22:11 2016 by cisco
+!! Last configuration change at Tue May 17 01:48:50 2016 by CVAC
 !
 !  IOS-XR Config generated on 2016-05-15 01:35
 ! by autonetkit_0.21.4
@@ -522,16 +539,8 @@ hostname iosxrv-1
 service timestamps log datetime msec
 service timestamps debug datetime msec
 telnet vrf default ipv4 server max-servers 10
-telnet vrf Mgmt-intf ipv4 server max-servers 10
 domain name virl.info
 domain lookup disable
-username rlaney
- group root-lr
- group netadmin
- group sysadmin
- group root-system
- secret 5 $1$vs.z$wjXxlVZZfM0.hxnkC2rrQ/
-!
 cdp
 vrf Mgmt-intf
  address-family ipv4 unicast

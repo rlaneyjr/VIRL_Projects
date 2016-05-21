@@ -205,7 +205,8 @@ line vty 0 4
 !
 no scheduler allocate
 !
-crypto key generate rsa general-keys
+exit
+crypto key generate rsa
  768
 end</entry>
         </extensions>
@@ -415,7 +416,8 @@ line vty 0 4
 !
 no scheduler allocate
 !
-crypto key generate rsa general-keys
+exit
+crypto key generate rsa
  768
 end</entry>
         </extensions>
@@ -634,6 +636,9 @@ router bgp 1
 !
 ssh server v2
 ssh server vrf default
+exit
+crypto key generate rsa
+ 768
 end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/0/0/0" ipv4="10.0.0.10" netPrefixLenV4="30"/>

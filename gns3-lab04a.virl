@@ -205,7 +205,6 @@ line vty 0 4
 !
 no scheduler allocate
 !
-exit
 crypto key generate rsa
  768
 end</entry>
@@ -416,7 +415,6 @@ line vty 0 4
 !
 no scheduler allocate
 !
-exit
 crypto key generate rsa
  768
 end</entry>

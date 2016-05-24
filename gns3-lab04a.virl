@@ -160,6 +160,8 @@ no ip http secure-server
 ip route 0.0.0.0 0.0.0.0 172.16.1.1
 ip route 192.168.0.5 255.255.255.255 10.0.0.6
 ip ssh server algorithm authentication password
+crypto key generate rsa modulus 1024
+ip ssh version 2
 !
 !
 !
@@ -205,8 +207,6 @@ line vty 0 4
 !
 no scheduler allocate
 !
-crypto key generate rsa
- 768
 end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.5" netPrefixLenV4="30"/>
@@ -370,6 +370,8 @@ no ip http secure-server
 ip route 0.0.0.0 0.0.0.0 172.16.1.1
 ip route 192.168.0.6 255.255.255.255 10.0.0.22
 ip ssh server algorithm authentication password
+crypto key generate rsa modulus 1024
+ip ssh version 2
 !
 !
 !
@@ -415,8 +417,6 @@ line vty 0 4
 !
 no scheduler allocate
 !
-crypto key generate rsa
- 768
 end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.21" netPrefixLenV4="30"/>
@@ -635,8 +635,7 @@ router bgp 1
 ssh server v2
 ssh server vrf default
 exit
-crypto key generate rsa
- 768
+crypto key generate rsa modulus 1024
 end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/0/0/0" ipv4="10.0.0.10" netPrefixLenV4="30"/>

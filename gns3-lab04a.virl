@@ -634,8 +634,6 @@ router bgp 1
 !
 ssh server v2
 ssh server vrf default
-exit
-crypto key generate rsa modulus 1024
 end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/0/0/0" ipv4="10.0.0.10" netPrefixLenV4="30"/>

@@ -6,8 +6,8 @@
     </extensions>
     <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="158,145" ipv4="192.168.0.1">
         <extensions>
-            <entry key="static_ip" type="String">172.16.1.12</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.12</entry>
+            <entry key="static_ip" type="String">172.16.1.22</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.22</entry>
             <entry key="AutoNetkit.IGP" type="String">ospf</entry>
             <entry key="AutoNetkit.ospf_area" type="String">1</entry>
             <entry key="AutoNetkit.ibgp_role" type="String">Peer</entry>
@@ -93,7 +93,7 @@ interface Loopback0
 !
 interface GigabitEthernet0/0
  description OOB Management
- ip address 172.16.1.12 255.255.255.0
+ ip address 172.16.1.22 255.255.255.0
  duplex full
  speed auto
  media-type rj45
@@ -216,8 +216,8 @@ end</entry>
     </node>
     <node name="iosv-2" type="SIMPLE" subtype="IOSv" location="338,145" ipv4="192.168.0.4">
         <extensions>
-            <entry key="static_ip" type="String">172.16.1.13</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.13</entry>
+            <entry key="static_ip" type="String">172.16.1.23</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.23</entry>
             <entry key="AutoNetkit.IGP" type="String">ospf</entry>
             <entry key="AutoNetkit.ospf_area" type="String">1</entry>
             <entry key="AutoNetkit.ibgp_role" type="String">Peer</entry>
@@ -303,7 +303,7 @@ interface Loopback0
 !
 interface GigabitEthernet0/0
  description OOB Management
- ip address 172.16.1.13 255.255.255.0
+ ip address 172.16.1.23 255.255.255.0
  duplex full
  speed auto
  media-type rj45
@@ -425,7 +425,7 @@ end</entry>
     </node>
     <node name="veos-2" type="SIMPLE" subtype="vEOS" location="338,289" vmImage="vEOS [dcd0d9fe-cbcd-4cdd-8cc8-c045ba4928c6]" vmFlavor="vEOS-4.15.5M.medium [8a04f019-5001-4cf3-8436-24f7f6c25856]">
         <extensions>
-            <entry key="static_ip" type="String">172.16.1.11</entry>
+            <entry key="static_ip" type="String">172.16.1.21</entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">! device: veos-2 (vEOS, EOS-4.15.5M)
 !
@@ -452,7 +452,7 @@ interface Loopback0
   ip address 192.168.0.6/32
 !
 interface Management1
-ip address 172.16.1.11/24
+ip address 172.16.1.21/24
 !
 ip routing
 ip route 0.0.0.0 0.0.0.0 172.16.1.1
@@ -467,7 +467,7 @@ end
     </node>
     <node name="veos-1" type="SIMPLE" subtype="vEOS" location="158,289" vmImage="vEOS [dcd0d9fe-cbcd-4cdd-8cc8-c045ba4928c6]" vmFlavor="vEOS-4.15.5M.medium [8a04f019-5001-4cf3-8436-24f7f6c25856]">
         <extensions>
-            <entry key="static_ip" type="String">172.16.1.10</entry>
+            <entry key="static_ip" type="String">172.16.1.20</entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">! device: veos-1 (vEOS, EOS-4.15.5M)
 !
@@ -494,7 +494,7 @@ interface Loopback0
   ip address 192.168.0.5/32
 !
 interface Management1
-ip address 172.16.1.10/24
+ip address 172.16.1.20/24
 !
 ip routing
 ip route 0.0.0.0 0.0.0.0 172.16.1.1
@@ -509,8 +509,8 @@ end
     </node>
     <node name="iosv-3" type="SIMPLE" subtype="IOSv" location="236,25" ipv4="192.168.0.3">
         <extensions>
-            <entry key="static_ip" type="String">172.16.1.14</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.14</entry>
+            <entry key="static_ip" type="String">172.16.1.24</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.24</entry>
             <entry key="AutoNetkit.IGP" type="String">ospf</entry>
             <entry key="AutoNetkit.ospf_area" type="String">1</entry>
             <entry key="AutoNetkit.ibgp_role" type="String">Peer</entry>
@@ -596,7 +596,7 @@ interface Loopback0
 !
 interface GigabitEthernet0/0
  description OOB Management
- ip address 172.16.1.14 255.255.255.0
+ ip address 172.16.1.24 255.255.255.0
  duplex full
  speed auto
  media-type rj45

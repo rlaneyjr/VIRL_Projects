@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
-    <extensions>
-        <entry key="management_network" type="String">user</entry>
-    </extensions>
     <node name="R1" type="SIMPLE" subtype="IOSv" location="108,50">
         <extensions>
             <entry key="Auto-generate config" type="Boolean">false</entry>
-            <entry key="config" type="string">!
-version 15.2
-!
-enable
+            <entry key="config" type="string">enable
 configure terminal
 no service timestamps debug uptime
 no service timestamps log uptime
@@ -25,6 +19,7 @@ cdp run
 interface Loopback0
  ipv6 address 2001:150:1:1::1/128
  ip address 150.1.1.1 255.255.255.255
+ ipv6 ospf 1 area 0
 !
 interface GigabitEthernet0/1
  cdp enable
@@ -51,7 +46,8 @@ crypto isakmp policy 10
  group 5
  hash md5
 ! 
-crypto isakmp key cisco address 0.0.0.0
+crypto isakmp key 0 cisco address 0.0.0.0
+crypto isakmp key cisco address ipv6 ::/0
 !
 crypto ipsec transform-set ESP_AES_SHA esp-aes esp-sha-hmac
 !
@@ -59,33 +55,27 @@ crypto ipsec profile DMVPN_PROFILE
  set transform-set ESP_AES_SHA
 !
 interface Tunnel0
- ip address 155.1.0.1 255.255.255.0
- ip mtu 1400
- ip nhrp authentication NHRPPASS
- ip nhrp map 155.1.0.5 169.254.100.5
- ip nhrp map multicast 169.254.100.5
- ip nhrp network-id 1 
- ip nhrp holdtime 300
- ip nhrp nhs 155.1.0.5
- ip tcp adjust-mss 1360
- ip ospf network non-broadcast
- ip ospf priority 0
+ no ip address
+ no ip redirects
+ ipv6 address FE80::1 link-local
+ ipv6 address 2001:155:1:1234::1/64
+ ipv6 mtu 1416
+ ipv6 nhrp authentication cisco
+ ipv6 nhrp map 2001:155:1:1234::5/64 169.254.100.5
+ ipv6 nhrp map multicast 169.254.100.5
+ ipv6 nhrp network-id 10
+ ipv6 nhrp holdtime 600
+ ipv6 nhrp nhs 2001:155:1:1234::5
+ ipv6 nhrp shortcut
+ ipv6 ospf 1 area 0
+ ipv6 ospf mtu-ignore
  tunnel source GigabitEthernet0/1.100
  tunnel mode gre multipoint
- tunnel key 150
+ tunnel key 10
  tunnel protection ipsec profile DMVPN_PROFILE
- no shutdown
 !
-interface Tunnel10
- ip address 155.1.15.1 255.255.255.0
- tunnel source GigabitEthernet0/1.100
- tunnel destination 169.254.100.5
- tunnel key 100
-!
-router ospf 1
- router-id 150.1.1.1
- network 150.1.0.0 0.0.255.255 area 0
- network 155.1.0.0 0.0.255.255 area 0
+ ipv6 router ospf 1
+  router-id 150.1.1.1
 !
 line con 0
  exec-timeout 0 0
@@ -99,19 +89,13 @@ line vty 0 4
 !
 end
 
-
-!
-end
 </entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1"/>
     </node>
     <node name="R2" type="SIMPLE" subtype="IOSv" location="202,50">
         <extensions>
-            <entry key="config" type="string">!
-version 15.2
-!
-enable
+            <entry key="config" type="string">﻿enable
 configure terminal
 no service timestamps debug uptime
 no service timestamps log uptime
@@ -127,6 +111,7 @@ cdp run
 interface Loopback0
  ipv6 address 2001:150:2:2::2/128
  ip address 150.1.2.2 255.255.255.255
+ ipv6 ospf 1 area 0
 !
 interface GigabitEthernet0/1
  cdp enable
@@ -136,11 +121,7 @@ interface GigabitEthernet0/1.23
  encapsulation dot1q 23
  ip address 155.1.23.2 255.255.255.0
  ipv6 address 2001:155:1:23::2/64
-!
-interface GigabitEthernet0/1.210
- encapsulation dot1q 210
- ip address 192.10.1.2 255.255.255.0
- ipv6 address 2001:192:10:1::2/64
+ shutdown
 !
 interface GigabitEthernet0/1.100
  encapsulation dot1q 100
@@ -153,7 +134,8 @@ crypto isakmp policy 10
  group 5
  hash md5
 ! 
-crypto isakmp key cisco address 0.0.0.0
+crypto isakmp key 0 cisco address 0.0.0.0
+crypto isakmp key cisco address ipv6 ::/0
 !
 crypto ipsec transform-set ESP_AES_SHA esp-aes esp-sha-hmac
 !
@@ -161,27 +143,33 @@ crypto ipsec profile DMVPN_PROFILE
  set transform-set ESP_AES_SHA
 !
 interface Tunnel0
- ip address 155.1.0.2 255.255.255.0
- ip mtu 1400
- ip nhrp authentication NHRPPASS
- ip nhrp map 155.1.0.5 169.254.100.5
- ip nhrp map multicast 169.254.100.5
- ip nhrp network-id 1 
- ip nhrp holdtime 300
- ip nhrp nhs 155.1.0.5
- ip tcp adjust-mss 1360
- ip ospf network non-broadcast
- ip ospf priority 0
+ no ip address
+ no ip redirects
+ ipv6 address FE80::2 link-local
+ ipv6 address 2001:155:1:1234::2/64
+ ipv6 mtu 1416
+ ipv6 nhrp authentication cisco
+ ipv6 nhrp map 2001:155:1:1234::5/64 169.254.100.5
+ ipv6 nhrp map multicast 169.254.100.5
+ ipv6 nhrp network-id 10
+ ipv6 nhrp holdtime 600
+ ipv6 nhrp nhs 2001:155:1:1234::5
+ ipv6 nhrp shortcut
+ ipv6 ospf 1 area 0
+ ipv6 ospf mtu-ignore
  tunnel source GigabitEthernet0/1.100
  tunnel mode gre multipoint
- tunnel key 150
+ tunnel key 10
  tunnel protection ipsec profile DMVPN_PROFILE
- no shutdown
 !
-router ospf 1
+router rip
+ version 2
+ network 150.1.0.0
+ network 155.1.0.0
+ no auto-summary
+!
+ipv6 router ospf 1
  router-id 150.1.2.2
- network 150.1.0.0 0.0.255.255 area 0
- network 155.1.0.0 0.0.255.255 area 0
 !
 line con 0
  exec-timeout 0 0
@@ -195,19 +183,13 @@ line vty 0 4
 !
 end
 
-
-!
-end
 </entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1"/>
     </node>
     <node name="R3" type="SIMPLE" subtype="IOSv" location="303,50">
         <extensions>
-            <entry key="config" type="string">!
-version 15.2
-!
-enable
+            <entry key="config" type="string">﻿enable
 configure terminal
 no service timestamps debug uptime
 no service timestamps log uptime
@@ -217,34 +199,40 @@ hostname R3
 no ip domain lookup
 ip routing
 ipv6 unicast-routing
+ipv6 multicast-routing
 !
 cdp run
 !
 interface Loopback0
- ipv6 address 2001:150:3:3::3/128
+ ipv6 address 2001:150:1:3::3/128
  ip address 150.1.3.3 255.255.255.255
+ ipv6 ospf 1 area 0
 !
+
 interface GigabitEthernet0/1
  cdp enable
  no shutdown
-!
+!         
 interface GigabitEthernet0/1.13
- encapsulation dot1q 13
+ encapsulation dot1Q 13
  ip address 155.1.13.3 255.255.255.0
  ipv6 address 2001:155:1:13::3/64
+ ipv6 ospf 1 area 0
 !
 interface GigabitEthernet0/1.23
- encapsulation dot1q 23
+ encapsulation dot1Q 23
  ip address 155.1.23.3 255.255.255.0
+ shutdown
  ipv6 address 2001:155:1:23::3/64
 !
 interface GigabitEthernet0/1.37
- encapsulation dot1q 37
+ encapsulation dot1Q 37
  ip address 155.1.37.3 255.255.255.0
  ipv6 address 2001:155:1:37::3/64
+ ipv6 ospf 1 area 0
 !
 interface GigabitEthernet0/1.100
- encapsulation dot1q 100
+ encapsulation dot1Q 100
  ip address 169.254.100.3 255.255.255.0
  ipv6 address 2001:169:254:100::3/64
 !
@@ -254,7 +242,8 @@ crypto isakmp policy 10
  group 5
  hash md5
 ! 
-crypto isakmp key cisco address 0.0.0.0
+crypto isakmp key 0 cisco address 0.0.0.0
+crypto isakmp key cisco address ipv6 ::/0
 !
 crypto ipsec transform-set ESP_AES_SHA esp-aes esp-sha-hmac
 !
@@ -262,34 +251,25 @@ crypto ipsec profile DMVPN_PROFILE
  set transform-set ESP_AES_SHA
 !
 interface Tunnel0
- ip address 155.1.0.3 255.255.255.0
- ip mtu 1400
- ip nhrp authentication NHRPPASS
- ip nhrp map 155.1.0.5 169.254.100.5
- ip nhrp map multicast 169.254.100.5
- ip nhrp network-id 1 
- ip nhrp holdtime 300
- ip nhrp nhs 155.1.0.5
- ip tcp adjust-mss 1360
- ip ospf network non-broadcast
- ip ospf priority 0
+ no ip address
+ no ip redirects
+ ipv6 address FE80::3 link-local
+ ipv6 address 2001:155:1:1234::3/64
+ ipv6 mtu 1416
+ ipv6 nhrp authentication cisco
+ ipv6 nhrp map 2001:155:1:1234::5/64 169.254.100.5
+ ipv6 nhrp map multicast 169.254.100.5
+ ipv6 nhrp network-id 10
+ ipv6 nhrp holdtime 600
+ ipv6 nhrp nhs 2001:155:1:1234::5
+ ipv6 nhrp shortcut
  tunnel source GigabitEthernet0/1.100
  tunnel mode gre multipoint
- tunnel key 150
+ tunnel key 10
  tunnel protection ipsec profile DMVPN_PROFILE
- no shutdown
 !
-router eigrp 100
- network 150.1.0.0 0.0.255.255
- no auto-summary
- network 155.1.0.0 0.0.255.255
-!
-!
-router ospf 1
+ipv6 router ospf 1
  router-id 150.1.3.3
- network 150.1.0.0 0.0.255.255 area 0
- network 155.1.0.0 0.0.255.255 area 0
-!
 line con 0
  exec-timeout 0 0
  logging synchronous
@@ -302,19 +282,13 @@ line vty 0 4
 !
 end
 
-
-!
-end
 </entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1"/>
     </node>
     <node name="R4" type="SIMPLE" subtype="IOSv" location="412,50">
         <extensions>
-            <entry key="config" type="string">!
-version 15.2
-!
-enable
+            <entry key="config" type="string">﻿enable
 configure terminal
 no service timestamps debug uptime
 no service timestamps log uptime
@@ -324,12 +298,14 @@ hostname R4
 no ip domain lookup
 ip routing
 ipv6 unicast-routing
+ipv6 multicast-routing
 !
 cdp run
 !
 interface Loopback0
- ipv6 address 2001:150:4:4::4/128
+ ipv6 address 2001:150:1:4::4/128
  ip address 150.1.4.4 255.255.255.255
+ ipv6 ospf 1 area 0
 !
 interface GigabitEthernet0/1
  cdp enable
@@ -348,6 +324,7 @@ interface GigabitEthernet0/1.100
 interface GigabitEthernet0/1.146
  encapsulation dot1q 146
  ip address 155.1.146.4 255.255.255.0
+ ipv6 ospf 1 area 0
  ipv6 address 2001:155:1:146::4/64
 !
 crypto isakmp policy 10
@@ -357,6 +334,7 @@ crypto isakmp policy 10
  hash md5
 ! 
 crypto isakmp key cisco address 0.0.0.0
+crypto isakmp key cisco address ipv6 ::/0
 !
 crypto ipsec transform-set ESP_AES_SHA esp-aes esp-sha-hmac
 !
@@ -364,38 +342,31 @@ crypto ipsec profile DMVPN_PROFILE
  set transform-set ESP_AES_SHA
 !
 interface Tunnel0
- ip address 155.1.0.4 255.255.255.0
- ip mtu 1400
- ip nhrp authentication NHRPPASS
- ip nhrp map 155.1.0.5 169.254.100.5
- ip nhrp map multicast 169.254.100.5
- ip nhrp network-id 1 
- ip nhrp holdtime 300
- ip nhrp nhs 155.1.0.5
- ip tcp adjust-mss 1360
- ip ospf network non-broadcast
- ip ospf priority 0
+ no ip address
+ no ip redirects
+ ipv6 address FE80::4 link-local
+ ipv6 address 2001:155:1:1234::4/64
+ ipv6 mtu 1416
+ ipv6 nhrp authentication cisco
+ ipv6 nhrp map 2001:155:1:1234::5/64 169.254.100.5
+ ipv6 nhrp map multicast 169.254.100.5
+ ipv6 nhrp network-id 10
+ ipv6 nhrp holdtime 600
+ ipv6 nhrp nhs 2001:155:1:1234::5
+ ipv6 nhrp shortcut
  tunnel source GigabitEthernet0/1.100
  tunnel mode gre multipoint
- tunnel key 150
+ tunnel key 10
  tunnel protection ipsec profile DMVPN_PROFILE
- no shutdown
 !
-router eigrp 100
+router rip
+ version 2
  network 150.1.0.0
  network 155.1.0.0
- passive-interface Tunnel0
- passive-interface Tunnel10
+ no auto-summary
 !
-!
-router ospf 1
+ipv6 router ospf 1
  router-id 150.1.4.4
- network 150.1.0.0 0.0.255.255 area 0
- network 155.1.0.0 0.0.255.255 area 0
- passive-interface GigabitEthernet0/1.146
- passive-interface GigabitEthernet0/1.45
- distance ospf external 171
-!
 line con 0
  exec-timeout 0 0
  logging synchronous
@@ -408,19 +379,13 @@ line vty 0 4
 !
 end
 
-
-!
-end
 </entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1"/>
     </node>
     <node name="R5" type="SIMPLE" subtype="IOSv" location="520,50">
         <extensions>
-            <entry key="config" type="string">!
-version 15.2
-!
-enable
+            <entry key="config" type="string">﻿enable
 configure terminal
 no service timestamps debug uptime
 no service timestamps log uptime
@@ -436,6 +401,7 @@ cdp run
 interface Loopback0
  ipv6 address 2001:150:5:5::5/128
  ip address 150.1.5.5 255.255.255.255
+ ipv6 ospf 1 area 0
 !
 interface GigabitEthernet0/1
  cdp enable
@@ -468,6 +434,8 @@ crypto isakmp policy 10
  hash md5
 ! 
 crypto isakmp key cisco address 0.0.0.0
+crypto isakmp key cisco address ipv6 ::/0
+
 !
 crypto ipsec transform-set ESP_AES_SHA esp-aes esp-sha-hmac
 !
@@ -475,44 +443,39 @@ crypto ipsec profile DMVPN_PROFILE
  set transform-set ESP_AES_SHA
 !
 interface Tunnel0
- ip address 155.1.0.5 255.255.255.0
- ip mtu 1400
- ip nhrp authentication NHRPPASS
- ip nhrp map multicast dynamic
- ip nhrp network-id 1
- ip tcp adjust-mss 1360
- delay 1000
- ip ospf network non-broadcast
+ no ip address
+ no ip redirects
+ ipv6 address FE80::5 link-local
+ ipv6 address 2001:155:1:1234::5/64
+ ipv6 mtu 1416
+ ipv6 nhrp authentication cisco
+ ipv6 nhrp map multicast dynamic
+ ipv6 nhrp network-id 10
+ ipv6 nhrp holdtime 600
+ ipv6 nhrp redirect
+ ipv6 ospf 1 area 0
+ ipv6 ospf neighbor FE80::2
+ ipv6 ospf neighbor FE80::1
+ ipv6 ospf network point-to-multipoint
+ ipv6 ospf hello-interval 10
+ ipv6 ospf priority 255
+ ipv6 ospf mtu-ignore
  tunnel source GigabitEthernet0/1.100
  tunnel mode gre multipoint
- tunnel key 150
+ tunnel key 10
  tunnel protection ipsec profile DMVPN_PROFILE
- no shutdown
 !
-interface Tunnel10
- ip address 155.1.15.5 255.255.255.0
- ip pim dense-mode
- tunnel source GigabitEthernet0/1.100
- tunnel destination 169.254.100.1
- tunnel key 100
-!
-router eigrp 100
+router rip
+ version 2
  network 150.1.0.0
  network 155.1.0.0
- redistribute ospf 1 metric 1 1 1 1 1
- passive-interface Tunnel0
- passive-interface Tunnel10
+ no auto-summary
 !
-router ospf 1
+ipv6 router rip RIPNG
+ no split-horizon
+!
+ipv6 router ospf 1
  router-id 150.1.5.5
- network 150.1.0.0 0.0.255.255 area 0
- network 155.1.0.0 0.0.255.255 area 0
- redistribute eigrp 100 subnets
- distance ospf external 171
- neighbor 155.1.0.1
- neighbor 155.1.0.2
- neighbor 155.1.0.3
- neighbor 155.1.0.4
 !
 line con 0
  exec-timeout 0 0
@@ -526,19 +489,13 @@ line vty 0 4
 !
 end
 
-
-!
-end
 </entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1"/>
     </node>
     <node name="R6" type="SIMPLE" subtype="IOSv" location="635,50">
         <extensions>
-            <entry key="config" type="string">!
-version 15.2
-!
-enable
+            <entry key="config" type="string">﻿enable
 configure terminal
 no service timestamps debug uptime
 no service timestamps log uptime
@@ -548,12 +505,14 @@ hostname R6
 no ip domain lookup
 ip routing
 ipv6 unicast-routing
+ipv6 multicast-routing
 !
 cdp run
 !
 interface Loopback0
- ipv6 address 2001:150:6:6::6/128
+ ipv6 address 2001:150:1:6::6/128
  ip address 150.1.6.6 255.255.255.255
+ ipv6 ospf 1 area 0
 !
 interface GigabitEthernet0/1
  cdp enable
@@ -567,20 +526,17 @@ interface GigabitEthernet0/1.67
 interface GigabitEthernet0/1.146
  encapsulation dot1q 146
  ip address 155.1.146.6 255.255.255.0
+ ipv6 ospf 1 area 0
  ipv6 address 2001:155:1:146::6/64
 !
-router eigrp 100
+router rip
+ version 2
+ network 150.1.0.0
+ network 155.1.0.0
  no auto-summary
- network 150.1.0.0 0.0.255.255
- network 155.1.0.0 0.0.255.255
- redistribute ospf 1 metric 1 1 1 1 1
 !
-router ospf 1
+ipv6 router ospf 1
  router-id 150.1.6.6
- network 155.1.67.6 0.0.0.0 area 0
- redistribute eigrp 100 subnets
- distance ospf external 171
-!
 line con 0
  exec-timeout 0 0
  logging synchronous
@@ -593,19 +549,13 @@ line vty 0 4
 !
 end
 
-
-!
-end
 </entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1"/>
     </node>
     <node name="R7" type="SIMPLE" subtype="IOSv" location="728,50">
         <extensions>
-            <entry key="config" type="string">!
-version 15.2
-!
-enable
+            <entry key="config" type="string">﻿enable
 configure terminal
 no service timestamps debug uptime
 no service timestamps log uptime
@@ -646,11 +596,11 @@ interface GigabitEthernet0/1.79
  ip address 155.1.79.7 255.255.255.0
  ipv6 address 2001:155:1:79::7/64
 !
-router ospf 1
- router-id 150.1.7.7
- network 155.1.0.0 0.0.255.255 area 0
- network 150.1.0.0 0.0.255.255 area 0
- !
+router rip
+ version 2
+ network 150.1.0.0
+ network 155.1.0.0
+ no auto-summary
 !
 line con 0
  exec-timeout 0 0
@@ -664,19 +614,13 @@ line vty 0 4
 !
 end
 
-
-!
-end
 </entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1"/>
     </node>
     <node name="R8" type="SIMPLE" subtype="IOSv" location="841,50">
         <extensions>
-            <entry key="config" type="string">!
-version 15.2
-!
-enable
+            <entry key="config" type="string">﻿enable
 configure terminal
 no service timestamps debug uptime
 no service timestamps log uptime
@@ -712,10 +656,14 @@ interface GigabitEthernet0/1.108
  ip address 155.1.108.8 255.255.255.0
  ipv6 address 2001:155:1:108::8/64
 !
-router eigrp 100
+router rip
+ version 2
+ network 150.1.0.0
+ network 155.1.0.0
  no auto-summary
- network 150.1.0.0 0.0.255.255
- network 155.1.0.0 0.0.255.255
+!
+ipv6 router ospf 1
+ router-id 150.1.8.8
 !
 line con 0
  exec-timeout 0 0
@@ -729,242 +677,116 @@ line vty 0 4
 !
 end
 
-
-!
-end
 </entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1"/>
     </node>
     <node name="R9" type="SIMPLE" subtype="IOSv" location="940,50">
         <extensions>
-            <entry key="config" type="string">!
-version 15.2
-!
-enable
-conf t
-version 15.4
+            <entry key="config" type="string">﻿enable
+configure terminal
 no service timestamps debug uptime
 no service timestamps log uptime
-no platform punt-keepalive disable-kernel-core
-platform console serial
 !
 hostname R9
 !
-boot-start-marker
-boot-end-marker
-!
-!
-!
-no aaa new-model
-!
 no ip domain lookup
-!
+ip routing
 ipv6 unicast-routing
-!
-!
-subscriber templating
-!
-multilink bundle-name authenticated
-!
-!
-license udi pid CSR1000V sn 9Y9VCZ8B841
-license boot level premium
-spanning-tree extend system-id
-!
-!
-redundancy
- mode none
-!
 !
 cdp run
 !
-!
 interface Loopback0
- ip address 150.1.9.9 255.255.255.255
  ipv6 address 2001:150:9:9::9/128
+ ip address 150.1.9.9 255.255.255.255
 !
 interface GigabitEthernet0/1
- no ip address
- negotiation auto
  cdp enable
- no shut
+ no shutdown
 !
 interface GigabitEthernet0/1.9
- encapsulation dot1Q 9
+ encapsulation dot1q 9
  ip address 155.1.9.9 255.255.255.0
  ipv6 address 2001:155:1:9::9/64
 !
 interface GigabitEthernet0/1.79
- encapsulation dot1Q 79
+ encapsulation dot1q 79
  ip address 155.1.79.9 255.255.255.0
  ipv6 address 2001:155:1:79::9/64
 !
-!
-interface GigabitEthernet2
- no ip address
- shutdown
- negotiation auto
-!
-interface GigabitEthernet3
- no ip address
- shutdown
- negotiation auto
-!
-router ospf 1
- network 150.1.0.0 0.0.255.255 area 0
- network 155.1.0.0 0.0.255.255 area 0
-!
-!
-!
-ip forward-protocol nd
-!
-!
-!
-control-plane
-!
+router rip
+ version 2
+ network 150.1.0.0
+ network 155.1.0.0
+ no auto-summary
 !
 line con 0
  exec-timeout 0 0
- privilege level 15
  logging synchronous
- stopbits 1
-line aux 0
- stopbits 1
+ privilege level 15
+ no login
+!
 line vty 0 4
  privilege level 15
  no login
 !
-!
 end
-!
-end
+
 </entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1"/>
     </node>
     <node name="R10" type="SIMPLE" subtype="IOSv" location="1059,50">
         <extensions>
-            <entry key="config" type="string">!
-version 15.2
-!
-enable
-conf t
-!
-version 15.4
+            <entry key="config" type="string">﻿enable
+configure terminal
 no service timestamps debug uptime
 no service timestamps log uptime
-no platform punt-keepalive disable-kernel-core
-platform console serial
 !
 hostname R10
 !
-boot-start-marker
-boot-end-marker
-!
-!
-vrf definition AS_254
- rd 100:100
- !
- address-family ipv4
- exit-address-family
- !
- address-family ipv6
- exit-address-family
-!
-!
-no aaa new-model
-!
 no ip domain lookup
-!
+ip routing
 ipv6 unicast-routing
-!
-!
-subscriber templating
-!
-multilink bundle-name authenticated
-!
-!
-license udi pid CSR1000V sn 9Y9VCZ8B841
-license boot level premium
-spanning-tree extend system-id
-!
-!
-redundancy
- mode none
-!
 !
 cdp run
 !
-! 
 interface Loopback0
- ip address 150.1.10.10 255.255.255.255
  ipv6 address 2001:150:10:10::10/128
+ ip address 150.1.10.10 255.255.255.255
 !
 interface GigabitEthernet0/1
- no shut
- no ip address
- negotiation auto
  cdp enable
+ no shutdown
 !
 interface GigabitEthernet0/1.10
- encapsulation dot1Q 10
+ encapsulation dot1q 10
  ip address 155.1.10.10 255.255.255.0
  ipv6 address 2001:155:1:10::10/64
 !
 interface GigabitEthernet0/1.108
- encapsulation dot1Q 108
+ encapsulation dot1q 108
  ip address 155.1.108.10 255.255.255.0
  ipv6 address 2001:155:1:108::10/64
 !
-!
-interface GigabitEthernet2
- no ip address
- shutdown
- negotiation auto
-!
-interface GigabitEthernet3
- no ip address
- shutdown
- negotiation auto
-!
-router eigrp 100
+router rip
+ version 2
+ network 150.1.0.0
+ network 155.1.0.0
  no auto-summary
- network 150.1.0.0 0.0.255.255
- network 155.1.0.0 0.0.255.255
-!
-!
-virtual-service csr_mgmt
-!
-ip forward-protocol nd
-!
-control-plane
-!
 !
 line con 0
  exec-timeout 0 0
- privilege level 15
  logging synchronous
- stopbits 1
-line aux 0
- stopbits 1
-line vty 0
- privilege level 15
- no login
-line vty 1
- privilege level 15
- no login
- length 0
-line vty 2 4
  privilege level 15
  no login
 !
+line vty 0 4
+ privilege level 15
+ no login
 !
 end
 
-
-!
-end
 </entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1"/>

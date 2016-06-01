@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
     <extensions>
-        <entry key="lxc.host.static_ip" type="String">172.16.1.30</entry>
         <entry key="management_network" type="String">flat</entry>
+        <entry key="management_lxc" type="Boolean">false</entry>
     </extensions>
     <node name="R1" type="SIMPLE" subtype="IOSv" location="108,50">
         <extensions>
+            <entry key="static_ip" type="String">172.16.1.31</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.31</entry>
+            <entry key="AutoNetkit.IGP" type="String">ospf</entry>
+            <entry key="AutoNetkit.ospf_area" type="String">1</entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="string">!
 version 15.2
@@ -115,6 +119,11 @@ end
     </node>
     <node name="R2" type="SIMPLE" subtype="IOSv" location="202,50">
         <extensions>
+            <entry key="static_ip" type="String">172.16.1.32</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.32</entry>
+            <entry key="AutoNetkit.IGP" type="String">ospf</entry>
+            <entry key="AutoNetkit.ospf_area" type="String">1</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="string">!
 version 15.2
 !
@@ -217,6 +226,11 @@ end
     </node>
     <node name="R3" type="SIMPLE" subtype="IOSv" location="303,50">
         <extensions>
+            <entry key="static_ip" type="String">172.16.1.33</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.33</entry>
+            <entry key="AutoNetkit.IGP" type="String">ospf</entry>
+            <entry key="AutoNetkit.ospf_area" type="String">1</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="string">!
 version 15.2
 !
@@ -330,6 +344,11 @@ end
     </node>
     <node name="R4" type="SIMPLE" subtype="IOSv" location="412,50">
         <extensions>
+            <entry key="static_ip" type="String">172.16.1.34</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.34</entry>
+            <entry key="AutoNetkit.IGP" type="String">ospf</entry>
+            <entry key="AutoNetkit.ospf_area" type="String">1</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="string">!
 version 15.2
 !
@@ -442,6 +461,11 @@ end
     </node>
     <node name="R5" type="SIMPLE" subtype="IOSv" location="520,50">
         <extensions>
+            <entry key="static_ip" type="String">172.16.1.35</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.35</entry>
+            <entry key="AutoNetkit.IGP" type="String">ospf</entry>
+            <entry key="AutoNetkit.ospf_area" type="String">1</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="string">!
 version 15.2
 !
@@ -566,6 +590,11 @@ end
     </node>
     <node name="R6" type="SIMPLE" subtype="IOSv" location="635,50">
         <extensions>
+            <entry key="static_ip" type="String">172.16.1.36</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.36</entry>
+            <entry key="AutoNetkit.IGP" type="String">ospf</entry>
+            <entry key="AutoNetkit.ospf_area" type="String">1</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="string">!
 version 15.2
 !
@@ -639,6 +668,11 @@ end
     </node>
     <node name="R7" type="SIMPLE" subtype="IOSv" location="728,50">
         <extensions>
+            <entry key="static_ip" type="String">172.16.1.37</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.37</entry>
+            <entry key="AutoNetkit.IGP" type="String">ospf</entry>
+            <entry key="AutoNetkit.ospf_area" type="String">1</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="string">!
 version 15.2
 !
@@ -716,6 +750,11 @@ end
     </node>
     <node name="R8" type="SIMPLE" subtype="IOSv" location="841,50">
         <extensions>
+            <entry key="static_ip" type="String">172.16.1.38</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.38</entry>
+            <entry key="AutoNetkit.IGP" type="String">ospf</entry>
+            <entry key="AutoNetkit.ospf_area" type="String">1</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="string">!
 version 15.2
 !
@@ -787,6 +826,11 @@ end
     </node>
     <node name="R9" type="SIMPLE" subtype="IOSv" location="940,50">
         <extensions>
+            <entry key="static_ip" type="String">172.16.1.39</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.39</entry>
+            <entry key="AutoNetkit.IGP" type="String">ospf</entry>
+            <entry key="AutoNetkit.ospf_area" type="String">1</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="string">!
 version 15.2
 !
@@ -900,6 +944,11 @@ end
     </node>
     <node name="R10" type="SIMPLE" subtype="IOSv" location="1059,50">
         <extensions>
+            <entry key="static_ip" type="String">172.16.1.40</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.40</entry>
+            <entry key="AutoNetkit.IGP" type="String">ospf</entry>
+            <entry key="AutoNetkit.ospf_area" type="String">1</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="string">!
 version 15.2
 !

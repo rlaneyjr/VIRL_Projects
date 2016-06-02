@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+    <extensions>
+        <entry key="management_network" type="String">user</entry>
+        <entry key="AutoNetkit.enable_cdp" type="Boolean">true</entry>
+    </extensions>
+    <node name="hub" type="SIMPLE" subtype="IOSv" location="199,76" ipv4="192.168.0.6">
+        <extensions>
+            <entry key="config" type="string">! IOS Config generated on 2016-06-02 07:52
+! by autonetkit_0.21.4
+!
+hostname hub
+boot-start-marker
+boot-end-marker
+!
+vrf definition Mgmt-intf
+!
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+!
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+ip multicast routing
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+ip domain name virl.info
+!
+crypto isakmp policy 10
+ encr aes
+ hash md5
+ authentication pre-share
+ group 5
+crypto isakmp key cisco address 0.0.0.0        
+!
+!
+crypto ipsec transform-set ESP_AES_SHA esp-aes esp-sha-hmac 
+ mode tunnel
+!
+crypto ipsec profile DMVPN_PROFILE
+ set transform-set ESP_AES_SHA 
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.6 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  vrf forwarding Mgmt-intf
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to dummy
+  ip address 10.0.0.6 255.255.255.252
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to networktools-server-1
+  ip address 10.0.0.9 255.255.255.252
+  ip pim sparse-mode
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface Tunnel0
+ ip address 10.1.0.6 255.255.255.0
+ ip mtu 1400
+ ip pim sparse-mode
+ ip nhrp authentication NHRPPASS
+ ip nhrp map multicast dynamic
+ ip nhrp network-id 1 
+ ip nhrp holdtime 300
+ ip tcp adjust-mss 1360
+ ip ospf network non-broadcast
+ ip ospf priority 0
+ tunnel source GigabitEthernet0/1
+ tunnel mode gre multipoint
+ tunnel key 150
+ tunnel protection ipsec profile DMVPN_PROFILE
+ no shutdown
+!
+!
+router ospf 1
+  network 192.168.0.6 0.0.0.0 area 0
+  log-adjacency-changes
+  passive-interface Loopback0
+  network 10.0.0.4 0.0.0.3 area 0
+  network 10.0.0.8 0.0.0.3 area 0
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+ privilege level 15
+ no login
+!
+line vty 0 4
+ privilege level 15
+ no login
+!
+!
+!
+end
+</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.6" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.9" netPrefixLenV4="30"/>
+    </node>
+    <node name="r1" type="SIMPLE" subtype="IOSv" location="360,76" ipv4="192.168.0.2">
+        <extensions>
+            <entry key="config" type="string">! IOS Config generated on 2016-06-02 07:52
+! by autonetkit_0.21.4
+!
+hostname r1
+boot-start-marker
+boot-end-marker
+!
+vrf definition Mgmt-intf
+!
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+!
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+ip multicast routing
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+ip domain name virl.info
+!
+crypto isakmp policy 10
+ encr aes
+ hash md5
+ authentication pre-share
+ group 5
+crypto isakmp key cisco address 0.0.0.0        
+!
+!
+crypto ipsec transform-set ESP_AES_SHA esp-aes esp-sha-hmac 
+ mode tunnel
+!
+crypto ipsec profile DMVPN_PROFILE
+ set transform-set ESP_AES_SHA 
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.2 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  vrf forwarding Mgmt-intf
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to dummy
+  ip address 10.0.0.14 255.255.255.252
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface Tunnel0
+ ip address 10.1.0.4 255.255.255.0
+ ip pim sparse-mode
+ ip mtu 1400
+ ip nhrp authentication NHRPPASS
+ ip nhrp map 10.1.0.6 10.0.0.6
+ ip nhrp map multicast 10.0.0.6
+ ip nhrp network-id 1 
+ ip nhrp holdtime 300
+ ip nhrp nhs 10.1.0.6
+ ip nhrp shortcut
+ ip tcp adjust-mss 1360
+ ip ospf network non-broadcast
+ ip ospf priority 0
+ tunnel source GigabitEthernet0/1
+ tunnel mode gre multipoint
+ tunnel key 150
+ tunnel protection ipsec profile DMVPN_PROFILE
+ no shutdown
+!
+!
+router ospf 1
+  network 192.168.0.2 0.0.0.0 area 0
+  log-adjacency-changes
+  passive-interface Loopback0
+  network 10.0.0.12 0.0.0.3 area 0
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+ privilege level 15
+ no login
+!
+line vty 0 4
+ privilege level 15
+ no login
+!
+!
+end
+</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.14" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="r3" type="SIMPLE" subtype="IOSv" location="699,75" ipv4="192.168.0.5">
+        <extensions>
+            <entry key="config" type="string">! IOS Config generated on 2016-06-02 07:52
+! by autonetkit_0.21.4
+!
+hostname r3
+boot-start-marker
+boot-end-marker
+!
+vrf definition Mgmt-intf
+!
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+!
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+ip multicast routing
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+ip domain name virl.info
+!
+crypto isakmp policy 10
+ encr aes
+ hash md5
+ authentication pre-share
+ group 5
+crypto isakmp key cisco address 0.0.0.0        
+!
+!
+crypto ipsec transform-set ESP_AES_SHA esp-aes esp-sha-hmac 
+ mode tunnel
+!
+crypto ipsec profile DMVPN_PROFILE
+ set transform-set ESP_AES_SHA 
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.5 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  vrf forwarding Mgmt-intf
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to dummy
+  ip address 10.0.0.22 255.255.255.252
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to lxc-ostinato-drone-1
+  ip address 10.0.0.26 255.255.255.252
+  ip pim sparse-mode
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface Tunnel0
+ ip address 10.1.0.5 255.255.255.0
+ ip pim sparse-mode
+ ip mtu 1400
+ ip nhrp authentication NHRPPASS
+ ip nhrp map 10.1.0.6 10.0.0.6
+ ip nhrp map multicast 10.0.0.6
+ ip nhrp network-id 1 
+ ip nhrp holdtime 300
+ ip nhrp nhs 10.1.0.6
+ ip nhrp shortcut
+ ip tcp adjust-mss 1360
+ ip ospf network non-broadcast
+ ip ospf priority 0
+ tunnel source GigabitEthernet0/1
+ tunnel mode gre multipoint
+ tunnel key 150
+ tunnel protection ipsec profile DMVPN_PROFILE
+ no shutdown
+!
+!
+router ospf 1
+  network 192.168.0.5 0.0.0.0 area 0
+  log-adjacency-changes
+  passive-interface Loopback0
+  network 10.0.0.20 0.0.0.3 area 0
+  network 10.0.0.24 0.0.0.3 area 0
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+ privilege level 15
+ no login
+!
+line vty 0 4
+ privilege level 15
+ no login
+!
+!
+end
+</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.22" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.26" netPrefixLenV4="30"/>
+    </node>
+    <node name="r2" type="SIMPLE" subtype="IOSv" location="532,79" ipv4="192.168.0.4">
+        <extensions>
+            <entry key="config" type="string">! IOS Config generated on 2016-06-02 07:52
+! by autonetkit_0.21.4
+!
+hostname r2
+boot-start-marker
+boot-end-marker
+!
+vrf definition Mgmt-intf
+!
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+!
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+ip multicast routing
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+ip domain name virl.info
+!
+crypto isakmp policy 10
+ encr aes
+ hash md5
+ authentication pre-share
+ group 5
+crypto isakmp key cisco address 0.0.0.0        
+!
+!
+crypto ipsec transform-set ESP_AES_SHA esp-aes esp-sha-hmac 
+ mode tunnel
+!
+crypto ipsec profile DMVPN_PROFILE
+ set transform-set ESP_AES_SHA 
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.4 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  vrf forwarding Mgmt-intf
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to dummy
+  ip address 10.0.0.18 255.255.255.252
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface Tunnel0
+ ip address 10.1.0.7 255.255.255.0
+ ip pim sparse-mode
+ ip mtu 1400
+ ip nhrp authentication NHRPPASS
+ ip nhrp map 10.1.0.6 10.0.0.6
+ ip nhrp map multicast 10.0.0.6
+ ip nhrp network-id 1 
+ ip nhrp holdtime 300
+ ip nhrp nhs 10.1.0.6
+ ip nhrp shortcut
+ ip tcp adjust-mss 1360
+ ip ospf network non-broadcast
+ ip ospf priority 0
+ tunnel source GigabitEthernet0/1
+ tunnel mode gre multipoint
+ tunnel key 150
+ tunnel protection ipsec profile DMVPN_PROFILE
+ no shutdown
+!
+!
+router ospf 1
+  network 192.168.0.4 0.0.0.0 area 0
+  log-adjacency-changes
+  passive-interface Loopback0
+  network 10.0.0.16 0.0.0.3 area 0
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+ privilege level 15
+ no login
+!
+line vty 0 4
+ privilege level 15
+ no login
+!
+!
+end
+</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.18" netPrefixLenV4="30"/>
+    </node>
+    <node name="dummy" type="SIMPLE" subtype="IOSv" location="464,264" ipv4="192.168.0.7">
+        <extensions>
+            <entry key="config" type="string">! IOS Config generated on 2016-06-02 07:52
+! by autonetkit_0.21.4
+!
+hostname dummy
+boot-start-marker
+boot-end-marker
+!
+vrf definition Mgmt-intf
+!
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+!
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+ip classless
+ip subnet-zero
+no ip domain lookup
+ip domain name virl.info
+!
+cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.7 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  vrf forwarding Mgmt-intf
+  ! Configured on launch
+  no ip address
+  cdp enable
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to hub
+  ip address 10.0.0.5 255.255.255.252
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to r1
+  ip address 10.0.0.13 255.255.255.252
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/3
+  description to r2
+  ip address 10.0.0.17 255.255.255.252
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/4
+  description to r3
+  ip address 10.0.0.21 255.255.255.252
+  cdp enable
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/5
+  description GigabitEthernet0/5
+  no ip address
+  cdp enable
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/6
+  description GigabitEthernet0/6
+  no ip address
+  cdp enable
+  duplex full
+  speed auto
+  no shutdown
+!
+!
+!
+router ospf 1
+  network 192.168.0.7 0.0.0.0 area 0
+  log-adjacency-changes
+  passive-interface Loopback0
+  network 10.0.0.4 0.0.0.3 area 0
+  network 10.0.0.12 0.0.0.3 area 0
+  network 10.0.0.16 0.0.0.3 area 0
+  network 10.0.0.20 0.0.0.3 area 0
+!
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+ privilege level 15
+ no login
+!
+line vty 0 4
+ privilege level 15
+ no login
+!
+!
+!
+end
+</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.5" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.13" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.0.17" netPrefixLenV4="30"/>
+        <interface id="3" name="GigabitEthernet0/4" ipv4="10.0.0.21" netPrefixLenV4="30"/>
+        <interface id="4" name="GigabitEthernet0/5"/>
+        <interface id="5" name="GigabitEthernet0/6"/>
+    </node>
+    <node name="lxc-ostinato-drone-1" type="SIMPLE" subtype="lxc-ostinato-drone" location="831,55">
+        <extensions>
+            <entry key="config" type="string">#cloud-config
+bootcmd:
+- ln -s -t /etc/rc.d /etc/rc.local
+hostname: lxc-ostinato-drone-1
+manage_etc_hosts: true
+runcmd:
+- systemctl start rc-local
+- sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
+- echo "UseDNS no" &gt;&gt; /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: User configured by VIRL Configuration Engine 0.21.7
+  lock-passwd: false
+  name: cisco
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - VIRL-USER-SSH-PUBLIC-KEY
+  sudo: ALL=(ALL) NOPASSWD:ALL
+write_files:
+- path: /etc/systemd/system/dhclient@.service
+  content: |
+    [Unit]
+    Description=Run dhclient on %i interface
+    After=network.target
+    [Service]
+    Type=oneshot
+    ExecStart=/sbin/dhclient %i -pf /var/run/dhclient.%i.pid -lf /var/lib/dhclient/dhclient.%i.lease
+    RemainAfterExit=yes
+  owner: root:root
+  permissions: '0644'
+- path: /etc/rc.local
+  owner: root:root
+  permissions: '0755'
+  content: |-
+    #!/bin/sh
+    ifconfig eth1 up 10.0.0.25 netmask 255.255.255.252
+    route add -net 10.0.0.0/8 gw 10.0.0.26 dev eth1
+    route add -net 192.168.0.0/28 gw 10.0.0.26 dev eth1
+    exit 0
+</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="eth1" ipv4="10.0.0.25" netPrefixLenV4="30"/>
+    </node>
+    <node name="networktools-server-1" type="SIMPLE" subtype="NetworkTools-server" location="17,29">
+        <extensions>
+            <entry key="config" type="string"> </entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="eth1" ipv4="10.0.0.10" netPrefixLenV4="30"/>
+    </node>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[2]" src="/virl:topology/virl:node[2]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[3]" src="/virl:topology/virl:node[4]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[4]" src="/virl:topology/virl:node[3]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[2]" src="/virl:topology/virl:node[6]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[1]/virl:interface[2]" src="/virl:topology/virl:node[7]/virl:interface[1]"/>
+</topology>

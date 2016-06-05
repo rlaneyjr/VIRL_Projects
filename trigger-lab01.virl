@@ -748,7 +748,7 @@ end
         <interface id="0" name="GigabitEthernet0/1"/>
         <interface id="1" name="GigabitEthernet0/2"/>
     </node>
-    <node name="veos-1" type="SIMPLE" subtype="vEOS" location="732,288" vmImage="vEOS [dcd0d9fe-cbcd-4cdd-8cc8-c045ba4928c6]" vmFlavor="vEOS-4.15.5M.small [170e6d78-40b9-4b89-a904-2d987ab1ed0a]">
+    <node name="veos-1" type="SIMPLE" subtype="vEOS" location="732,288" vmImage="vEOS [dcd0d9fe-cbcd-4cdd-8cc8-c045ba4928c6]" vmFlavor="vEOS-4.15.5M.small [170e6d78-40b9-4b89-a904-2d987ab1ed0a]" ipv4="192.168.0.8">
         <extensions>
             <entry key="static_ip" type="String">172.16.1.47</entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
@@ -774,7 +774,7 @@ interface Ethernet1
 !
 interface Loopback0
   no switchport
-  ip address 192.168.0.6/32
+  ip address 192.168.0.8/32
 !
 interface Management1
 ip address 172.16.1.47/24
@@ -790,7 +790,7 @@ end
         </extensions>
         <interface id="0" name="Ethernet1" ipv4="10.0.0.18" netPrefixLenV4="30"/>
     </node>
-    <node name="veos-2" type="SIMPLE" subtype="vEOS" location="192,288" vmImage="vEOS [dcd0d9fe-cbcd-4cdd-8cc8-c045ba4928c6]" vmFlavor="vEOS-4.15.5M.small [170e6d78-40b9-4b89-a904-2d987ab1ed0a]">
+    <node name="veos-2" type="SIMPLE" subtype="vEOS" location="192,288" vmImage="vEOS [dcd0d9fe-cbcd-4cdd-8cc8-c045ba4928c6]" vmFlavor="vEOS-4.15.5M.small [170e6d78-40b9-4b89-a904-2d987ab1ed0a]" ipv4="192.168.0.9">
         <extensions>
             <entry key="static_ip" type="String">172.16.1.48</entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
@@ -816,7 +816,7 @@ interface Ethernet1
 !
 interface Loopback0
   no switchport
-  ip address 192.168.0.6/32
+  ip address 192.168.0.9/32
 !
 interface Management1
 ip address 172.16.1.48/24
@@ -972,7 +972,6 @@ router bgp 1
 !
 end
 </entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
         </extensions>
         <interface id="0" name="GigabitEthernet2" ipv4="10.0.0.21" netPrefixLenV4="30"/>
         <interface id="1" name="GigabitEthernet3" ipv4="10.0.0.25" netPrefixLenV4="30"/>

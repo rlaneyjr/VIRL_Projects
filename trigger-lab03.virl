@@ -486,6 +486,7 @@ domain lookup disable
 router static
  address-family ipv4 unicast
   192.168.22.0/24 172.16.1.1
+  172.16.20.0/24 172.16.1.1
   10.0.22.0/24 172.16.1.1
 !
 crypto key generate rsa general-keys
@@ -741,15 +742,14 @@ rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
 ip domain name virl.info
-ip route 192.168.22.0 255.255.255.0 172.16.1.1
-ip route 172.16.20.0 255.255.255.0 172.16.1.1
-ip route 10.0.22.0 255.255.255.0 172.16.1.1
 crypto key generate rsa modulus 1024
 ip ssh version 2
 
 vlan 1
 
 vrf context default
+vrf context management
+  ip route 0.0.0.0/0 172.16.1.1
 hardware forwarding unicast trace
 
 interface Loopback0
@@ -791,6 +791,7 @@ interface Ethernet2/4
 
 interface mgmt0
   description OOB Management
+  vrf member management
   ip address 172.16.1.114/24
   duplex full
   mac-address fa16.3e00.000f
@@ -1074,15 +1075,14 @@ rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
 ip domain name virl.info
-ip route 192.168.22.0 255.255.255.0 172.16.1.1
-ip route 172.16.20.0 255.255.255.0 172.16.1.1
-ip route 10.0.22.0 255.255.255.0 172.16.1.1
 crypto key generate rsa modulus 1024
 ip ssh version 2
 
 vlan 1
 
 vrf context default
+vrf context management
+  ip route 0.0.0.0/0 172.16.1.1
 hardware forwarding unicast trace
 
 interface Loopback0
@@ -1124,6 +1124,7 @@ interface Ethernet2/4
 
 interface mgmt0
   description OOB Management
+  vrf member management
   ip address 172.16.1.115/24
   duplex full
   mac-address fa16.3e00.0014
@@ -1946,15 +1947,14 @@ rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
 ip domain name virl.info
-ip route 192.168.22.0 255.255.255.0 172.16.1.1
-ip route 172.16.20.0 255.255.255.0 172.16.1.1
-ip route 10.0.22.0 255.255.255.0 172.16.1.1
 crypto key generate rsa modulus 1024
 ip ssh version 2
 
 vlan 1
 
 vrf context default
+vrf context management
+  ip route 0.0.0.0/0 172.16.1.1
 hardware forwarding unicast trace
 
 interface Loopback0
@@ -1996,6 +1996,7 @@ interface Ethernet2/4
 
 interface mgmt0
   description OOB Management
+  vrf member management
   ip address 172.16.1.104/24
   duplex full
   mac-address fa16.3e00.0005
@@ -2162,15 +2163,14 @@ rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
 ip domain name virl.info
-ip route 192.168.22.0 255.255.255.0 172.16.1.1
-ip route 172.16.20.0 255.255.255.0 172.16.1.1
-ip route 10.0.22.0 255.255.255.0 172.16.1.1
 crypto key generate rsa modulus 1024
 ip ssh version 2
 
 vlan 1
 
 vrf context default
+vrf context management
+  ip route 0.0.0.0/0 172.16.1.1
 hardware forwarding unicast trace
 
 interface Loopback0
@@ -2212,6 +2212,7 @@ interface Ethernet2/4
 
 interface mgmt0
   description OOB Management
+  vrf member management
   ip address 172.16.1.105/24
   duplex full
   mac-address fa16.3e00.000a
@@ -2663,6 +2664,7 @@ domain lookup disable
 router static
  address-family ipv4 unicast
   192.168.22.0/24 172.16.1.1
+  172.16.20.0/24 172.16.1.1
   10.0.22.0/24 172.16.1.1
 !
 crypto key generate rsa general-keys

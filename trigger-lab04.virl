@@ -540,7 +540,7 @@ username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 no password strength-check
 ip domain-lookup
-crypto key param rsa label sc9-nxos1 modulus 1024 
+crypto key generate rsa label sc9-nxos1 modulus 1024 
 vlan dot1Q tag native
 system default switchport
 system jumbomtu 0
@@ -871,7 +871,7 @@ username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 no password strength-check
 ip domain-lookup
-crypto key param rsa label sc9-nxos2 modulus 1024 
+crypto key generate rsa label sc9-nxos2 modulus 1024 
 vlan dot1Q tag native
 system default switchport
 system jumbomtu 0
@@ -1758,7 +1758,7 @@ username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 no password strength-check
 ip domain-lookup
-crypto key param rsa label dc4-nxos1 modulus 1024 
+crypto key generate rsa label dc4-nxos1 modulus 1024 
 vlan dot1Q tag native
 system default switchport
 system jumbomtu 0
@@ -1983,7 +1983,7 @@ username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 no password strength-check
 ip domain-lookup
-crypto key param rsa label dc4-nxos2 modulus 1024 
+crypto key generate rsa label dc4-nxos2 modulus 1024 
 vlan dot1Q tag native
 system default switchport
 system jumbomtu 0

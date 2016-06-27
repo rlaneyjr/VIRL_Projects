@@ -5,7 +5,7 @@
         <entry key="management_lxc" type="Boolean">true</entry>
         <entry key="lxc.host.static_ip" type="String">172.16.1.22</entry>
     </extensions>
-    <node name="sc9-gw1" type="SIMPLE" subtype="IOSv" location="648,108" ipv4="192.168.0.16">
+    <node name="sc8-gw1" type="SIMPLE" subtype="IOSv" location="648,108" ipv4="192.168.0.16">
         <extensions>
             <entry key="static_ip" type="String">172.16.1.116</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.116</entry>
@@ -18,7 +18,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 !
-hostname sc9-gw1
+hostname sc8-gw1
 !
 boot-start-marker
 boot-end-marker
@@ -88,7 +88,7 @@ interface GigabitEthernet0/0
  media-type rj45
 !
 interface GigabitEthernet0/1
- description to sc9-edge
+ description to sc8-edge
  ip address 10.0.0.18 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -96,7 +96,7 @@ interface GigabitEthernet0/1
  media-type rj45
 !
 interface GigabitEthernet0/2
- description to sc9-nxos1
+ description to sc8-nxos1
  ip address 10.0.128.26 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -104,7 +104,7 @@ interface GigabitEthernet0/2
  media-type rj45
 !
 interface GigabitEthernet0/3
- description to sc9-nxos2
+ description to sc8-nxos2
  ip address 10.0.128.2 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -122,37 +122,37 @@ router bgp 1
  bgp router-id 192.168.0.16
  bgp log-neighbor-changes
  neighbor 192.168.0.3 remote-as 1
- neighbor 192.168.0.3 description iBGP peer dc4-nxos1
+ neighbor 192.168.0.3 description iBGP peer dc3-nxos1
  neighbor 192.168.0.3 update-source Loopback0
  neighbor 192.168.0.4 remote-as 1
- neighbor 192.168.0.4 description iBGP peer dc4-gw1
+ neighbor 192.168.0.4 description iBGP peer dc3-gw1
  neighbor 192.168.0.4 update-source Loopback0
  neighbor 192.168.0.5 remote-as 1
- neighbor 192.168.0.5 description iBGP peer dc4-edge
+ neighbor 192.168.0.5 description iBGP peer dc3-edge
  neighbor 192.168.0.5 update-source Loopback0
  neighbor 192.168.0.7 remote-as 1
- neighbor 192.168.0.7 description iBGP peer sc9-edge
+ neighbor 192.168.0.7 description iBGP peer sc8-edge
  neighbor 192.168.0.7 update-source Loopback0
  neighbor 192.168.0.8 remote-as 1
- neighbor 192.168.0.8 description iBGP peer dc4-nxos2
+ neighbor 192.168.0.8 description iBGP peer dc3-nxos2
  neighbor 192.168.0.8 update-source Loopback0
  neighbor 192.168.0.9 remote-as 1
- neighbor 192.168.0.9 description iBGP peer dc4-gw2
+ neighbor 192.168.0.9 description iBGP peer dc3-gw2
  neighbor 192.168.0.9 update-source Loopback0
  neighbor 192.168.0.11 remote-as 1
- neighbor 192.168.0.11 description iBGP peer dc4-backhaul
+ neighbor 192.168.0.11 description iBGP peer dc3-backhaul
  neighbor 192.168.0.11 update-source Loopback0
  neighbor 192.168.0.13 remote-as 1
- neighbor 192.168.0.13 description iBGP peer sc9-nxos1
+ neighbor 192.168.0.13 description iBGP peer sc8-nxos1
  neighbor 192.168.0.13 update-source Loopback0
  neighbor 192.168.0.14 remote-as 1
- neighbor 192.168.0.14 description iBGP peer sc9-nxos2
+ neighbor 192.168.0.14 description iBGP peer sc8-nxos2
  neighbor 192.168.0.14 update-source Loopback0
  neighbor 192.168.0.17 remote-as 1
- neighbor 192.168.0.17 description iBGP peer sc9-gw2
+ neighbor 192.168.0.17 description iBGP peer sc8-gw2
  neighbor 192.168.0.17 update-source Loopback0
  neighbor 192.168.0.18 remote-as 1
- neighbor 192.168.0.18 description iBGP peer sc9-backhaul
+ neighbor 192.168.0.18 description iBGP peer sc8-backhaul
  neighbor 192.168.0.18 update-source Loopback0
  neighbor 192.168.0.19 remote-as 1
  neighbor 192.168.0.19 description iBGP peer internet1
@@ -210,7 +210,7 @@ end</entry>
         <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.128.26" netPrefixLenV4="30"/>
         <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.128.2" netPrefixLenV4="30"/>
     </node>
-    <node name="sc9-nxos1" type="SIMPLE" subtype="NX-OSv" location="744,60" ipv4="192.168.0.13">
+    <node name="sc8-nxos1" type="SIMPLE" subtype="NX-OSv" location="744,60" ipv4="192.168.0.13">
         <extensions>
             <entry key="static_ip" type="String">172.16.1.114</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.114</entry>
@@ -222,8 +222,8 @@ version 7.3(0)D1(1)
 power redundancy-mode redundant
 license grace-period
 
-hostname sc9-nxos1
-vdc sc9-nxos1 id 1
+hostname sc8-nxos1
+vdc sc8-nxos1 id 1
   limit-resource module-type m1 m1xl m2xl f2e 
   allocate interface Ethernet2/1-48
   allocate interface Ethernet3/1-48
@@ -253,7 +253,7 @@ username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 no password strength-check
 ip domain-lookup
-crypto key generate rsa label sc9-nxos1 modulus 1024 
+crypto key generate rsa label sc8-nxos1 modulus 1024 
 vlan dot1Q tag native
 system default switchport
 system jumbomtu 0
@@ -291,7 +291,7 @@ interface mgmt0
   ip address 172.16.1.114/24
 
 interface Ethernet2/1
-  description to sc9-gw1
+  description to sc8-gw1
   no switchport
   mac-address fa16.3e00.000b
   ip address 10.0.128.25/30
@@ -299,7 +299,7 @@ interface Ethernet2/1
   no shutdown
 
 interface Ethernet2/2
-  description to sc9-eos1
+  description to sc8-eos1
   no switchport
   mac-address fa16.3e00.000c
   ip address 10.0.0.30/30
@@ -307,7 +307,7 @@ interface Ethernet2/2
   no shutdown
 
 interface Ethernet2/3
-  description to sc9-gw2
+  description to sc8-gw2
   no switchport
   mac-address fa16.3e00.000d
   ip address 10.0.128.29/30
@@ -315,7 +315,7 @@ interface Ethernet2/3
   no shutdown
 
 interface Ethernet2/4
-  description to sc9-eos2
+  description to sc8-eos2
   no switchport
   mac-address fa16.3e00.000e
   ip address 10.0.0.41/30
@@ -337,77 +337,77 @@ router bgp 1
 ! iBGP peers
   !
   neighbor 192.168.0.3 remote-as 1
-    description iBGP peer dc4-nxos1
+    description iBGP peer dc3-nxos1
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.4 remote-as 1
-    description iBGP peer dc4-gw1
+    description iBGP peer dc3-gw1
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.5 remote-as 1
-    description iBGP peer dc4-edge
+    description iBGP peer dc3-edge
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.7 remote-as 1
-    description iBGP peer sc9-edge
+    description iBGP peer sc8-edge
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.8 remote-as 1
-    description iBGP peer dc4-nxos2
+    description iBGP peer dc3-nxos2
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.9 remote-as 1
-    description iBGP peer dc4-gw2
+    description iBGP peer dc3-gw2
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.11 remote-as 1
-    description iBGP peer dc4-backhaul
+    description iBGP peer dc3-backhaul
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.14 remote-as 1
-    description iBGP peer sc9-nxos2
+    description iBGP peer sc8-nxos2
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.16 remote-as 1
-    description iBGP peer sc9-gw1
+    description iBGP peer sc8-gw1
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.17 remote-as 1
-    description iBGP peer sc9-gw2
+    description iBGP peer sc8-gw2
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.18 remote-as 1
-    description iBGP peer sc9-backhaul
+    description iBGP peer sc8-backhaul
     update-source Loopback0
     address-family ipv4 unicast
     !
@@ -434,7 +434,7 @@ end
         <interface id="2" name="Ethernet2/3" ipv4="10.0.128.29" netPrefixLenV4="30"/>
         <interface id="3" name="Ethernet2/4" ipv4="10.0.0.41" netPrefixLenV4="30"/>
     </node>
-    <node name="sc9-sw1" type="SIMPLE" subtype="IOSvL2" location="912,192">
+    <node name="sc8-sw1" type="SIMPLE" subtype="IOSvL2" location="919,192">
         <extensions>
             <entry key="static_ip" type="String">172.16.1.111</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.111</entry>
@@ -448,7 +448,7 @@ service timestamps log datetime msec
 no service password-encryption
 service compress-config
 !
-hostname sc9-sw1
+hostname sc8-sw1
 !
 boot-start-marker
 boot-end-marker
@@ -487,21 +487,21 @@ interface Loopback0
  no ip address
 !
 interface GigabitEthernet0/1
- description to sc9-eos2
+ description to sc8-eos2
  switchport access vlan 2
  switchport mode access
  media-type rj45
  negotiation auto
 !
 interface GigabitEthernet0/2
- description to sc9-eos1
+ description to sc8-eos1
  switchport access vlan 2
  switchport mode access
  media-type rj45
  negotiation auto
 !
 interface GigabitEthernet0/3
- description to sc9-routem
+ description to sc8-routem
  switchport access vlan 2
  switchport mode access
  media-type rj45
@@ -541,7 +541,7 @@ end</entry>
         <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.10" netPrefixLenV4="29"/>
         <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.128.49" netPrefixLenV4="30"/>
     </node>
-    <node name="sc9-nxos2" type="SIMPLE" subtype="NX-OSv" location="744,336" ipv4="192.168.0.14">
+    <node name="sc8-nxos2" type="SIMPLE" subtype="NX-OSv" location="744,336" ipv4="192.168.0.14">
         <extensions>
             <entry key="static_ip" type="String">172.16.1.115</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.115</entry>
@@ -553,8 +553,8 @@ version 7.3(0)D1(1)
 power redundancy-mode redundant
 license grace-period
 
-hostname sc9-nxos2
-vdc sc9-nxos2 id 1
+hostname sc8-nxos2
+vdc sc8-nxos2 id 1
   limit-resource module-type m1 m1xl m2xl f2e 
   allocate interface Ethernet2/1-48
   allocate interface Ethernet3/1-48
@@ -584,7 +584,7 @@ username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 no password strength-check
 ip domain-lookup
-crypto key generate rsa label sc9-nxos2 modulus 1024 
+crypto key generate rsa label sc8-nxos2 modulus 1024 
 vlan dot1Q tag native
 system default switchport
 system jumbomtu 0
@@ -623,7 +623,7 @@ interface mgmt0
   ip address 172.16.1.115/24
 
 interface Ethernet2/1
-  description to sc9-gw2
+  description to sc8-gw2
   no switchport
   mac-address fa16.3e00.0010
   ip address 10.0.128.5/30
@@ -631,7 +631,7 @@ interface Ethernet2/1
   no shutdown
 
 interface Ethernet2/2
-  description to sc9-eos2
+  description to sc8-eos2
   no switchport
   mac-address fa16.3e00.0011
   ip address 10.0.0.61/30
@@ -639,7 +639,7 @@ interface Ethernet2/2
   no shutdown
 
 interface Ethernet2/3
-  description to sc9-gw1
+  description to sc8-gw1
   no switchport
   mac-address fa16.3e00.0012
   ip address 10.0.128.1/30
@@ -647,7 +647,7 @@ interface Ethernet2/3
   no shutdown
 
 interface Ethernet2/4
-  description to sc9-eos1
+  description to sc8-eos1
   no switchport
   mac-address fa16.3e00.0013
   ip address 10.0.0.46/30
@@ -669,77 +669,77 @@ router bgp 1
 ! iBGP peers
   !
   neighbor 192.168.0.3 remote-as 1
-    description iBGP peer dc4-nxos1
+    description iBGP peer dc3-nxos1
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.4 remote-as 1
-    description iBGP peer dc4-gw1
+    description iBGP peer dc3-gw1
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.5 remote-as 1
-    description iBGP peer dc4-edge
+    description iBGP peer dc3-edge
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.7 remote-as 1
-    description iBGP peer sc9-edge
+    description iBGP peer sc8-edge
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.8 remote-as 1
-    description iBGP peer dc4-nxos2
+    description iBGP peer dc3-nxos2
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.9 remote-as 1
-    description iBGP peer dc4-gw2
+    description iBGP peer dc3-gw2
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.11 remote-as 1
-    description iBGP peer dc4-backhaul
+    description iBGP peer dc3-backhaul
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.13 remote-as 1
-    description iBGP peer sc9-nxos1
+    description iBGP peer sc8-nxos1
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.16 remote-as 1
-    description iBGP peer sc9-gw1
+    description iBGP peer sc8-gw1
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.17 remote-as 1
-    description iBGP peer sc9-gw2
+    description iBGP peer sc8-gw2
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.18 remote-as 1
-    description iBGP peer sc9-backhaul
+    description iBGP peer sc8-backhaul
     update-source Loopback0
     address-family ipv4 unicast
     !
@@ -766,7 +766,7 @@ end
         <interface id="2" name="Ethernet2/3" ipv4="10.0.128.1" netPrefixLenV4="30"/>
         <interface id="3" name="Ethernet2/4" ipv4="10.0.0.46" netPrefixLenV4="30"/>
     </node>
-    <node name="sc9-gw2" type="SIMPLE" subtype="IOSv" location="648,276" ipv4="192.168.0.17">
+    <node name="sc8-gw2" type="SIMPLE" subtype="IOSv" location="648,276" ipv4="192.168.0.17">
         <extensions>
             <entry key="static_ip" type="String">172.16.1.117</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.117</entry>
@@ -779,7 +779,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 !
-hostname sc9-gw2
+hostname sc8-gw2
 !
 boot-start-marker
 boot-end-marker
@@ -830,7 +830,7 @@ interface GigabitEthernet0/0
  media-type rj45
 !
 interface GigabitEthernet0/1
- description to sc9-edge
+ description to sc8-edge
  ip address 10.0.0.22 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -838,7 +838,7 @@ interface GigabitEthernet0/1
  media-type rj45
 !
 interface GigabitEthernet0/2
- description to sc9-nxos2
+ description to sc8-nxos2
  ip address 10.0.128.6 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -846,7 +846,7 @@ interface GigabitEthernet0/2
  media-type rj45
 !
 interface GigabitEthernet0/3
- description to sc9-backhaul
+ description to sc8-backhaul
  ip address 10.0.128.9 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -854,7 +854,7 @@ interface GigabitEthernet0/3
  media-type rj45
 !
 interface GigabitEthernet0/4
- description to sc9-nxos1
+ description to sc8-nxos1
  ip address 10.0.128.30 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -873,37 +873,37 @@ router bgp 1
  bgp router-id 192.168.0.17
  bgp log-neighbor-changes
  neighbor 192.168.0.3 remote-as 1
- neighbor 192.168.0.3 description iBGP peer dc4-nxos1
+ neighbor 192.168.0.3 description iBGP peer dc3-nxos1
  neighbor 192.168.0.3 update-source Loopback0
  neighbor 192.168.0.4 remote-as 1
- neighbor 192.168.0.4 description iBGP peer dc4-gw1
+ neighbor 192.168.0.4 description iBGP peer dc3-gw1
  neighbor 192.168.0.4 update-source Loopback0
  neighbor 192.168.0.5 remote-as 1
- neighbor 192.168.0.5 description iBGP peer dc4-edge
+ neighbor 192.168.0.5 description iBGP peer dc3-edge
  neighbor 192.168.0.5 update-source Loopback0
  neighbor 192.168.0.7 remote-as 1
- neighbor 192.168.0.7 description iBGP peer sc9-edge
+ neighbor 192.168.0.7 description iBGP peer sc8-edge
  neighbor 192.168.0.7 update-source Loopback0
  neighbor 192.168.0.8 remote-as 1
- neighbor 192.168.0.8 description iBGP peer dc4-nxos2
+ neighbor 192.168.0.8 description iBGP peer dc3-nxos2
  neighbor 192.168.0.8 update-source Loopback0
  neighbor 192.168.0.9 remote-as 1
- neighbor 192.168.0.9 description iBGP peer dc4-gw2
+ neighbor 192.168.0.9 description iBGP peer dc3-gw2
  neighbor 192.168.0.9 update-source Loopback0
  neighbor 192.168.0.11 remote-as 1
- neighbor 192.168.0.11 description iBGP peer dc4-backhaul
+ neighbor 192.168.0.11 description iBGP peer dc3-backhaul
  neighbor 192.168.0.11 update-source Loopback0
  neighbor 192.168.0.13 remote-as 1
- neighbor 192.168.0.13 description iBGP peer sc9-nxos1
+ neighbor 192.168.0.13 description iBGP peer sc8-nxos1
  neighbor 192.168.0.13 update-source Loopback0
  neighbor 192.168.0.14 remote-as 1
- neighbor 192.168.0.14 description iBGP peer sc9-nxos2
+ neighbor 192.168.0.14 description iBGP peer sc8-nxos2
  neighbor 192.168.0.14 update-source Loopback0
  neighbor 192.168.0.16 remote-as 1
- neighbor 192.168.0.16 description iBGP peer sc9-gw1
+ neighbor 192.168.0.16 description iBGP peer sc8-gw1
  neighbor 192.168.0.16 update-source Loopback0
  neighbor 192.168.0.18 remote-as 1
- neighbor 192.168.0.18 description iBGP peer sc9-backhaul
+ neighbor 192.168.0.18 description iBGP peer sc8-backhaul
  neighbor 192.168.0.18 update-source Loopback0
  neighbor 192.168.0.19 remote-as 1
  neighbor 192.168.0.19 description iBGP peer internet1
@@ -962,7 +962,7 @@ end</entry>
         <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.128.9" netPrefixLenV4="30"/>
         <interface id="3" name="GigabitEthernet0/4" ipv4="10.0.128.30" netPrefixLenV4="30"/>
     </node>
-    <node name="dc4-gw1" type="SIMPLE" subtype="IOSv" location="324,108" ipv4="192.168.0.4">
+    <node name="dc3-gw1" type="SIMPLE" subtype="IOSv" location="324,108" ipv4="192.168.0.4">
         <extensions>
             <entry key="static_ip" type="String">172.16.1.106</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.106</entry>
@@ -975,7 +975,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 !
-hostname dc4-gw1
+hostname dc3-gw1
 !
 boot-start-marker
 boot-end-marker
@@ -1023,7 +1023,7 @@ interface GigabitEthernet0/0
  media-type rj45
 !
 interface GigabitEthernet0/1
- description to dc4-edge
+ description to dc3-edge
  ip address 10.0.128.34 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -1031,7 +1031,7 @@ interface GigabitEthernet0/1
  media-type rj45
 !
 interface GigabitEthernet0/2
- description to dc4-nxos1
+ description to dc3-nxos1
  ip address 10.0.128.17 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -1039,7 +1039,7 @@ interface GigabitEthernet0/2
  media-type rj45
 !
 interface GigabitEthernet0/3
- description to dc4-nxos2
+ description to dc3-nxos2
  ip address 10.0.128.41 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -1057,37 +1057,37 @@ router bgp 1
  bgp router-id 192.168.0.4
  bgp log-neighbor-changes
  neighbor 192.168.0.3 remote-as 1
- neighbor 192.168.0.3 description iBGP peer dc4-nxos1
+ neighbor 192.168.0.3 description iBGP peer dc3-nxos1
  neighbor 192.168.0.3 update-source Loopback0
  neighbor 192.168.0.5 remote-as 1
- neighbor 192.168.0.5 description iBGP peer dc4-edge
+ neighbor 192.168.0.5 description iBGP peer dc3-edge
  neighbor 192.168.0.5 update-source Loopback0
  neighbor 192.168.0.7 remote-as 1
- neighbor 192.168.0.7 description iBGP peer sc9-edge
+ neighbor 192.168.0.7 description iBGP peer sc8-edge
  neighbor 192.168.0.7 update-source Loopback0
  neighbor 192.168.0.8 remote-as 1
- neighbor 192.168.0.8 description iBGP peer dc4-nxos2
+ neighbor 192.168.0.8 description iBGP peer dc3-nxos2
  neighbor 192.168.0.8 update-source Loopback0
  neighbor 192.168.0.9 remote-as 1
- neighbor 192.168.0.9 description iBGP peer dc4-gw2
+ neighbor 192.168.0.9 description iBGP peer dc3-gw2
  neighbor 192.168.0.9 update-source Loopback0
  neighbor 192.168.0.11 remote-as 1
- neighbor 192.168.0.11 description iBGP peer dc4-backhaul
+ neighbor 192.168.0.11 description iBGP peer dc3-backhaul
  neighbor 192.168.0.11 update-source Loopback0
  neighbor 192.168.0.13 remote-as 1
- neighbor 192.168.0.13 description iBGP peer sc9-nxos1
+ neighbor 192.168.0.13 description iBGP peer sc8-nxos1
  neighbor 192.168.0.13 update-source Loopback0
  neighbor 192.168.0.14 remote-as 1
- neighbor 192.168.0.14 description iBGP peer sc9-nxos2
+ neighbor 192.168.0.14 description iBGP peer sc8-nxos2
  neighbor 192.168.0.14 update-source Loopback0
  neighbor 192.168.0.16 remote-as 1
- neighbor 192.168.0.16 description iBGP peer sc9-gw1
+ neighbor 192.168.0.16 description iBGP peer sc8-gw1
  neighbor 192.168.0.16 update-source Loopback0
  neighbor 192.168.0.17 remote-as 1
- neighbor 192.168.0.17 description iBGP peer sc9-gw2
+ neighbor 192.168.0.17 description iBGP peer sc8-gw2
  neighbor 192.168.0.17 update-source Loopback0
  neighbor 192.168.0.18 remote-as 1
- neighbor 192.168.0.18 description iBGP peer sc9-backhaul
+ neighbor 192.168.0.18 description iBGP peer sc8-backhaul
  neighbor 192.168.0.18 update-source Loopback0
  neighbor 192.168.0.19 remote-as 1
  neighbor 192.168.0.19 description iBGP peer internet1
@@ -1143,7 +1143,7 @@ end</entry>
         <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.128.17" netPrefixLenV4="30"/>
         <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.128.41" netPrefixLenV4="30"/>
     </node>
-    <node name="dc4-nxos1" type="SIMPLE" subtype="NX-OSv" location="201,62" ipv4="192.168.0.3">
+    <node name="dc3-nxos1" type="SIMPLE" subtype="NX-OSv" location="201,62" ipv4="192.168.0.3">
         <extensions>
             <entry key="static_ip" type="String">172.16.1.104</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.104</entry>
@@ -1155,8 +1155,8 @@ version 7.3(0)D1(1)
 power redundancy-mode redundant
 license grace-period
 
-hostname dc4-nxos1
-vdc dc4-nxos1 id 1
+hostname dc3-nxos1
+vdc dc3-nxos1 id 1
   limit-resource module-type m1 m1xl m2xl f2e 
   allocate interface Ethernet2/1-48
   allocate interface Ethernet3/1-48
@@ -1186,7 +1186,7 @@ username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 no password strength-check
 ip domain-lookup
-crypto key generate rsa label dc4-nxos1 modulus 1024 
+crypto key generate rsa label dc3-nxos1 modulus 1024 
 vlan dot1Q tag native
 system default switchport
 system jumbomtu 0
@@ -1225,7 +1225,7 @@ interface mgmt0
   ip address 172.16.1.104/24
 
 interface Ethernet2/1
-  description to dc4-gw1
+  description to dc3-gw1
   no switchport
   mac-address fa16.3e00.0001
   ip address 10.0.128.18/30
@@ -1233,7 +1233,7 @@ interface Ethernet2/1
   no shutdown
 
 interface Ethernet2/2
-  description to dc4-eos1
+  description to dc3-eos1
   no switchport
   mac-address fa16.3e00.0002
   ip address 10.0.128.22/30
@@ -1241,7 +1241,7 @@ interface Ethernet2/2
   no shutdown
 
 interface Ethernet2/3
-  description to dc4-gw2
+  description to dc3-gw2
   no switchport
   mac-address fa16.3e00.0003
   ip address 10.0.128.37/30
@@ -1249,7 +1249,7 @@ interface Ethernet2/3
   no shutdown
 
 interface Ethernet2/4
-  description to dc4-eos2
+  description to dc3-eos2
   no switchport
   mac-address fa16.3e00.0004
   ip address 10.0.128.53/30
@@ -1271,77 +1271,77 @@ router bgp 1
 ! iBGP peers
   !
   neighbor 192.168.0.4 remote-as 1
-    description iBGP peer dc4-gw1
+    description iBGP peer dc3-gw1
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.5 remote-as 1
-    description iBGP peer dc4-edge
+    description iBGP peer dc3-edge
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.7 remote-as 1
-    description iBGP peer sc9-edge
+    description iBGP peer sc8-edge
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.8 remote-as 1
-    description iBGP peer dc4-nxos2
+    description iBGP peer dc3-nxos2
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.9 remote-as 1
-    description iBGP peer dc4-gw2
+    description iBGP peer dc3-gw2
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.11 remote-as 1
-    description iBGP peer dc4-backhaul
+    description iBGP peer dc3-backhaul
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.13 remote-as 1
-    description iBGP peer sc9-nxos1
+    description iBGP peer sc8-nxos1
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.14 remote-as 1
-    description iBGP peer sc9-nxos2
+    description iBGP peer sc8-nxos2
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.16 remote-as 1
-    description iBGP peer sc9-gw1
+    description iBGP peer sc8-gw1
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.17 remote-as 1
-    description iBGP peer sc9-gw2
+    description iBGP peer sc8-gw2
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.18 remote-as 1
-    description iBGP peer sc9-backhaul
+    description iBGP peer sc8-backhaul
     update-source Loopback0
     address-family ipv4 unicast
     !
@@ -1368,7 +1368,7 @@ end
         <interface id="2" name="Ethernet2/3" ipv4="10.0.128.37" netPrefixLenV4="30"/>
         <interface id="3" name="Ethernet2/4" ipv4="10.0.128.53" netPrefixLenV4="30"/>
     </node>
-    <node name="dc4-nxos2" type="SIMPLE" subtype="NX-OSv" location="200,335" ipv4="192.168.0.8">
+    <node name="dc3-nxos2" type="SIMPLE" subtype="NX-OSv" location="200,335" ipv4="192.168.0.8">
         <extensions>
             <entry key="static_ip" type="String">172.16.1.105</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.105</entry>
@@ -1380,8 +1380,8 @@ version 7.3(0)D1(1)
 power redundancy-mode redundant
 license grace-period
 
-hostname dc4-nxos2
-vdc dc4-nxos2 id 1
+hostname dc3-nxos2
+vdc dc3-nxos2 id 1
   limit-resource module-type m1 m1xl m2xl f2e 
   allocate interface Ethernet2/1-48
   allocate interface Ethernet3/1-48
@@ -1411,7 +1411,7 @@ username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 no password strength-check
 ip domain-lookup
-crypto key generate rsa label dc4-nxos2 modulus 1024 
+crypto key generate rsa label dc3-nxos2 modulus 1024 
 vlan dot1Q tag native
 system default switchport
 system jumbomtu 0
@@ -1450,7 +1450,7 @@ interface mgmt0
   ip address 172.16.1.105/24
 
 interface Ethernet2/1
-  description to dc4-gw2
+  description to dc3-gw2
   no switchport
   mac-address fa16.3e00.0006
   ip address 10.0.0.34/30
@@ -1458,7 +1458,7 @@ interface Ethernet2/1
   no shutdown
 
 interface Ethernet2/2
-  description to dc4-eos2
+  description to dc3-eos2
   no switchport
   mac-address fa16.3e00.0007
   ip address 10.0.0.54/30
@@ -1466,7 +1466,7 @@ interface Ethernet2/2
   no shutdown
 
 interface Ethernet2/3
-  description to dc4-gw1
+  description to dc3-gw1
   no switchport
   mac-address fa16.3e00.0008
   ip address 10.0.128.42/30
@@ -1474,7 +1474,7 @@ interface Ethernet2/3
   no shutdown
 
 interface Ethernet2/4
-  description to dc4-eos1
+  description to dc3-eos1
   no switchport
   mac-address fa16.3e00.0009
   ip address 10.0.128.50/30
@@ -1496,77 +1496,77 @@ router bgp 1
 ! iBGP peers
   !
   neighbor 192.168.0.3 remote-as 1
-    description iBGP peer dc4-nxos1
+    description iBGP peer dc3-nxos1
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.4 remote-as 1
-    description iBGP peer dc4-gw1
+    description iBGP peer dc3-gw1
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.5 remote-as 1
-    description iBGP peer dc4-edge
+    description iBGP peer dc3-edge
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.7 remote-as 1
-    description iBGP peer sc9-edge
+    description iBGP peer sc8-edge
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.9 remote-as 1
-    description iBGP peer dc4-gw2
+    description iBGP peer dc3-gw2
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.11 remote-as 1
-    description iBGP peer dc4-backhaul
+    description iBGP peer dc3-backhaul
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.13 remote-as 1
-    description iBGP peer sc9-nxos1
+    description iBGP peer sc8-nxos1
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.14 remote-as 1
-    description iBGP peer sc9-nxos2
+    description iBGP peer sc8-nxos2
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.16 remote-as 1
-    description iBGP peer sc9-gw1
+    description iBGP peer sc8-gw1
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.17 remote-as 1
-    description iBGP peer sc9-gw2
+    description iBGP peer sc8-gw2
     update-source Loopback0
     address-family ipv4 unicast
     !
     !
   !
   neighbor 192.168.0.18 remote-as 1
-    description iBGP peer sc9-backhaul
+    description iBGP peer sc8-backhaul
     update-source Loopback0
     address-family ipv4 unicast
     !
@@ -1593,7 +1593,7 @@ end
         <interface id="2" name="Ethernet2/3" ipv4="10.0.128.42" netPrefixLenV4="30"/>
         <interface id="3" name="Ethernet2/4" ipv4="10.0.128.50" netPrefixLenV4="30"/>
     </node>
-    <node name="dc4-sw1" type="SIMPLE" subtype="IOSvL2" location="24,192">
+    <node name="dc3-sw1" type="SIMPLE" subtype="IOSvL2" location="24,192">
         <extensions>
             <entry key="static_ip" type="String">172.16.1.101</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.101</entry>
@@ -1607,7 +1607,7 @@ service timestamps log datetime msec
 no service password-encryption
 service compress-config
 !
-hostname dc4-sw1
+hostname dc3-sw1
 !
 boot-start-marker
 boot-end-marker
@@ -1645,21 +1645,21 @@ interface Loopback0
  no ip address
 !
 interface GigabitEthernet0/1
- description to dc4-eos1
+ description to dc3-eos1
  switchport access vlan 2
  switchport mode access
  media-type rj45
  negotiation auto
 !
 interface GigabitEthernet0/2
- description to dc4-eos2
+ description to dc3-eos2
  switchport access vlan 2
  switchport mode access
  media-type rj45
  negotiation auto
 !
 interface GigabitEthernet0/3
- description to dc4-routem
+ description to dc3-routem
  switchport access vlan 2
  switchport mode access
  media-type rj45
@@ -1699,7 +1699,7 @@ end</entry>
         <interface id="1" name="GigabitEthernet0/2"/>
         <interface id="2" name="GigabitEthernet0/3"/>
     </node>
-    <node name="dc4-gw2" type="SIMPLE" subtype="IOSv" location="322,278" ipv4="192.168.0.9">
+    <node name="dc3-gw2" type="SIMPLE" subtype="IOSv" location="322,278" ipv4="192.168.0.9">
         <extensions>
             <entry key="static_ip" type="String">172.16.1.107</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.107</entry>
@@ -1712,7 +1712,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 !
-hostname dc4-gw2
+hostname dc3-gw2
 !
 boot-start-marker
 boot-end-marker
@@ -1760,7 +1760,7 @@ interface GigabitEthernet0/0
  media-type rj45
 !
 interface GigabitEthernet0/1
- description to dc4-edge
+ description to dc3-edge
  ip address 10.0.128.46 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -1768,7 +1768,7 @@ interface GigabitEthernet0/1
  media-type rj45
 !
 interface GigabitEthernet0/2
- description to dc4-nxos2
+ description to dc3-nxos2
  ip address 10.0.0.33 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -1776,7 +1776,7 @@ interface GigabitEthernet0/2
  media-type rj45
 !
 interface GigabitEthernet0/3
- description to dc4-backhaul
+ description to dc3-backhaul
  ip address 10.0.0.37 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -1784,7 +1784,7 @@ interface GigabitEthernet0/3
  media-type rj45
 !
 interface GigabitEthernet0/4
- description to dc4-nxos1
+ description to dc3-nxos1
  ip address 10.0.128.38 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -1803,37 +1803,37 @@ router bgp 1
  bgp router-id 192.168.0.9
  bgp log-neighbor-changes
  neighbor 192.168.0.3 remote-as 1
- neighbor 192.168.0.3 description iBGP peer dc4-nxos1
+ neighbor 192.168.0.3 description iBGP peer dc3-nxos1
  neighbor 192.168.0.3 update-source Loopback0
  neighbor 192.168.0.4 remote-as 1
- neighbor 192.168.0.4 description iBGP peer dc4-gw1
+ neighbor 192.168.0.4 description iBGP peer dc3-gw1
  neighbor 192.168.0.4 update-source Loopback0
  neighbor 192.168.0.5 remote-as 1
- neighbor 192.168.0.5 description iBGP peer dc4-edge
+ neighbor 192.168.0.5 description iBGP peer dc3-edge
  neighbor 192.168.0.5 update-source Loopback0
  neighbor 192.168.0.7 remote-as 1
- neighbor 192.168.0.7 description iBGP peer sc9-edge
+ neighbor 192.168.0.7 description iBGP peer sc8-edge
  neighbor 192.168.0.7 update-source Loopback0
  neighbor 192.168.0.8 remote-as 1
- neighbor 192.168.0.8 description iBGP peer dc4-nxos2
+ neighbor 192.168.0.8 description iBGP peer dc3-nxos2
  neighbor 192.168.0.8 update-source Loopback0
  neighbor 192.168.0.11 remote-as 1
- neighbor 192.168.0.11 description iBGP peer dc4-backhaul
+ neighbor 192.168.0.11 description iBGP peer dc3-backhaul
  neighbor 192.168.0.11 update-source Loopback0
  neighbor 192.168.0.13 remote-as 1
- neighbor 192.168.0.13 description iBGP peer sc9-nxos1
+ neighbor 192.168.0.13 description iBGP peer sc8-nxos1
  neighbor 192.168.0.13 update-source Loopback0
  neighbor 192.168.0.14 remote-as 1
- neighbor 192.168.0.14 description iBGP peer sc9-nxos2
+ neighbor 192.168.0.14 description iBGP peer sc8-nxos2
  neighbor 192.168.0.14 update-source Loopback0
  neighbor 192.168.0.16 remote-as 1
- neighbor 192.168.0.16 description iBGP peer sc9-gw1
+ neighbor 192.168.0.16 description iBGP peer sc8-gw1
  neighbor 192.168.0.16 update-source Loopback0
  neighbor 192.168.0.17 remote-as 1
- neighbor 192.168.0.17 description iBGP peer sc9-gw2
+ neighbor 192.168.0.17 description iBGP peer sc8-gw2
  neighbor 192.168.0.17 update-source Loopback0
  neighbor 192.168.0.18 remote-as 1
- neighbor 192.168.0.18 description iBGP peer sc9-backhaul
+ neighbor 192.168.0.18 description iBGP peer sc8-backhaul
  neighbor 192.168.0.18 update-source Loopback0
  neighbor 192.168.0.19 remote-as 1
  neighbor 192.168.0.19 description iBGP peer internet1
@@ -1950,7 +1950,7 @@ interface GigabitEthernet0/0
  media-type rj45
 !
 interface GigabitEthernet0/1
- description to dc4-edge
+ description to dc3-edge
  ip address 10.0.0.50 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -1958,7 +1958,7 @@ interface GigabitEthernet0/1
  media-type rj45
 !
 interface GigabitEthernet0/2
- description to sc9-edge
+ description to sc8-edge
  ip address 10.0.0.26 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -1975,40 +1975,40 @@ router bgp 1
  bgp router-id 192.168.0.19
  bgp log-neighbor-changes
  neighbor 192.168.0.3 remote-as 1
- neighbor 192.168.0.3 description iBGP peer dc4-nxos1
+ neighbor 192.168.0.3 description iBGP peer dc3-nxos1
  neighbor 192.168.0.3 update-source Loopback0
  neighbor 192.168.0.4 remote-as 1
- neighbor 192.168.0.4 description iBGP peer dc4-gw1
+ neighbor 192.168.0.4 description iBGP peer dc3-gw1
  neighbor 192.168.0.4 update-source Loopback0
  neighbor 192.168.0.5 remote-as 1
- neighbor 192.168.0.5 description iBGP peer dc4-edge
+ neighbor 192.168.0.5 description iBGP peer dc3-edge
  neighbor 192.168.0.5 update-source Loopback0
  neighbor 192.168.0.7 remote-as 1
- neighbor 192.168.0.7 description iBGP peer sc9-edge
+ neighbor 192.168.0.7 description iBGP peer sc8-edge
  neighbor 192.168.0.7 update-source Loopback0
  neighbor 192.168.0.8 remote-as 1
- neighbor 192.168.0.8 description iBGP peer dc4-nxos2
+ neighbor 192.168.0.8 description iBGP peer dc3-nxos2
  neighbor 192.168.0.8 update-source Loopback0
  neighbor 192.168.0.9 remote-as 1
- neighbor 192.168.0.9 description iBGP peer dc4-gw2
+ neighbor 192.168.0.9 description iBGP peer dc3-gw2
  neighbor 192.168.0.9 update-source Loopback0
  neighbor 192.168.0.11 remote-as 1
- neighbor 192.168.0.11 description iBGP peer dc4-backhaul
+ neighbor 192.168.0.11 description iBGP peer dc3-backhaul
  neighbor 192.168.0.11 update-source Loopback0
  neighbor 192.168.0.13 remote-as 1
- neighbor 192.168.0.13 description iBGP peer sc9-nxos1
+ neighbor 192.168.0.13 description iBGP peer sc8-nxos1
  neighbor 192.168.0.13 update-source Loopback0
  neighbor 192.168.0.14 remote-as 1
- neighbor 192.168.0.14 description iBGP peer sc9-nxos2
+ neighbor 192.168.0.14 description iBGP peer sc8-nxos2
  neighbor 192.168.0.14 update-source Loopback0
  neighbor 192.168.0.16 remote-as 1
- neighbor 192.168.0.16 description iBGP peer sc9-gw1
+ neighbor 192.168.0.16 description iBGP peer sc8-gw1
  neighbor 192.168.0.16 update-source Loopback0
  neighbor 192.168.0.17 remote-as 1
- neighbor 192.168.0.17 description iBGP peer sc9-gw2
+ neighbor 192.168.0.17 description iBGP peer sc8-gw2
  neighbor 192.168.0.17 update-source Loopback0
  neighbor 192.168.0.18 remote-as 1
- neighbor 192.168.0.18 description iBGP peer sc9-backhaul
+ neighbor 192.168.0.18 description iBGP peer sc8-backhaul
  neighbor 192.168.0.18 update-source Loopback0
  neighbor 192.168.0.20 remote-as 1
  neighbor 192.168.0.20 description iBGP peer internet2
@@ -2120,7 +2120,7 @@ interface GigabitEthernet0/0
  media-type rj45
 !
 interface GigabitEthernet0/1
- description to dc4-backhaul
+ description to dc3-backhaul
  ip address 10.0.0.58 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -2128,7 +2128,7 @@ interface GigabitEthernet0/1
  media-type rj45
 !
 interface GigabitEthernet0/2
- description to sc9-backhaul
+ description to sc8-backhaul
  ip address 10.0.128.14 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -2145,40 +2145,40 @@ router bgp 1
  bgp router-id 192.168.0.20
  bgp log-neighbor-changes
  neighbor 192.168.0.3 remote-as 1
- neighbor 192.168.0.3 description iBGP peer dc4-nxos1
+ neighbor 192.168.0.3 description iBGP peer dc3-nxos1
  neighbor 192.168.0.3 update-source Loopback0
  neighbor 192.168.0.4 remote-as 1
- neighbor 192.168.0.4 description iBGP peer dc4-gw1
+ neighbor 192.168.0.4 description iBGP peer dc3-gw1
  neighbor 192.168.0.4 update-source Loopback0
  neighbor 192.168.0.5 remote-as 1
- neighbor 192.168.0.5 description iBGP peer dc4-edge
+ neighbor 192.168.0.5 description iBGP peer dc3-edge
  neighbor 192.168.0.5 update-source Loopback0
  neighbor 192.168.0.7 remote-as 1
- neighbor 192.168.0.7 description iBGP peer sc9-edge
+ neighbor 192.168.0.7 description iBGP peer sc8-edge
  neighbor 192.168.0.7 update-source Loopback0
  neighbor 192.168.0.8 remote-as 1
- neighbor 192.168.0.8 description iBGP peer dc4-nxos2
+ neighbor 192.168.0.8 description iBGP peer dc3-nxos2
  neighbor 192.168.0.8 update-source Loopback0
  neighbor 192.168.0.9 remote-as 1
- neighbor 192.168.0.9 description iBGP peer dc4-gw2
+ neighbor 192.168.0.9 description iBGP peer dc3-gw2
  neighbor 192.168.0.9 update-source Loopback0
  neighbor 192.168.0.11 remote-as 1
- neighbor 192.168.0.11 description iBGP peer dc4-backhaul
+ neighbor 192.168.0.11 description iBGP peer dc3-backhaul
  neighbor 192.168.0.11 update-source Loopback0
  neighbor 192.168.0.13 remote-as 1
- neighbor 192.168.0.13 description iBGP peer sc9-nxos1
+ neighbor 192.168.0.13 description iBGP peer sc8-nxos1
  neighbor 192.168.0.13 update-source Loopback0
  neighbor 192.168.0.14 remote-as 1
- neighbor 192.168.0.14 description iBGP peer sc9-nxos2
+ neighbor 192.168.0.14 description iBGP peer sc8-nxos2
  neighbor 192.168.0.14 update-source Loopback0
  neighbor 192.168.0.16 remote-as 1
- neighbor 192.168.0.16 description iBGP peer sc9-gw1
+ neighbor 192.168.0.16 description iBGP peer sc8-gw1
  neighbor 192.168.0.16 update-source Loopback0
  neighbor 192.168.0.17 remote-as 1
- neighbor 192.168.0.17 description iBGP peer sc9-gw2
+ neighbor 192.168.0.17 description iBGP peer sc8-gw2
  neighbor 192.168.0.17 update-source Loopback0
  neighbor 192.168.0.18 remote-as 1
- neighbor 192.168.0.18 description iBGP peer sc9-backhaul
+ neighbor 192.168.0.18 description iBGP peer sc8-backhaul
  neighbor 192.168.0.18 update-source Loopback0
  neighbor 192.168.0.19 remote-as 1
  neighbor 192.168.0.19 description iBGP peer internet1
@@ -2230,7 +2230,7 @@ end</entry>
         <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.58" netPrefixLenV4="30"/>
         <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.128.14" netPrefixLenV4="30"/>
     </node>
-    <node name="dc4-edge" type="SIMPLE" subtype="IOSv" location="396,192" ipv4="192.168.0.5">
+    <node name="dc3-edge" type="SIMPLE" subtype="IOSv" location="396,192" ipv4="192.168.0.5">
         <extensions>
             <entry key="static_ip" type="String">172.16.1.108</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.108</entry>
@@ -2238,7 +2238,7 @@ end</entry>
             <entry key="config" type="string">! IOS Config generated on 2016-06-04 16:20
 ! by autonetkit_0.21.4
 !
-hostname dc4-edge
+hostname dc3-edge
 boot-start-marker
 boot-end-marker
 !
@@ -2297,7 +2297,7 @@ interface GigabitEthernet0/1
   no shutdown
 !
 interface GigabitEthernet0/2
-  description to dc4-gw1
+  description to dc3-gw1
   ip address 10.0.128.33 255.255.255.252
   ip ospf cost 1
   duplex full
@@ -2305,7 +2305,7 @@ interface GigabitEthernet0/2
   no shutdown
 !
 interface GigabitEthernet0/3
-  description to dc4-gw2
+  description to dc3-gw2
   ip address 10.0.128.45 255.255.255.252
   ip ospf cost 1
   duplex full
@@ -2330,47 +2330,47 @@ router bgp 1
   ! ibgp peers
   !
   neighbor 192.168.0.3 remote-as 1
-  neighbor 192.168.0.3 description iBGP peer dc4-nxos1
+  neighbor 192.168.0.3 description iBGP peer dc3-nxos1
   neighbor 192.168.0.3 update-source Loopback0
   !
   neighbor 192.168.0.4 remote-as 1
-  neighbor 192.168.0.4 description iBGP peer dc4-gw1
+  neighbor 192.168.0.4 description iBGP peer dc3-gw1
   neighbor 192.168.0.4 update-source Loopback0
   !
   neighbor 192.168.0.7 remote-as 1
-  neighbor 192.168.0.7 description iBGP peer sc9-edge
+  neighbor 192.168.0.7 description iBGP peer sc8-edge
   neighbor 192.168.0.7 update-source Loopback0
   !
   neighbor 192.168.0.8 remote-as 1
-  neighbor 192.168.0.8 description iBGP peer dc4-nxos2
+  neighbor 192.168.0.8 description iBGP peer dc3-nxos2
   neighbor 192.168.0.8 update-source Loopback0
   !
   neighbor 192.168.0.9 remote-as 1
-  neighbor 192.168.0.9 description iBGP peer dc4-gw2
+  neighbor 192.168.0.9 description iBGP peer dc3-gw2
   neighbor 192.168.0.9 update-source Loopback0
   !
   neighbor 192.168.0.11 remote-as 1
-  neighbor 192.168.0.11 description iBGP peer dc4-backhaul
+  neighbor 192.168.0.11 description iBGP peer dc3-backhaul
   neighbor 192.168.0.11 update-source Loopback0
   !
   neighbor 192.168.0.13 remote-as 1
-  neighbor 192.168.0.13 description iBGP peer sc9-nxos1
+  neighbor 192.168.0.13 description iBGP peer sc8-nxos1
   neighbor 192.168.0.13 update-source Loopback0
   !
   neighbor 192.168.0.14 remote-as 1
-  neighbor 192.168.0.14 description iBGP peer sc9-nxos2
+  neighbor 192.168.0.14 description iBGP peer sc8-nxos2
   neighbor 192.168.0.14 update-source Loopback0
   !
   neighbor 192.168.0.16 remote-as 1
-  neighbor 192.168.0.16 description iBGP peer sc9-gw1
+  neighbor 192.168.0.16 description iBGP peer sc8-gw1
   neighbor 192.168.0.16 update-source Loopback0
   !
   neighbor 192.168.0.17 remote-as 1
-  neighbor 192.168.0.17 description iBGP peer sc9-gw2
+  neighbor 192.168.0.17 description iBGP peer sc8-gw2
   neighbor 192.168.0.17 update-source Loopback0
   !
   neighbor 192.168.0.18 remote-as 1
-  neighbor 192.168.0.18 description iBGP peer sc9-backhaul
+  neighbor 192.168.0.18 description iBGP peer sc8-backhaul
   neighbor 192.168.0.18 update-source Loopback0
   !
   neighbor 192.168.0.19 remote-as 1
@@ -2412,7 +2412,7 @@ end
         <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.128.45" netPrefixLenV4="30"/>
         <interface id="3" name="GigabitEthernet0/4"/>
     </node>
-    <node name="sc9-edge" type="SIMPLE" subtype="IOSv" location="552,192" ipv4="192.168.0.7">
+    <node name="sc8-edge" type="SIMPLE" subtype="IOSv" location="552,192" ipv4="192.168.0.7">
         <extensions>
             <entry key="static_ip" type="String">172.16.1.118</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.118</entry>
@@ -2425,7 +2425,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 !
-hostname sc9-edge
+hostname sc8-edge
 !
 boot-start-marker
 boot-end-marker
@@ -2480,7 +2480,7 @@ interface GigabitEthernet0/1
  media-type rj45
 !
 interface GigabitEthernet0/2
- description to sc9-gw1
+ description to sc8-gw1
  ip address 10.0.0.17 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -2488,7 +2488,7 @@ interface GigabitEthernet0/2
  media-type rj45
 !
 interface GigabitEthernet0/3
- description to sc9-gw2
+ description to sc8-gw2
  ip address 10.0.0.21 255.255.255.252
  ip ospf cost 1
  duplex full
@@ -2506,37 +2506,37 @@ router bgp 1
  bgp router-id 192.168.0.7
  bgp log-neighbor-changes
  neighbor 192.168.0.3 remote-as 1
- neighbor 192.168.0.3 description iBGP peer dc4-nxos1
+ neighbor 192.168.0.3 description iBGP peer dc3-nxos1
  neighbor 192.168.0.3 update-source Loopback0
  neighbor 192.168.0.4 remote-as 1
- neighbor 192.168.0.4 description iBGP peer dc4-gw1
+ neighbor 192.168.0.4 description iBGP peer dc3-gw1
  neighbor 192.168.0.4 update-source Loopback0
  neighbor 192.168.0.5 remote-as 1
- neighbor 192.168.0.5 description iBGP peer dc4-edge
+ neighbor 192.168.0.5 description iBGP peer dc3-edge
  neighbor 192.168.0.5 update-source Loopback0
  neighbor 192.168.0.8 remote-as 1
- neighbor 192.168.0.8 description iBGP peer dc4-nxos2
+ neighbor 192.168.0.8 description iBGP peer dc3-nxos2
  neighbor 192.168.0.8 update-source Loopback0
  neighbor 192.168.0.9 remote-as 1
- neighbor 192.168.0.9 description iBGP peer dc4-gw2
+ neighbor 192.168.0.9 description iBGP peer dc3-gw2
  neighbor 192.168.0.9 update-source Loopback0
  neighbor 192.168.0.11 remote-as 1
- neighbor 192.168.0.11 description iBGP peer dc4-backhaul
+ neighbor 192.168.0.11 description iBGP peer dc3-backhaul
  neighbor 192.168.0.11 update-source Loopback0
  neighbor 192.168.0.13 remote-as 1
- neighbor 192.168.0.13 description iBGP peer sc9-nxos1
+ neighbor 192.168.0.13 description iBGP peer sc8-nxos1
  neighbor 192.168.0.13 update-source Loopback0
  neighbor 192.168.0.14 remote-as 1
- neighbor 192.168.0.14 description iBGP peer sc9-nxos2
+ neighbor 192.168.0.14 description iBGP peer sc8-nxos2
  neighbor 192.168.0.14 update-source Loopback0
  neighbor 192.168.0.16 remote-as 1
- neighbor 192.168.0.16 description iBGP peer sc9-gw1
+ neighbor 192.168.0.16 description iBGP peer sc8-gw1
  neighbor 192.168.0.16 update-source Loopback0
  neighbor 192.168.0.17 remote-as 1
- neighbor 192.168.0.17 description iBGP peer sc9-gw2
+ neighbor 192.168.0.17 description iBGP peer sc8-gw2
  neighbor 192.168.0.17 update-source Loopback0
  neighbor 192.168.0.18 remote-as 1
- neighbor 192.168.0.18 description iBGP peer sc9-backhaul
+ neighbor 192.168.0.18 description iBGP peer sc8-backhaul
  neighbor 192.168.0.18 update-source Loopback0
  neighbor 192.168.0.19 remote-as 1
  neighbor 192.168.0.19 description iBGP peer internet1
@@ -2615,10 +2615,10 @@ end</entry>
         <interface id="1" name="Ethernet2/2"/>
         <interface id="2" name="Ethernet2/3"/>
     </node>
-    <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="24,36">
+    <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="30,38">
         <interface id="0" name="GigabitEthernet0/1"/>
     </node>
-    <node name="iosv-2" type="SIMPLE" subtype="IOSv" location="912,36">
+    <node name="iosv-2" type="SIMPLE" subtype="IOSv" location="924,33">
         <interface id="0" name="GigabitEthernet0/1"/>
     </node>
     <connection dst="/virl:topology/virl:node[1]/virl:interface[2]" src="/virl:topology/virl:node[2]/virl:interface[1]"/>

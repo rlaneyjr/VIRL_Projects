@@ -1,0 +1,61 @@
+
+172.16.1.122    dc3-sw1
+172.16.1.123    dc3-core-nxos1
+172.16.1.124    dc3-core-nxos2
+172.16.1.125    dc3-nxos1
+172.16.1.126    dc3-nxos2
+172.16.1.127    dc3-gw1
+172.16.1.128    dc3-gw2
+172.16.1.129    dc3-edge
+172.16.1.130    dc3-sat1
+172.16.1.131    sc8-sw1
+172.16.1.132    sc8-core-nxos1
+172.16.1.133    sc8-core-nxos2
+172.16.1.134    sc8-nxos1
+172.16.1.135    sc8-nxos2
+172.16.1.136    sc8-gw1
+172.16.1.137    sc8-gw2
+172.16.1.138    sc8-edge
+172.16.1.139    sc8-sat1
+172.16.1.140    dc3-sat2
+172.16.1.141    sc8-sat2
+
+            <entry key="static_ip" type="String">172.16.1.122</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.122</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+!
+ip route 10.0.22.0 255.255.255.0 172.16.1.1
+ip route 172.16.20.0 255.255.255.0 172.16.1.1
+ip route 192.168.22.0 255.255.255.0 172.16.1.1
+ip ssh version 2
+
+interface GigabitEthernet0/0
+  description OOB management
+  no switchport
+  ip address 172.16.1.134 255.255.255.0
+  no shutdown
+
+
+interface mgmt0
+  description OOB Management
+  duplex full
+  vrf member management
+  ip address 172.16.1.105/24
+
+username rlaney password 5 $5$M68RP.GN$M.ILLBUaIz2JXOoUORYHgSJpdgYkZNIVkH9RtVf/Ul9  role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+crypto key generate rsa modulus 1024 
+
+################################################################################
+username rlaney privilege 15 secret 0 ralrox
+crypto key generate rsa modulus 1024 
+!
+line con 0
+ password cisco
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ password cisco
+ login local
+ transport input telnet ssh

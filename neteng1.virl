@@ -1,0 +1,2654 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+    <extensions>
+        <entry key="management_network" type="String">flat</entry>
+        <entry key="management_lxc" type="Boolean">true</entry>
+        <entry key="lxc.host.static_ip" type="String">172.16.1.22</entry>
+    </extensions>
+    <node name="sc9-gw1" type="SIMPLE" subtype="IOSv" location="648,108" ipv4="192.168.0.16">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.116</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.116</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 01:23:09 UTC Fri Jun 10 2016
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname sc9-gw1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+username rlaney privilege 15 secret 5 $1$OuEZ$.L82iZ1ErCfYHB/VklDg0/
+username cisco privilege 15 secret 5 $1$6Lsd$NEAiMyXdBPyGjfCmWI/D60
+!
+redundancy
+!
+no cdp run
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.16 255.255.255.255
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 172.16.1.116 255.255.255.0
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to sc9-edge
+ ip address 10.0.0.18 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description to sc9-nxos1
+ ip address 10.0.128.26 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/3
+ description to sc9-nxos2
+ ip address 10.0.128.2 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+router ospf 1
+ passive-interface Loopback0
+ network 10.0.0.16 0.0.0.3 area 0
+ network 10.0.128.0 0.0.0.3 area 0
+ network 10.0.128.24 0.0.0.3 area 0
+ network 192.168.0.16 0.0.0.0 area 0
+!
+router bgp 1
+ bgp router-id 192.168.0.16
+ bgp log-neighbor-changes
+ neighbor 192.168.0.3 remote-as 1
+ neighbor 192.168.0.3 description iBGP peer dc4-nxos1
+ neighbor 192.168.0.3 update-source Loopback0
+ neighbor 192.168.0.4 remote-as 1
+ neighbor 192.168.0.4 description iBGP peer dc4-gw1
+ neighbor 192.168.0.4 update-source Loopback0
+ neighbor 192.168.0.5 remote-as 1
+ neighbor 192.168.0.5 description iBGP peer dc4-edge
+ neighbor 192.168.0.5 update-source Loopback0
+ neighbor 192.168.0.7 remote-as 1
+ neighbor 192.168.0.7 description iBGP peer sc9-edge
+ neighbor 192.168.0.7 update-source Loopback0
+ neighbor 192.168.0.8 remote-as 1
+ neighbor 192.168.0.8 description iBGP peer dc4-nxos2
+ neighbor 192.168.0.8 update-source Loopback0
+ neighbor 192.168.0.9 remote-as 1
+ neighbor 192.168.0.9 description iBGP peer dc4-gw2
+ neighbor 192.168.0.9 update-source Loopback0
+ neighbor 192.168.0.11 remote-as 1
+ neighbor 192.168.0.11 description iBGP peer dc4-backhaul
+ neighbor 192.168.0.11 update-source Loopback0
+ neighbor 192.168.0.13 remote-as 1
+ neighbor 192.168.0.13 description iBGP peer sc9-nxos1
+ neighbor 192.168.0.13 update-source Loopback0
+ neighbor 192.168.0.14 remote-as 1
+ neighbor 192.168.0.14 description iBGP peer sc9-nxos2
+ neighbor 192.168.0.14 update-source Loopback0
+ neighbor 192.168.0.17 remote-as 1
+ neighbor 192.168.0.17 description iBGP peer sc9-gw2
+ neighbor 192.168.0.17 update-source Loopback0
+ neighbor 192.168.0.18 remote-as 1
+ neighbor 192.168.0.18 description iBGP peer sc9-backhaul
+ neighbor 192.168.0.18 update-source Loopback0
+ neighbor 192.168.0.19 remote-as 1
+ neighbor 192.168.0.19 description iBGP peer internet1
+ neighbor 192.168.0.19 update-source Loopback0
+ neighbor 192.168.0.20 remote-as 1
+ neighbor 192.168.0.20 description iBGP peer internet2
+ neighbor 192.168.0.20 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.16 mask 255.255.255.255
+  neighbor 192.168.0.3 activate
+  neighbor 192.168.0.4 activate
+  neighbor 192.168.0.5 activate
+  neighbor 192.168.0.7 activate
+  neighbor 192.168.0.8 activate
+  neighbor 192.168.0.9 activate
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.13 activate
+  neighbor 192.168.0.14 activate
+  neighbor 192.168.0.17 activate
+  neighbor 192.168.0.18 activate
+  neighbor 192.168.0.19 activate
+  neighbor 192.168.0.20 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 10.0.22.0 255.255.255.0 172.16.1.1
+ip route 172.16.20.0 255.255.255.0 172.16.1.1
+ip route 192.168.22.0 255.255.255.0 172.16.1.1
+ip ssh version 2
+ip ssh server algorithm authentication password
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login local
+ transport input telnet ssh
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.18" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.128.26" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.128.2" netPrefixLenV4="30"/>
+    </node>
+    <node name="sc9-nxos1" type="SIMPLE" subtype="NX-OSv" location="744,60" ipv4="192.168.0.13">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.114</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.114</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!Command: show running-config
+!Time: Fri Jun 10 01:54:51 2016
+
+version 7.3(0)D1(1)
+power redundancy-mode redundant
+license grace-period
+
+hostname sc9-nxos1
+vdc sc9-nxos1 id 1
+  limit-resource module-type m1 m1xl m2xl f2e 
+  allocate interface Ethernet2/1-48
+  allocate interface Ethernet3/1-48
+  allocate interface Ethernet4/1-48
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+feature ospf
+feature bgp
+
+username admin password 5 $5$K8jEHjHk$BvJfP0EFTcMCokzxHYuzAzJahqz3Gdt/RI4Qj0wPgk4  role network-admin
+username adminbackup password 5 !  role network-operator
+username adminbackup passphrase  lifetime 99999 warntime 14 gracetime 3
+username cisco password 5 $5$Rvo3e0TC$McsP8jrfO.S.PlOmp0IqHorAC03rCgKSTtrcJ3BYRW9  role network-operator
+username cisco role network-admin
+username cisco passphrase  lifetime 99999 warntime 14 gracetime 3
+username lab password 5 $5$iDwJKHmf$x4aRhkAGTxk5EE7/ozdSaHYNyKfM9EJ1zV/N.CFlUp6  role network-admin
+username lab passphrase  lifetime 99999 warntime 14 gracetime 3
+username rlaney password 5 $5$M68RP.GN$M.ILLBUaIz2JXOoUORYHgSJpdgYkZNIVkH9RtVf/Ul9  role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+no password strength-check
+ip domain-lookup
+crypto key generate rsa label sc9-nxos1 modulus 1024 
+vlan dot1Q tag native
+system default switchport
+system jumbomtu 0
+no logging event trunk-status enable
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-admin
+snmp-server user rlaney network-operator auth md5 0xc1ab6e0aaa8d73404296522b00e3dfac priv 0xc1ab6e0aaa8d73404296522b00e3dfac localizedkey
+snmp-server user rlaney network-admin
+snmp-server user admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey engineID 128:0:0:9:3:0:0:0:0:0:0
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+snmp-server enable traps link
+
+vlan 1
+
+vrf context management
+  ip route 0.0.0.0/0 172.16.1.1
+hardware forwarding unicast trace
+
+interface loopback0
+  description Loopback
+  ip address 192.168.0.13/32
+  ip router ospf 1 area 0.0.0.0
+
+interface mgmt0
+  description OOB Management
+  duplex full
+  vrf member management
+  ip address 172.16.1.114/24
+
+interface Ethernet2/1
+  description to sc9-gw1
+  no switchport
+  mac-address fa16.3e00.000b
+  ip address 10.0.128.25/30
+  ip router ospf 1 area 0.0.0.0
+  no shutdown
+
+interface Ethernet2/2
+  description to sc9-eos1
+  no switchport
+  mac-address fa16.3e00.000c
+  ip address 10.0.0.30/30
+  ip router ospf 1 area 0.0.0.0
+  no shutdown
+
+interface Ethernet2/3
+  description to sc9-gw2
+  no switchport
+  mac-address fa16.3e00.000d
+  ip address 10.0.128.29/30
+  ip router ospf 1 area 0.0.0.0
+  no shutdown
+
+interface Ethernet2/4
+  description to sc9-eos2
+  no switchport
+  mac-address fa16.3e00.000e
+  ip address 10.0.0.41/30
+  ip router ospf 1 area 0.0.0.0
+  no shutdown
+
+
+line console
+line vty
+router ospf 1
+  router-id 192.168.0.13
+router bgp 1
+  router-id 192.168.0.13
+  address-family ipv4 unicast
+    network 192.168.0.13/32
+  !
+! iBGP
+!
+! iBGP peers
+  !
+  neighbor 192.168.0.3 remote-as 1
+    description iBGP peer dc4-nxos1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.4 remote-as 1
+    description iBGP peer dc4-gw1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.5 remote-as 1
+    description iBGP peer dc4-edge
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.7 remote-as 1
+    description iBGP peer sc9-edge
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.8 remote-as 1
+    description iBGP peer dc4-nxos2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.9 remote-as 1
+    description iBGP peer dc4-gw2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.11 remote-as 1
+    description iBGP peer dc4-backhaul
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.14 remote-as 1
+    description iBGP peer sc9-nxos2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.16 remote-as 1
+    description iBGP peer sc9-gw1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.17 remote-as 1
+    description iBGP peer sc9-gw2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.18 remote-as 1
+    description iBGP peer sc9-backhaul
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.19 remote-as 1
+    description iBGP peer internet1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.20 remote-as 1
+    description iBGP peer internet2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+end
+</entry>
+        </extensions>
+        <interface id="0" name="Ethernet2/1" ipv4="10.0.128.25" netPrefixLenV4="30"/>
+        <interface id="1" name="Ethernet2/2" ipv4="10.0.0.30" netPrefixLenV4="30"/>
+        <interface id="2" name="Ethernet2/3" ipv4="10.0.128.29" netPrefixLenV4="30"/>
+        <interface id="3" name="Ethernet2/4" ipv4="10.0.0.41" netPrefixLenV4="30"/>
+    </node>
+    <node name="sc9-sw1" type="SIMPLE" subtype="IOSvL2" location="912,192">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.111</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.111</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 01:22:26 UTC Fri Jun 10 2016
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname sc9-sw1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+username rlaney privilege 15 secret 5 $1$Cjl9$FCrgKdiYqbLVvUdVrdcnk0
+username cisco privilege 15 secret 5 $1$HO23$gr5.GD5L6Tr9hkKocC4jV1
+no aaa new-model
+!
+!
+vtp mode transparent
+!
+!
+!
+no ip domain-lookup
+ip domain-name virl.info
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+vlan 2
+ name ank_vlan2
+no cdp run
+!
+! 
+!
+!
+interface Loopback0
+ description Loopback
+ no ip address
+!
+interface GigabitEthernet0/1
+ description to sc9-eos2
+ switchport access vlan 2
+ switchport mode access
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ description to sc9-eos1
+ switchport access vlan 2
+ switchport mode access
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ description to sc9-routem
+ switchport access vlan 2
+ switchport mode access
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet0/0
+ description OOB management
+ no switchport
+ ip address 172.16.1.111 255.255.255.0
+ negotiation auto
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+ip route 10.0.22.0 255.255.255.0 172.16.1.1
+ip route 172.16.20.0 255.255.255.0 172.16.1.1
+ip route 192.168.22.0 255.255.255.0 172.16.1.1
+ip ssh version 2
+!
+!
+control-plane
+!
+!
+line con 0
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login local
+ transport input telnet ssh
+!
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.128.21" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.10" netPrefixLenV4="29"/>
+        <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.128.49" netPrefixLenV4="30"/>
+    </node>
+    <node name="sc9-nxos2" type="SIMPLE" subtype="NX-OSv" location="744,336" ipv4="192.168.0.14">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.115</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.115</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!Command: show running-config
+!Time: Fri Jun 10 01:54:51 2016
+
+version 7.3(0)D1(1)
+power redundancy-mode redundant
+license grace-period
+
+hostname sc9-nxos2
+vdc sc9-nxos2 id 1
+  limit-resource module-type m1 m1xl m2xl f2e 
+  allocate interface Ethernet2/1-48
+  allocate interface Ethernet3/1-48
+  allocate interface Ethernet4/1-48
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+feature ospf
+feature bgp
+
+username admin password 5 $5$iNnT0TXb$pzC.WSmWwX2Dax5GfbubsUuELEzD5rLYdB6.IWDobH2  role network-admin
+username adminbackup password 5 !  role network-operator
+username adminbackup passphrase  lifetime 99999 warntime 14 gracetime 3
+username cisco password 5 $5$QRjxBjzj$GjbzA3cN5.il/a/0PtTWYsHRDOmAQX/VxqlvubnEPl8  role network-operator
+username cisco role network-admin
+username cisco passphrase  lifetime 99999 warntime 14 gracetime 3
+username lab password 5 $5$01jqQYMX$cX7gghBHDazTWqFV/iV18HlFVtul84qQuhNJfk5Wa78  role network-admin
+username lab passphrase  lifetime 99999 warntime 14 gracetime 3
+username rlaney password 5 $5$8W7/sd2L$CEhFbemq2jQBtAr4.zA7OovtkCCL05kDV7ynvIMZbVB  role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+no password strength-check
+ip domain-lookup
+crypto key generate rsa label sc9-nxos2 modulus 1024 
+vlan dot1Q tag native
+system default switchport
+system jumbomtu 0
+no logging event trunk-status enable
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-admin
+snmp-server user rlaney network-operator auth md5 0xc902011220235fc66d6ddc62dacfef88 priv 0xc902011220235fc66d6ddc62dacfef88 localizedkey
+snmp-server user rlaney network-admin
+snmp-server user admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey engineID 128:0:0:9:3:0:0:0:0:0:0
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+snmp-server enable traps link
+
+vlan 1
+
+vrf context management
+  ip route 0.0.0.0/0 172.16.1.1
+hardware forwarding unicast trace
+
+
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.14/32
+  ip router ospf 1 area 0
+
+interface mgmt0
+  description OOB Management
+  duplex full
+  vrf member management
+  ip address 172.16.1.115/24
+
+interface Ethernet2/1
+  description to sc9-gw2
+  no switchport
+  mac-address fa16.3e00.0010
+  ip address 10.0.128.5/30
+  ip router ospf 1 area 0.0.0.0
+  no shutdown
+
+interface Ethernet2/2
+  description to sc9-eos2
+  no switchport
+  mac-address fa16.3e00.0011
+  ip address 10.0.0.61/30
+  ip router ospf 1 area 0.0.0.0
+  no shutdown
+
+interface Ethernet2/3
+  description to sc9-gw1
+  no switchport
+  mac-address fa16.3e00.0012
+  ip address 10.0.128.1/30
+  ip router ospf 1 area 0.0.0.0
+  no shutdown
+
+interface Ethernet2/4
+  description to sc9-eos1
+  no switchport
+  mac-address fa16.3e00.0013
+  ip address 10.0.0.46/30
+  ip router ospf 1 area 0.0.0.0
+  no shutdown
+
+
+line console
+line vty
+router ospf 1
+  router-id 192.168.0.14
+router bgp 1
+  router-id 192.168.0.14
+  address-family ipv4 unicast
+    network 192.168.0.14/32
+  !
+! iBGP
+!
+! iBGP peers
+  !
+  neighbor 192.168.0.3 remote-as 1
+    description iBGP peer dc4-nxos1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.4 remote-as 1
+    description iBGP peer dc4-gw1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.5 remote-as 1
+    description iBGP peer dc4-edge
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.7 remote-as 1
+    description iBGP peer sc9-edge
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.8 remote-as 1
+    description iBGP peer dc4-nxos2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.9 remote-as 1
+    description iBGP peer dc4-gw2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.11 remote-as 1
+    description iBGP peer dc4-backhaul
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.13 remote-as 1
+    description iBGP peer sc9-nxos1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.16 remote-as 1
+    description iBGP peer sc9-gw1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.17 remote-as 1
+    description iBGP peer sc9-gw2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.18 remote-as 1
+    description iBGP peer sc9-backhaul
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.19 remote-as 1
+    description iBGP peer internet1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.20 remote-as 1
+    description iBGP peer internet2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+end
+</entry>
+        </extensions>
+        <interface id="0" name="Ethernet2/1" ipv4="10.0.128.5" netPrefixLenV4="30"/>
+        <interface id="1" name="Ethernet2/2" ipv4="10.0.0.61" netPrefixLenV4="30"/>
+        <interface id="2" name="Ethernet2/3" ipv4="10.0.128.1" netPrefixLenV4="30"/>
+        <interface id="3" name="Ethernet2/4" ipv4="10.0.0.46" netPrefixLenV4="30"/>
+    </node>
+    <node name="sc9-gw2" type="SIMPLE" subtype="IOSv" location="648,276" ipv4="192.168.0.17">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.117</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.117</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 01:23:16 UTC Fri Jun 10 2016
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname sc9-gw2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+username rlaney privilege 15 secret 5 $1$iw5C$srr5Bvcj.IvdMu6ONqgT4.
+username cisco privilege 15 secret 5 $1$.kRk$h0i.fWLlaC2Rj4ald/dAn.
+!
+redundancy
+!
+no cdp run
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.17 255.255.255.255
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 172.16.1.117 255.255.255.0
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to sc9-edge
+ ip address 10.0.0.22 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description to sc9-nxos2
+ ip address 10.0.128.6 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/3
+ description to sc9-backhaul
+ ip address 10.0.128.9 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/4
+ description to sc9-nxos1
+ ip address 10.0.128.30 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+router ospf 1
+ passive-interface Loopback0
+ network 10.0.0.20 0.0.0.3 area 0
+ network 10.0.128.4 0.0.0.3 area 0
+ network 10.0.128.8 0.0.0.3 area 0
+ network 10.0.128.28 0.0.0.3 area 0
+ network 192.168.0.17 0.0.0.0 area 0
+!
+router bgp 1
+ bgp router-id 192.168.0.17
+ bgp log-neighbor-changes
+ neighbor 192.168.0.3 remote-as 1
+ neighbor 192.168.0.3 description iBGP peer dc4-nxos1
+ neighbor 192.168.0.3 update-source Loopback0
+ neighbor 192.168.0.4 remote-as 1
+ neighbor 192.168.0.4 description iBGP peer dc4-gw1
+ neighbor 192.168.0.4 update-source Loopback0
+ neighbor 192.168.0.5 remote-as 1
+ neighbor 192.168.0.5 description iBGP peer dc4-edge
+ neighbor 192.168.0.5 update-source Loopback0
+ neighbor 192.168.0.7 remote-as 1
+ neighbor 192.168.0.7 description iBGP peer sc9-edge
+ neighbor 192.168.0.7 update-source Loopback0
+ neighbor 192.168.0.8 remote-as 1
+ neighbor 192.168.0.8 description iBGP peer dc4-nxos2
+ neighbor 192.168.0.8 update-source Loopback0
+ neighbor 192.168.0.9 remote-as 1
+ neighbor 192.168.0.9 description iBGP peer dc4-gw2
+ neighbor 192.168.0.9 update-source Loopback0
+ neighbor 192.168.0.11 remote-as 1
+ neighbor 192.168.0.11 description iBGP peer dc4-backhaul
+ neighbor 192.168.0.11 update-source Loopback0
+ neighbor 192.168.0.13 remote-as 1
+ neighbor 192.168.0.13 description iBGP peer sc9-nxos1
+ neighbor 192.168.0.13 update-source Loopback0
+ neighbor 192.168.0.14 remote-as 1
+ neighbor 192.168.0.14 description iBGP peer sc9-nxos2
+ neighbor 192.168.0.14 update-source Loopback0
+ neighbor 192.168.0.16 remote-as 1
+ neighbor 192.168.0.16 description iBGP peer sc9-gw1
+ neighbor 192.168.0.16 update-source Loopback0
+ neighbor 192.168.0.18 remote-as 1
+ neighbor 192.168.0.18 description iBGP peer sc9-backhaul
+ neighbor 192.168.0.18 update-source Loopback0
+ neighbor 192.168.0.19 remote-as 1
+ neighbor 192.168.0.19 description iBGP peer internet1
+ neighbor 192.168.0.19 update-source Loopback0
+ neighbor 192.168.0.20 remote-as 1
+ neighbor 192.168.0.20 description iBGP peer internet2
+ neighbor 192.168.0.20 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.17 mask 255.255.255.255
+  neighbor 192.168.0.3 activate
+  neighbor 192.168.0.4 activate
+  neighbor 192.168.0.5 activate
+  neighbor 192.168.0.7 activate
+  neighbor 192.168.0.8 activate
+  neighbor 192.168.0.9 activate
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.13 activate
+  neighbor 192.168.0.14 activate
+  neighbor 192.168.0.16 activate
+  neighbor 192.168.0.18 activate
+  neighbor 192.168.0.19 activate
+  neighbor 192.168.0.20 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 10.0.22.0 255.255.255.0 172.16.1.1
+ip route 172.16.20.0 255.255.255.0 172.16.1.1
+ip route 192.168.22.0 255.255.255.0 172.16.1.1
+ip ssh version 2
+ip ssh server algorithm authentication password
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login local
+ transport input telnet ssh
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.22" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.128.6" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.128.9" netPrefixLenV4="30"/>
+        <interface id="3" name="GigabitEthernet0/4" ipv4="10.0.128.30" netPrefixLenV4="30"/>
+    </node>
+    <node name="dc4-gw1" type="SIMPLE" subtype="IOSv" location="324,108" ipv4="192.168.0.4">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.106</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.106</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 01:21:35 UTC Fri Jun 10 2016
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname dc4-gw1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+username rlaney privilege 15 secret 5 $1$Z9Xe$.sI4Ia2TPZCpzgkMQY/F..
+username cisco privilege 15 secret 5 $1$jJoq$rTLXxof5sBF.w3qyOEDRY/
+!
+redundancy
+!
+no cdp run
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.4 255.255.255.255
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 172.16.1.106 255.255.255.0
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to dc4-edge
+ ip address 10.0.128.34 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description to dc4-nxos1
+ ip address 10.0.128.17 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/3
+ description to dc4-nxos2
+ ip address 10.0.128.41 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+router ospf 1
+ passive-interface Loopback0
+ network 10.0.128.16 0.0.0.3 area 0
+ network 10.0.128.32 0.0.0.3 area 0
+ network 10.0.128.40 0.0.0.3 area 0
+ network 192.168.0.4 0.0.0.0 area 0
+!
+router bgp 1
+ bgp router-id 192.168.0.4
+ bgp log-neighbor-changes
+ neighbor 192.168.0.3 remote-as 1
+ neighbor 192.168.0.3 description iBGP peer dc4-nxos1
+ neighbor 192.168.0.3 update-source Loopback0
+ neighbor 192.168.0.5 remote-as 1
+ neighbor 192.168.0.5 description iBGP peer dc4-edge
+ neighbor 192.168.0.5 update-source Loopback0
+ neighbor 192.168.0.7 remote-as 1
+ neighbor 192.168.0.7 description iBGP peer sc9-edge
+ neighbor 192.168.0.7 update-source Loopback0
+ neighbor 192.168.0.8 remote-as 1
+ neighbor 192.168.0.8 description iBGP peer dc4-nxos2
+ neighbor 192.168.0.8 update-source Loopback0
+ neighbor 192.168.0.9 remote-as 1
+ neighbor 192.168.0.9 description iBGP peer dc4-gw2
+ neighbor 192.168.0.9 update-source Loopback0
+ neighbor 192.168.0.11 remote-as 1
+ neighbor 192.168.0.11 description iBGP peer dc4-backhaul
+ neighbor 192.168.0.11 update-source Loopback0
+ neighbor 192.168.0.13 remote-as 1
+ neighbor 192.168.0.13 description iBGP peer sc9-nxos1
+ neighbor 192.168.0.13 update-source Loopback0
+ neighbor 192.168.0.14 remote-as 1
+ neighbor 192.168.0.14 description iBGP peer sc9-nxos2
+ neighbor 192.168.0.14 update-source Loopback0
+ neighbor 192.168.0.16 remote-as 1
+ neighbor 192.168.0.16 description iBGP peer sc9-gw1
+ neighbor 192.168.0.16 update-source Loopback0
+ neighbor 192.168.0.17 remote-as 1
+ neighbor 192.168.0.17 description iBGP peer sc9-gw2
+ neighbor 192.168.0.17 update-source Loopback0
+ neighbor 192.168.0.18 remote-as 1
+ neighbor 192.168.0.18 description iBGP peer sc9-backhaul
+ neighbor 192.168.0.18 update-source Loopback0
+ neighbor 192.168.0.19 remote-as 1
+ neighbor 192.168.0.19 description iBGP peer internet1
+ neighbor 192.168.0.19 update-source Loopback0
+ neighbor 192.168.0.20 remote-as 1
+ neighbor 192.168.0.20 description iBGP peer internet2
+ neighbor 192.168.0.20 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.4 mask 255.255.255.255
+  neighbor 192.168.0.3 activate
+  neighbor 192.168.0.5 activate
+  neighbor 192.168.0.7 activate
+  neighbor 192.168.0.8 activate
+  neighbor 192.168.0.9 activate
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.13 activate
+  neighbor 192.168.0.14 activate
+  neighbor 192.168.0.16 activate
+  neighbor 192.168.0.17 activate
+  neighbor 192.168.0.18 activate
+  neighbor 192.168.0.19 activate
+  neighbor 192.168.0.20 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 10.0.22.0 255.255.255.0 172.16.1.1
+ip route 172.16.20.0 255.255.255.0 172.16.1.1
+ip route 192.168.22.0 255.255.255.0 172.16.1.1
+ip ssh version 2
+ip ssh server algorithm authentication password
+!
+!
+control-plane
+!
+!
+line con 0
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login local
+ transport input telnet ssh
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.128.34" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.128.17" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.128.41" netPrefixLenV4="30"/>
+    </node>
+    <node name="dc4-nxos1" type="SIMPLE" subtype="NX-OSv" location="201,62" ipv4="192.168.0.3">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.104</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.104</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!Command: show running-config
+!Time: Fri Jun 10 01:54:52 2016
+
+version 7.3(0)D1(1)
+power redundancy-mode redundant
+license grace-period
+
+hostname dc4-nxos1
+vdc dc4-nxos1 id 1
+  limit-resource module-type m1 m1xl m2xl f2e 
+  allocate interface Ethernet2/1-48
+  allocate interface Ethernet3/1-48
+  allocate interface Ethernet4/1-48
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+feature ospf
+feature bgp
+
+username admin password 5 $5$Y5dCuYUT$AQ5NQnwkKAY.ICc4p9xhkQ6RnHUBEHMhjCGqiZpLfz6  role network-admin
+username adminbackup password 5 !  role network-operator
+username adminbackup passphrase  lifetime 99999 warntime 14 gracetime 3
+username cisco password 5 $5$cgD7EUCk$unLDTB09Tpf8cFsX4FOIIlLzFBy7wvngV4FlqMv1PV3  role network-operator
+username cisco role network-admin
+username cisco passphrase  lifetime 99999 warntime 14 gracetime 3
+username lab password 5 $5$HMRXJPXZ$Doeg21ECvBzzMvqaelH68B7ty2dduCqN3ZO0NVlfNOD  role network-admin
+username lab passphrase  lifetime 99999 warntime 14 gracetime 3
+username rlaney password 5 $5$mT7L4ChX$Y9DdIQDaAcpoXS/akVy./3MjmoFbYDYW2Wi7f8E58u/  role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+no password strength-check
+ip domain-lookup
+crypto key generate rsa label dc4-nxos1 modulus 1024 
+vlan dot1Q tag native
+system default switchport
+system jumbomtu 0
+no logging event trunk-status enable
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-admin
+snmp-server user rlaney network-operator auth md5 0xfd46170dd34a23c352c18f5f9acbfacb priv 0xfd46170dd34a23c352c18f5f9acbfacb localizedkey
+snmp-server user rlaney network-admin
+snmp-server user admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey engineID 128:0:0:9:3:0:0:0:0:0:0
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+snmp-server enable traps link
+
+vlan 1
+
+vrf context management
+  ip route 0.0.0.0/0 172.16.1.1
+hardware forwarding unicast trace
+
+
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.3/32
+  ip router ospf 1 area 0
+
+interface mgmt0
+  description OOB Management
+  duplex full
+  vrf member management
+  ip address 172.16.1.104/24
+
+interface Ethernet2/1
+  description to dc4-gw1
+  no switchport
+  mac-address fa16.3e00.0001
+  ip address 10.0.128.18/30
+  ip router ospf 1 area 0.0.0.0
+  no shutdown
+
+interface Ethernet2/2
+  description to dc4-eos1
+  no switchport
+  mac-address fa16.3e00.0002
+  ip address 10.0.128.22/30
+  ip router ospf 1 area 0.0.0.0
+  no shutdown
+
+interface Ethernet2/3
+  description to dc4-gw2
+  no switchport
+  mac-address fa16.3e00.0003
+  ip address 10.0.128.37/30
+  ip router ospf 1 area 0.0.0.0
+  no shutdown
+
+interface Ethernet2/4
+  description to dc4-eos2
+  no switchport
+  mac-address fa16.3e00.0004
+  ip address 10.0.128.53/30
+  ip router ospf 1 area 0.0.0.0
+  no shutdown
+
+
+line console
+line vty
+router ospf 1
+  router-id 192.168.0.3
+router bgp 1
+  router-id 192.168.0.3
+  address-family ipv4 unicast
+    network 192.168.0.3/32
+  !
+! iBGP
+!
+! iBGP peers
+  !
+  neighbor 192.168.0.4 remote-as 1
+    description iBGP peer dc4-gw1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.5 remote-as 1
+    description iBGP peer dc4-edge
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.7 remote-as 1
+    description iBGP peer sc9-edge
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.8 remote-as 1
+    description iBGP peer dc4-nxos2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.9 remote-as 1
+    description iBGP peer dc4-gw2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.11 remote-as 1
+    description iBGP peer dc4-backhaul
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.13 remote-as 1
+    description iBGP peer sc9-nxos1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.14 remote-as 1
+    description iBGP peer sc9-nxos2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.16 remote-as 1
+    description iBGP peer sc9-gw1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.17 remote-as 1
+    description iBGP peer sc9-gw2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.18 remote-as 1
+    description iBGP peer sc9-backhaul
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.19 remote-as 1
+    description iBGP peer internet1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.20 remote-as 1
+    description iBGP peer internet2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+end
+</entry>
+        </extensions>
+        <interface id="0" name="Ethernet2/1" ipv4="10.0.128.18" netPrefixLenV4="30"/>
+        <interface id="1" name="Ethernet2/2" ipv4="10.0.128.22" netPrefixLenV4="30"/>
+        <interface id="2" name="Ethernet2/3" ipv4="10.0.128.37" netPrefixLenV4="30"/>
+        <interface id="3" name="Ethernet2/4" ipv4="10.0.128.53" netPrefixLenV4="30"/>
+    </node>
+    <node name="dc4-nxos2" type="SIMPLE" subtype="NX-OSv" location="200,335" ipv4="192.168.0.8">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.105</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.105</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!Command: show running-config
+!Time: Fri Jun 10 01:54:53 2016
+
+version 7.3(0)D1(1)
+power redundancy-mode redundant
+license grace-period
+
+hostname dc4-nxos2
+vdc dc4-nxos2 id 1
+  limit-resource module-type m1 m1xl m2xl f2e 
+  allocate interface Ethernet2/1-48
+  allocate interface Ethernet3/1-48
+  allocate interface Ethernet4/1-48
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+feature ospf
+feature bgp
+
+username admin password 5 $5$Aubg7S8n$imnDZod1a6DpcCKQrBWP1.mfzjFZtzaKiQFIqauGZZC  role network-admin
+username adminbackup password 5 !  role network-operator
+username adminbackup passphrase  lifetime 99999 warntime 14 gracetime 3
+username cisco password 5 $5$zMYXHaGV$HsRwdGO/Ie2G2YgrmCF17UkFuGHZ8lc77MsZLfPTKU7  role network-operator
+username cisco role network-admin
+username cisco passphrase  lifetime 99999 warntime 14 gracetime 3
+username lab password 5 $5$z51dw2nO$ua9titMiI59Qtv7w.2tT0An0Ijtm2AdZPeF6nnckCF6  role network-admin
+username lab passphrase  lifetime 99999 warntime 14 gracetime 3
+username rlaney password 5 $5$TJL/72do$7qowcK1gPB0fJ86/LBjy4FpyeBDSynaODX5vYFcCQA9  role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+no password strength-check
+ip domain-lookup
+crypto key generate rsa label dc4-nxos2 modulus 1024 
+vlan dot1Q tag native
+system default switchport
+system jumbomtu 0
+no logging event trunk-status enable
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-admin
+snmp-server user rlaney network-operator auth md5 0xce299fc121b9fe275c041eb735cda2ac priv 0xce299fc121b9fe275c041eb735cda2ac localizedkey
+snmp-server user rlaney network-admin
+snmp-server user admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey engineID 128:0:0:9:3:0:0:0:0:0:0
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+snmp-server enable traps link
+
+vlan 1
+
+vrf context management
+  ip route 0.0.0.0/0 172.16.1.1
+hardware forwarding unicast trace
+
+
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.8/32
+  ip router ospf 1 area 0
+
+interface mgmt0
+  description OOB Management
+  duplex full
+  vrf member management
+  ip address 172.16.1.105/24
+
+interface Ethernet2/1
+  description to dc4-gw2
+  no switchport
+  mac-address fa16.3e00.0006
+  ip address 10.0.0.34/30
+  ip router ospf 1 area 0.0.0.0
+  no shutdown
+
+interface Ethernet2/2
+  description to dc4-eos2
+  no switchport
+  mac-address fa16.3e00.0007
+  ip address 10.0.0.54/30
+  ip router ospf 1 area 0.0.0.0
+  no shutdown
+
+interface Ethernet2/3
+  description to dc4-gw1
+  no switchport
+  mac-address fa16.3e00.0008
+  ip address 10.0.128.42/30
+  ip router ospf 1 area 0.0.0.0
+  no shutdown
+
+interface Ethernet2/4
+  description to dc4-eos1
+  no switchport
+  mac-address fa16.3e00.0009
+  ip address 10.0.128.50/30
+  ip router ospf 1 area 0.0.0.0
+  no shutdown
+
+
+line console
+line vty
+router ospf 1
+  router-id 192.168.0.8
+router bgp 1
+  router-id 192.168.0.8
+  address-family ipv4 unicast
+    network 192.168.0.8/32
+  !
+! iBGP
+!
+! iBGP peers
+  !
+  neighbor 192.168.0.3 remote-as 1
+    description iBGP peer dc4-nxos1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.4 remote-as 1
+    description iBGP peer dc4-gw1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.5 remote-as 1
+    description iBGP peer dc4-edge
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.7 remote-as 1
+    description iBGP peer sc9-edge
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.9 remote-as 1
+    description iBGP peer dc4-gw2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.11 remote-as 1
+    description iBGP peer dc4-backhaul
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.13 remote-as 1
+    description iBGP peer sc9-nxos1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.14 remote-as 1
+    description iBGP peer sc9-nxos2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.16 remote-as 1
+    description iBGP peer sc9-gw1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.17 remote-as 1
+    description iBGP peer sc9-gw2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.18 remote-as 1
+    description iBGP peer sc9-backhaul
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.19 remote-as 1
+    description iBGP peer internet1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.20 remote-as 1
+    description iBGP peer internet2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+end
+</entry>
+        </extensions>
+        <interface id="0" name="Ethernet2/1" ipv4="10.0.0.34" netPrefixLenV4="30"/>
+        <interface id="1" name="Ethernet2/2" ipv4="10.0.0.54" netPrefixLenV4="30"/>
+        <interface id="2" name="Ethernet2/3" ipv4="10.0.128.42" netPrefixLenV4="30"/>
+        <interface id="3" name="Ethernet2/4" ipv4="10.0.128.50" netPrefixLenV4="30"/>
+    </node>
+    <node name="dc4-sw1" type="SIMPLE" subtype="IOSvL2" location="24,192">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.101</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.101</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 01:23:11 UTC Fri Jun 10 2016
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname dc4-sw1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+username rlaney privilege 15 secret 5 $1$62Q1$3w8ZZh6rj8yHu2v.P.OAX/
+username cisco privilege 15 secret 5 $1$d8NV$bvxagHEePG/OeR4Y6bpuQ.
+no aaa new-model
+!
+!
+vtp mode transparent
+!
+!
+!
+no ip domain-lookup
+ip domain-name virl.info
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+vlan 2
+ name ank_vlan2
+no cdp run
+!
+!
+interface Loopback0
+ description Loopback
+ no ip address
+!
+interface GigabitEthernet0/1
+ description to dc4-eos1
+ switchport access vlan 2
+ switchport mode access
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ description to dc4-eos2
+ switchport access vlan 2
+ switchport mode access
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ description to dc4-routem
+ switchport access vlan 2
+ switchport mode access
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet0/0
+ description OOB management
+ no switchport
+ ip address 172.16.1.101 255.255.255.0
+ negotiation auto
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+ip route 10.0.22.0 255.255.255.0 172.16.1.1
+ip route 172.16.20.0 255.255.255.0 172.16.1.1
+ip route 192.168.22.0 255.255.255.0 172.16.1.1
+ip ssh version 2
+!
+!
+control-plane
+!
+!
+line con 0
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login local
+ transport input telnet ssh
+!
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+        <interface id="2" name="GigabitEthernet0/3"/>
+    </node>
+    <node name="dc4-gw2" type="SIMPLE" subtype="IOSv" location="322,278" ipv4="192.168.0.9">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.107</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.107</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 01:21:33 UTC Fri Jun 10 2016
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname dc4-gw2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+no ip domain lookup
+ip domain name virl.info
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+username rlaney privilege 15 secret 5 $1$7OFs$xKlOQwGES99oOxkZf5kuo0
+username cisco privilege 15 secret 5 $1$65Ac$6O0ZubIp1NQHvqvwptX3j0
+!
+redundancy
+!
+no cdp run
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.9 255.255.255.255
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 172.16.1.107 255.255.255.0
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to dc4-edge
+ ip address 10.0.128.46 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description to dc4-nxos2
+ ip address 10.0.0.33 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/3
+ description to dc4-backhaul
+ ip address 10.0.0.37 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/4
+ description to dc4-nxos1
+ ip address 10.0.128.38 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+router ospf 1
+ passive-interface Loopback0
+ network 10.0.0.32 0.0.0.3 area 0
+ network 10.0.0.36 0.0.0.3 area 0
+ network 10.0.128.36 0.0.0.3 area 0
+ network 10.0.128.44 0.0.0.3 area 0
+ network 192.168.0.9 0.0.0.0 area 0
+!
+router bgp 1
+ bgp router-id 192.168.0.9
+ bgp log-neighbor-changes
+ neighbor 192.168.0.3 remote-as 1
+ neighbor 192.168.0.3 description iBGP peer dc4-nxos1
+ neighbor 192.168.0.3 update-source Loopback0
+ neighbor 192.168.0.4 remote-as 1
+ neighbor 192.168.0.4 description iBGP peer dc4-gw1
+ neighbor 192.168.0.4 update-source Loopback0
+ neighbor 192.168.0.5 remote-as 1
+ neighbor 192.168.0.5 description iBGP peer dc4-edge
+ neighbor 192.168.0.5 update-source Loopback0
+ neighbor 192.168.0.7 remote-as 1
+ neighbor 192.168.0.7 description iBGP peer sc9-edge
+ neighbor 192.168.0.7 update-source Loopback0
+ neighbor 192.168.0.8 remote-as 1
+ neighbor 192.168.0.8 description iBGP peer dc4-nxos2
+ neighbor 192.168.0.8 update-source Loopback0
+ neighbor 192.168.0.11 remote-as 1
+ neighbor 192.168.0.11 description iBGP peer dc4-backhaul
+ neighbor 192.168.0.11 update-source Loopback0
+ neighbor 192.168.0.13 remote-as 1
+ neighbor 192.168.0.13 description iBGP peer sc9-nxos1
+ neighbor 192.168.0.13 update-source Loopback0
+ neighbor 192.168.0.14 remote-as 1
+ neighbor 192.168.0.14 description iBGP peer sc9-nxos2
+ neighbor 192.168.0.14 update-source Loopback0
+ neighbor 192.168.0.16 remote-as 1
+ neighbor 192.168.0.16 description iBGP peer sc9-gw1
+ neighbor 192.168.0.16 update-source Loopback0
+ neighbor 192.168.0.17 remote-as 1
+ neighbor 192.168.0.17 description iBGP peer sc9-gw2
+ neighbor 192.168.0.17 update-source Loopback0
+ neighbor 192.168.0.18 remote-as 1
+ neighbor 192.168.0.18 description iBGP peer sc9-backhaul
+ neighbor 192.168.0.18 update-source Loopback0
+ neighbor 192.168.0.19 remote-as 1
+ neighbor 192.168.0.19 description iBGP peer internet1
+ neighbor 192.168.0.19 update-source Loopback0
+ neighbor 192.168.0.20 remote-as 1
+ neighbor 192.168.0.20 description iBGP peer internet2
+ neighbor 192.168.0.20 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.9 mask 255.255.255.255
+  neighbor 192.168.0.3 activate
+  neighbor 192.168.0.4 activate
+  neighbor 192.168.0.5 activate
+  neighbor 192.168.0.7 activate
+  neighbor 192.168.0.8 activate
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.13 activate
+  neighbor 192.168.0.14 activate
+  neighbor 192.168.0.16 activate
+  neighbor 192.168.0.17 activate
+  neighbor 192.168.0.18 activate
+  neighbor 192.168.0.19 activate
+  neighbor 192.168.0.20 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 10.0.22.0 255.255.255.0 172.16.1.1
+ip route 172.16.20.0 255.255.255.0 172.16.1.1
+ip route 192.168.22.0 255.255.255.0 172.16.1.1
+ip ssh version 2
+ip ssh server algorithm authentication password
+!
+!
+control-plane
+!
+!
+line con 0
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login local
+ transport input telnet ssh
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.128.46" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.33" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.0.37" netPrefixLenV4="30"/>
+        <interface id="3" name="GigabitEthernet0/4" ipv4="10.0.128.38" netPrefixLenV4="30"/>
+    </node>
+    <node name="internet1" type="SIMPLE" subtype="IOSv" location="474,93" ipv4="192.168.0.19">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.120</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.120</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 01:22:10 UTC Fri Jun 10 2016
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname internet1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+no ip domain lookup
+ip domain name virl.info
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+username rlaney privilege 15 secret 5 $1$ql27$rvUJ8ZxRB9Hq7tuzYyc0y1
+username cisco privilege 15 secret 5 $1$5aKZ$VxT/r2LMndH3c6HMRoU7d.
+!
+redundancy
+!
+no cdp run
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.19 255.255.255.255
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 172.16.1.120 255.255.255.0
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to dc4-edge
+ ip address 10.0.0.50 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description to sc9-edge
+ ip address 10.0.0.26 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+router ospf 1
+ passive-interface Loopback0
+ network 10.0.0.24 0.0.0.3 area 0
+ network 10.0.0.48 0.0.0.3 area 0
+ network 192.168.0.19 0.0.0.0 area 0
+!
+router bgp 1
+ bgp router-id 192.168.0.19
+ bgp log-neighbor-changes
+ neighbor 192.168.0.3 remote-as 1
+ neighbor 192.168.0.3 description iBGP peer dc4-nxos1
+ neighbor 192.168.0.3 update-source Loopback0
+ neighbor 192.168.0.4 remote-as 1
+ neighbor 192.168.0.4 description iBGP peer dc4-gw1
+ neighbor 192.168.0.4 update-source Loopback0
+ neighbor 192.168.0.5 remote-as 1
+ neighbor 192.168.0.5 description iBGP peer dc4-edge
+ neighbor 192.168.0.5 update-source Loopback0
+ neighbor 192.168.0.7 remote-as 1
+ neighbor 192.168.0.7 description iBGP peer sc9-edge
+ neighbor 192.168.0.7 update-source Loopback0
+ neighbor 192.168.0.8 remote-as 1
+ neighbor 192.168.0.8 description iBGP peer dc4-nxos2
+ neighbor 192.168.0.8 update-source Loopback0
+ neighbor 192.168.0.9 remote-as 1
+ neighbor 192.168.0.9 description iBGP peer dc4-gw2
+ neighbor 192.168.0.9 update-source Loopback0
+ neighbor 192.168.0.11 remote-as 1
+ neighbor 192.168.0.11 description iBGP peer dc4-backhaul
+ neighbor 192.168.0.11 update-source Loopback0
+ neighbor 192.168.0.13 remote-as 1
+ neighbor 192.168.0.13 description iBGP peer sc9-nxos1
+ neighbor 192.168.0.13 update-source Loopback0
+ neighbor 192.168.0.14 remote-as 1
+ neighbor 192.168.0.14 description iBGP peer sc9-nxos2
+ neighbor 192.168.0.14 update-source Loopback0
+ neighbor 192.168.0.16 remote-as 1
+ neighbor 192.168.0.16 description iBGP peer sc9-gw1
+ neighbor 192.168.0.16 update-source Loopback0
+ neighbor 192.168.0.17 remote-as 1
+ neighbor 192.168.0.17 description iBGP peer sc9-gw2
+ neighbor 192.168.0.17 update-source Loopback0
+ neighbor 192.168.0.18 remote-as 1
+ neighbor 192.168.0.18 description iBGP peer sc9-backhaul
+ neighbor 192.168.0.18 update-source Loopback0
+ neighbor 192.168.0.20 remote-as 1
+ neighbor 192.168.0.20 description iBGP peer internet2
+ neighbor 192.168.0.20 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.19 mask 255.255.255.255
+  neighbor 192.168.0.3 activate
+  neighbor 192.168.0.4 activate
+  neighbor 192.168.0.5 activate
+  neighbor 192.168.0.7 activate
+  neighbor 192.168.0.8 activate
+  neighbor 192.168.0.9 activate
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.13 activate
+  neighbor 192.168.0.14 activate
+  neighbor 192.168.0.16 activate
+  neighbor 192.168.0.17 activate
+  neighbor 192.168.0.18 activate
+  neighbor 192.168.0.20 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 10.0.22.0 255.255.255.0 172.16.1.1
+ip route 172.16.20.0 255.255.255.0 172.16.1.1
+ip route 192.168.22.0 255.255.255.0 172.16.1.1
+ip ssh version 2
+ip ssh server algorithm authentication password
+!
+!
+control-plane
+!
+!
+line con 0
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login local
+ transport input telnet ssh
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.50" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.26" netPrefixLenV4="30"/>
+    </node>
+    <node name="internet2" type="SIMPLE" subtype="IOSv" location="479,292" ipv4="192.168.0.20">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.121</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.121</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 01:22:20 UTC Fri Jun 10 2016
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname internet2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+no ip domain lookup
+ip domain name virl.info
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+username rlaney privilege 15 secret 5 $1$n5Sl$VtzLKkBsaPUz72.JQq5vp1
+username cisco privilege 15 secret 5 $1$JJE2$b3Muvn9zKHpxppcgf2FeB.
+!
+redundancy
+!
+no cdp run
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.20 255.255.255.255
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 172.16.1.121 255.255.255.0
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to dc4-backhaul
+ ip address 10.0.0.58 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description to sc9-backhaul
+ ip address 10.0.128.14 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+router ospf 1
+ passive-interface Loopback0
+ network 10.0.0.56 0.0.0.3 area 0
+ network 10.0.128.12 0.0.0.3 area 0
+ network 192.168.0.20 0.0.0.0 area 0
+!
+router bgp 1
+ bgp router-id 192.168.0.20
+ bgp log-neighbor-changes
+ neighbor 192.168.0.3 remote-as 1
+ neighbor 192.168.0.3 description iBGP peer dc4-nxos1
+ neighbor 192.168.0.3 update-source Loopback0
+ neighbor 192.168.0.4 remote-as 1
+ neighbor 192.168.0.4 description iBGP peer dc4-gw1
+ neighbor 192.168.0.4 update-source Loopback0
+ neighbor 192.168.0.5 remote-as 1
+ neighbor 192.168.0.5 description iBGP peer dc4-edge
+ neighbor 192.168.0.5 update-source Loopback0
+ neighbor 192.168.0.7 remote-as 1
+ neighbor 192.168.0.7 description iBGP peer sc9-edge
+ neighbor 192.168.0.7 update-source Loopback0
+ neighbor 192.168.0.8 remote-as 1
+ neighbor 192.168.0.8 description iBGP peer dc4-nxos2
+ neighbor 192.168.0.8 update-source Loopback0
+ neighbor 192.168.0.9 remote-as 1
+ neighbor 192.168.0.9 description iBGP peer dc4-gw2
+ neighbor 192.168.0.9 update-source Loopback0
+ neighbor 192.168.0.11 remote-as 1
+ neighbor 192.168.0.11 description iBGP peer dc4-backhaul
+ neighbor 192.168.0.11 update-source Loopback0
+ neighbor 192.168.0.13 remote-as 1
+ neighbor 192.168.0.13 description iBGP peer sc9-nxos1
+ neighbor 192.168.0.13 update-source Loopback0
+ neighbor 192.168.0.14 remote-as 1
+ neighbor 192.168.0.14 description iBGP peer sc9-nxos2
+ neighbor 192.168.0.14 update-source Loopback0
+ neighbor 192.168.0.16 remote-as 1
+ neighbor 192.168.0.16 description iBGP peer sc9-gw1
+ neighbor 192.168.0.16 update-source Loopback0
+ neighbor 192.168.0.17 remote-as 1
+ neighbor 192.168.0.17 description iBGP peer sc9-gw2
+ neighbor 192.168.0.17 update-source Loopback0
+ neighbor 192.168.0.18 remote-as 1
+ neighbor 192.168.0.18 description iBGP peer sc9-backhaul
+ neighbor 192.168.0.18 update-source Loopback0
+ neighbor 192.168.0.19 remote-as 1
+ neighbor 192.168.0.19 description iBGP peer internet1
+ neighbor 192.168.0.19 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.20 mask 255.255.255.255
+  neighbor 192.168.0.3 activate
+  neighbor 192.168.0.4 activate
+  neighbor 192.168.0.5 activate
+  neighbor 192.168.0.7 activate
+  neighbor 192.168.0.8 activate
+  neighbor 192.168.0.9 activate
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.13 activate
+  neighbor 192.168.0.14 activate
+  neighbor 192.168.0.16 activate
+  neighbor 192.168.0.17 activate
+  neighbor 192.168.0.18 activate
+  neighbor 192.168.0.19 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 10.0.22.0 255.255.255.0 172.16.1.1
+ip route 172.16.20.0 255.255.255.0 172.16.1.1
+ip route 192.168.22.0 255.255.255.0 172.16.1.1
+ip ssh version 2
+ip ssh server algorithm authentication password
+!
+!
+control-plane
+!
+!
+line con 0
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login local
+ transport input telnet ssh
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.58" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.128.14" netPrefixLenV4="30"/>
+    </node>
+    <node name="dc4-edge" type="SIMPLE" subtype="IOSv" location="396,192" ipv4="192.168.0.5">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.108</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.108</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="string">! IOS Config generated on 2016-06-04 16:20
+! by autonetkit_0.21.4
+!
+hostname dc4-edge
+boot-start-marker
+boot-end-marker
+!
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+ip classless
+ip subnet-zero
+no ip domain lookup
+ip domain name virl.info
+ip route 192.168.22.0 255.255.255.0 172.16.1.1
+ip route 172.16.20.0 255.255.255.0 172.16.1.1
+ip route 10.0.22.0 255.255.255.0 172.16.1.1
+ip ssh server algorithm authentication password
+crypto key generate rsa modulus 1024
+ip ssh version 2
+ip ssh server algorithm authentication password
+username rlaney privilege 15 secret 0 ralrox
+username cisco privilege 15 secret cisco
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 0 0
+ login local
+line con 0
+!
+no cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.5 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  ip address 172.16.1.108 255.255.255.0
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/1
+  description to internet1
+  ip address 10.0.0.49 255.255.255.252
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/2
+  description to dc4-gw1
+  ip address 10.0.128.33 255.255.255.252
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+interface GigabitEthernet0/3
+  description to dc4-gw2
+  ip address 10.0.128.45 255.255.255.252
+  ip ospf cost 1
+  duplex full
+  speed auto
+  no shutdown
+!
+!
+!
+router ospf 1
+  network 192.168.0.5 0.0.0.0 area 0
+  log-adjacency-changes
+  passive-interface Loopback0
+  network 10.0.0.49 0.0.0.3 area 0
+  network 10.0.128.33 0.0.0.3 area 0
+  network 10.0.128.45 0.0.0.3 area 0
+!
+!
+router bgp 1
+  bgp router-id 192.168.0.5
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.3 remote-as 1
+  neighbor 192.168.0.3 description iBGP peer dc4-nxos1
+  neighbor 192.168.0.3 update-source Loopback0
+  !
+  neighbor 192.168.0.4 remote-as 1
+  neighbor 192.168.0.4 description iBGP peer dc4-gw1
+  neighbor 192.168.0.4 update-source Loopback0
+  !
+  neighbor 192.168.0.7 remote-as 1
+  neighbor 192.168.0.7 description iBGP peer sc9-edge
+  neighbor 192.168.0.7 update-source Loopback0
+  !
+  neighbor 192.168.0.8 remote-as 1
+  neighbor 192.168.0.8 description iBGP peer dc4-nxos2
+  neighbor 192.168.0.8 update-source Loopback0
+  !
+  neighbor 192.168.0.9 remote-as 1
+  neighbor 192.168.0.9 description iBGP peer dc4-gw2
+  neighbor 192.168.0.9 update-source Loopback0
+  !
+  neighbor 192.168.0.11 remote-as 1
+  neighbor 192.168.0.11 description iBGP peer dc4-backhaul
+  neighbor 192.168.0.11 update-source Loopback0
+  !
+  neighbor 192.168.0.13 remote-as 1
+  neighbor 192.168.0.13 description iBGP peer sc9-nxos1
+  neighbor 192.168.0.13 update-source Loopback0
+  !
+  neighbor 192.168.0.14 remote-as 1
+  neighbor 192.168.0.14 description iBGP peer sc9-nxos2
+  neighbor 192.168.0.14 update-source Loopback0
+  !
+  neighbor 192.168.0.16 remote-as 1
+  neighbor 192.168.0.16 description iBGP peer sc9-gw1
+  neighbor 192.168.0.16 update-source Loopback0
+  !
+  neighbor 192.168.0.17 remote-as 1
+  neighbor 192.168.0.17 description iBGP peer sc9-gw2
+  neighbor 192.168.0.17 update-source Loopback0
+  !
+  neighbor 192.168.0.18 remote-as 1
+  neighbor 192.168.0.18 description iBGP peer sc9-backhaul
+  neighbor 192.168.0.18 update-source Loopback0
+  !
+  neighbor 192.168.0.19 remote-as 1
+  neighbor 192.168.0.19 description iBGP peer internet1
+  neighbor 192.168.0.19 update-source Loopback0
+  !
+  neighbor 192.168.0.20 remote-as 1
+  neighbor 192.168.0.20 description iBGP peer internet2
+  neighbor 192.168.0.20 update-source Loopback0
+  !
+ !
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.5 mask 255.255.255.255
+  neighbor 192.168.0.4 activate
+  neighbor 192.168.0.9 activate
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.16 activate
+  neighbor 192.168.0.17 activate
+  neighbor 192.168.0.18 activate
+  neighbor 192.168.0.19 activate
+  neighbor 192.168.0.20 activate
+  neighbor 192.168.0.7 activate
+  neighbor 192.168.0.3 activate
+  neighbor 192.168.0.8 activate
+  neighbor 192.168.0.13 activate
+  neighbor 192.168.0.14 activate
+ exit-address-family
+!
+!
+!
+end
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.49" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.128.33" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.128.45" netPrefixLenV4="30"/>
+        <interface id="3" name="GigabitEthernet0/4"/>
+    </node>
+    <node name="sc9-edge" type="SIMPLE" subtype="IOSv" location="552,192" ipv4="192.168.0.7">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.118</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.118</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 01:23:09 UTC Fri Jun 10 2016
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname sc9-edge
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+no ip domain lookup
+ip domain name virl.info
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+username rlaney privilege 15 secret 5 $1$OuEZ$.L82iZ1ErCfYHB/VklDg0/
+username cisco privilege 15 secret 5 $1$6Lsd$NEAiMyXdBPyGjfCmWI/D60
+!
+redundancy
+!
+no cdp run
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.7 255.255.255.255
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ ip address 172.16.1.118 255.255.255.0
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to internet1
+ ip address 10.0.0.25 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description to sc9-gw1
+ ip address 10.0.0.17 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/3
+ description to sc9-gw2
+ ip address 10.0.0.21 255.255.255.252
+ ip ospf cost 1
+ duplex full
+ speed auto
+ media-type rj45
+!
+router ospf 1
+ passive-interface Loopback0
+ network 10.0.0.24 0.0.0.3 area 0
+ network 10.0.0.16 0.0.0.3 area 0
+ network 10.0.0.20 0.0.0.3 area 0
+ network 192.168.0.7 0.0.0.0 area 0
+!
+router bgp 1
+ bgp router-id 192.168.0.7
+ bgp log-neighbor-changes
+ neighbor 192.168.0.3 remote-as 1
+ neighbor 192.168.0.3 description iBGP peer dc4-nxos1
+ neighbor 192.168.0.3 update-source Loopback0
+ neighbor 192.168.0.4 remote-as 1
+ neighbor 192.168.0.4 description iBGP peer dc4-gw1
+ neighbor 192.168.0.4 update-source Loopback0
+ neighbor 192.168.0.5 remote-as 1
+ neighbor 192.168.0.5 description iBGP peer dc4-edge
+ neighbor 192.168.0.5 update-source Loopback0
+ neighbor 192.168.0.8 remote-as 1
+ neighbor 192.168.0.8 description iBGP peer dc4-nxos2
+ neighbor 192.168.0.8 update-source Loopback0
+ neighbor 192.168.0.9 remote-as 1
+ neighbor 192.168.0.9 description iBGP peer dc4-gw2
+ neighbor 192.168.0.9 update-source Loopback0
+ neighbor 192.168.0.11 remote-as 1
+ neighbor 192.168.0.11 description iBGP peer dc4-backhaul
+ neighbor 192.168.0.11 update-source Loopback0
+ neighbor 192.168.0.13 remote-as 1
+ neighbor 192.168.0.13 description iBGP peer sc9-nxos1
+ neighbor 192.168.0.13 update-source Loopback0
+ neighbor 192.168.0.14 remote-as 1
+ neighbor 192.168.0.14 description iBGP peer sc9-nxos2
+ neighbor 192.168.0.14 update-source Loopback0
+ neighbor 192.168.0.16 remote-as 1
+ neighbor 192.168.0.16 description iBGP peer sc9-gw1
+ neighbor 192.168.0.16 update-source Loopback0
+ neighbor 192.168.0.17 remote-as 1
+ neighbor 192.168.0.17 description iBGP peer sc9-gw2
+ neighbor 192.168.0.17 update-source Loopback0
+ neighbor 192.168.0.18 remote-as 1
+ neighbor 192.168.0.18 description iBGP peer sc9-backhaul
+ neighbor 192.168.0.18 update-source Loopback0
+ neighbor 192.168.0.19 remote-as 1
+ neighbor 192.168.0.19 description iBGP peer internet1
+ neighbor 192.168.0.19 update-source Loopback0
+ neighbor 192.168.0.20 remote-as 1
+ neighbor 192.168.0.20 description iBGP peer internet2
+ neighbor 192.168.0.20 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.16 mask 255.255.255.255
+  neighbor 192.168.0.3 activate
+  neighbor 192.168.0.4 activate
+  neighbor 192.168.0.5 activate
+  neighbor 192.168.0.8 activate
+  neighbor 192.168.0.9 activate
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.13 activate
+  neighbor 192.168.0.14 activate
+  neighbor 192.168.0.16 activate
+  neighbor 192.168.0.17 activate
+  neighbor 192.168.0.18 activate
+  neighbor 192.168.0.19 activate
+  neighbor 192.168.0.20 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 10.0.22.0 255.255.255.0 172.16.1.1
+ip route 172.16.20.0 255.255.255.0 172.16.1.1
+ip route 192.168.22.0 255.255.255.0 172.16.1.1
+ip ssh version 2
+ip ssh server algorithm authentication password
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login local
+ transport input telnet ssh
+!
+no scheduler allocate
+!
+end</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.25" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.17" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.0.21" netPrefixLenV4="30"/>
+        <interface id="3" name="GigabitEthernet0/4"/>
+    </node>
+    <node name="nx-osv-1" type="SIMPLE" subtype="NX-OSv" location="108,120">
+        <interface id="0" name="Ethernet2/1"/>
+        <interface id="1" name="Ethernet2/2"/>
+        <interface id="2" name="Ethernet2/3"/>
+    </node>
+    <node name="nx-osv-2" type="SIMPLE" subtype="NX-OSv" location="108,264">
+        <interface id="0" name="Ethernet2/1"/>
+        <interface id="1" name="Ethernet2/2"/>
+        <interface id="2" name="Ethernet2/3"/>
+    </node>
+    <node name="nx-osv-3" type="SIMPLE" subtype="NX-OSv" location="840,120">
+        <interface id="0" name="Ethernet2/1"/>
+        <interface id="1" name="Ethernet2/2"/>
+        <interface id="2" name="Ethernet2/3"/>
+    </node>
+    <node name="nx-osv-4" type="SIMPLE" subtype="NX-OSv" location="852,264">
+        <interface id="0" name="Ethernet2/1"/>
+        <interface id="1" name="Ethernet2/2"/>
+        <interface id="2" name="Ethernet2/3"/>
+    </node>
+    <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="24,36">
+        <interface id="0" name="GigabitEthernet0/1"/>
+    </node>
+    <node name="iosv-2" type="SIMPLE" subtype="IOSv" location="912,36">
+        <interface id="0" name="GigabitEthernet0/1"/>
+    </node>
+    <connection dst="/virl:topology/virl:node[1]/virl:interface[2]" src="/virl:topology/virl:node[2]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[2]" src="/virl:topology/virl:node[4]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[7]/virl:interface[1]" src="/virl:topology/virl:node[6]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[8]/virl:interface[1]" src="/virl:topology/virl:node[10]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[8]/virl:interface[3]" src="/virl:topology/virl:node[6]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[7]/virl:interface[3]" src="/virl:topology/virl:node[10]/virl:interface[4]"/>
+    <connection dst="/virl:topology/virl:node[4]/virl:interface[3]" src="/virl:topology/virl:node[1]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[3]" src="/virl:topology/virl:node[5]/virl:interface[4]"/>
+    <connection dst="/virl:topology/virl:node[11]/virl:interface[1]" src="/virl:topology/virl:node[13]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[11]/virl:interface[2]" src="/virl:topology/virl:node[14]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[1]/virl:interface[1]" src="/virl:topology/virl:node[14]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[1]" src="/virl:topology/virl:node[14]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[1]" src="/virl:topology/virl:node[13]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[10]/virl:interface[1]" src="/virl:topology/virl:node[13]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[7]/virl:interface[2]" src="/virl:topology/virl:node[15]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[8]/virl:interface[2]" src="/virl:topology/virl:node[16]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[7]/virl:interface[4]" src="/virl:topology/virl:node[16]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[8]/virl:interface[4]" src="/virl:topology/virl:node[15]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[9]/virl:interface[1]" src="/virl:topology/virl:node[15]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[9]/virl:interface[2]" src="/virl:topology/virl:node[16]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[9]/virl:interface[3]" src="/virl:topology/virl:node[19]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[2]" src="/virl:topology/virl:node[17]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[4]/virl:interface[2]" src="/virl:topology/virl:node[18]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[4]/virl:interface[4]" src="/virl:topology/virl:node[17]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[4]" src="/virl:topology/virl:node[18]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[17]/virl:interface[3]" src="/virl:topology/virl:node[3]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[18]/virl:interface[3]" src="/virl:topology/virl:node[3]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[3]" src="/virl:topology/virl:node[20]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[12]/virl:interface[1]" src="/virl:topology/virl:node[13]/virl:interface[4]"/>
+    <connection dst="/virl:topology/virl:node[12]/virl:interface[2]" src="/virl:topology/virl:node[14]/virl:interface[4]"/>
+</topology>

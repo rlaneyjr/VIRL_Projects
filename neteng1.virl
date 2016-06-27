@@ -1281,8 +1281,8 @@ end
     </node>
     <node name="dc3-nxos1" type="SIMPLE" subtype="NX-OSv" location="206,104" ipv4="192.168.1.5">
         <extensions>
-            <entry key="static_ip" type="String">172.16.1.123</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.123</entry>
+            <entry key="static_ip" type="String">172.16.1.125</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.125</entry>
             <entry key="config" type="String">! NX-OSv Config generated on 2016-06-27 07:13
 ! by autonetkit_0.21.4
 !
@@ -1374,7 +1374,7 @@ interface Ethernet2/4
 
 interface mgmt0
   description OOB Management
-  ip address 172.16.1.123/24
+  ip address 172.16.1.125/24
   duplex full
   mac-address fa16.3e00.0009
   no shutdown

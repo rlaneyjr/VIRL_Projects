@@ -289,6 +289,11 @@ vrf context management
   ip route 0.0.0.0/0 172.16.1.1
 hardware forwarding unicast trace
 
+vrf context default
+  ip route 10.0.22.0/24 172.16.1.1
+  ip route 192.168.20.0/24 172.16.1.1
+  ip route 192.168.22.0/24 172.16.1.1
+
 interface Loopback0
   description Loopback
   ip address 192.168.1.13/32
@@ -329,7 +334,7 @@ interface Ethernet2/4
 interface mgmt0
   description OOB Management
   duplex full
-  vrf member management
+  vrf member default
   ip address 172.16.1.134/24
   mac-address fa16.3e00.0017
   no shutdown
@@ -643,6 +648,11 @@ vrf context management
   ip route 0.0.0.0/0 172.16.1.1
 hardware forwarding unicast trace
 
+vrf context default
+  ip route 10.0.22.0/24 172.16.1.1
+  ip route 192.168.20.0/24 172.16.1.1
+  ip route 192.168.22.0/24 172.16.1.1
+
 interface Loopback0
   description Loopback
   ip address 192.168.1.16/32
@@ -686,7 +696,7 @@ interface mgmt0
   duplex full
   mac-address fa16.3e00.0024
   no shutdown
-  vrf member management
+  vrf member default
 
 
 line console
@@ -1335,6 +1345,11 @@ vrf context management
   ip route 0.0.0.0/0 172.16.1.1
 hardware forwarding unicast trace
 
+vrf context default
+  ip route 10.0.22.0/24 172.16.1.1
+  ip route 192.168.20.0/24 172.16.1.1
+  ip route 192.168.22.0/24 172.16.1.1
+
 interface Loopback0
   description Loopback
   ip address 192.168.1.5/32
@@ -1378,7 +1393,7 @@ interface mgmt0
   duplex full
   mac-address fa16.3e00.0009
   no shutdown
-  vrf member management
+  vrf member default
 
 
 line console
@@ -1576,6 +1591,11 @@ vrf context management
   ip route 0.0.0.0/0 172.16.1.1
 hardware forwarding unicast trace
 
+vrf context default
+  ip route 10.0.22.0/24 172.16.1.1
+  ip route 192.168.20.0/24 172.16.1.1
+  ip route 192.168.22.0/24 172.16.1.1
+
 interface Loopback0
   description Loopback
   ip address 192.168.1.8/32
@@ -1619,7 +1639,7 @@ interface mgmt0
   duplex full
   mac-address fa16.3e00.000e
   no shutdown
-  vrf member management
+  vrf member default
 
 
 line console
@@ -3039,6 +3059,11 @@ vrf context management
   ip route 0.0.0.0/0 172.16.1.1
 hardware forwarding unicast trace
 
+vrf context default
+  ip route 10.0.22.0/24 172.16.1.1
+  ip route 192.168.20.0/24 172.16.1.1
+  ip route 192.168.22.0/24 172.16.1.1
+
 interface Loopback0
   description Loopback
   ip address 192.168.1.4/32
@@ -3074,7 +3099,7 @@ interface mgmt0
   duplex full
   mac-address fa16.3e00.0004
   no shutdown
-  vrf member management
+  vrf member default
 
 
 line console
@@ -3271,6 +3296,11 @@ vrf context management
   ip route 0.0.0.0/0 172.16.1.1
 hardware forwarding unicast trace
 
+vrf context default
+  ip route 10.0.22.0/24 172.16.1.1
+  ip route 192.168.20.0/24 172.16.1.1
+  ip route 192.168.22.0/24 172.16.1.1
+
 interface Loopback0
   description Loopback
   ip address 192.168.1.10/32
@@ -3306,7 +3336,7 @@ interface mgmt0
   duplex full
   mac-address fa16.3e00.0012
   no shutdown
-  vrf member management
+  vrf member default
 
 
 line console
@@ -3503,6 +3533,11 @@ vrf context management
   ip route 0.0.0.0/0 172.16.1.1
 hardware forwarding unicast trace
 
+vrf context default
+  ip route 10.0.22.0/24 172.16.1.1
+  ip route 192.168.20.0/24 172.16.1.1
+  ip route 192.168.22.0/24 172.16.1.1
+
 interface Loopback0
   description Loopback
   ip address 192.168.1.14/32
@@ -3538,7 +3573,7 @@ interface mgmt0
   duplex full
   mac-address fa16.3e00.001b
   no shutdown
-  vrf member management
+  vrf member default
 
 
 line console
@@ -3735,6 +3770,11 @@ vrf context management
   ip route 0.0.0.0/0 172.16.1.1
 hardware forwarding unicast trace
 
+vrf context default
+  ip route 10.0.22.0/24 172.16.1.1
+  ip route 192.168.20.0/24 172.16.1.1
+  ip route 192.168.22.0/24 172.16.1.1
+
 interface Loopback0
   description Loopback
   ip address 192.168.1.15/32
@@ -3770,7 +3810,7 @@ interface mgmt0
   duplex full
   mac-address fa16.3e00.001f
   no shutdown
-  vrf member management
+  vrf member default
 
 
 line console

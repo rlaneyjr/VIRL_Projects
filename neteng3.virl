@@ -46,7 +46,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox
+username rlaney privilege 15 secret 0 ralrox22
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -278,7 +278,7 @@ rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
-username rlaney password 5 $5$TJL/72do$7qowcK1gPB0fJ86/LBjy4FpyeBDSynaODX5vYFcCQA9  role network-operator
+username rlaney password 0 ralrox22 role network-operator
 username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
@@ -286,13 +286,14 @@ crypto key generate rsa modulus 1024
 vlan 1
 
 vrf context management
-  ip route 0.0.0.0/0 172.16.1.1
-hardware forwarding unicast trace
-
-vrf context default
   ip route 10.0.22.0/24 172.16.1.1
   ip route 192.168.20.0/24 172.16.1.1
   ip route 192.168.22.0/24 172.16.1.1
+hardware forwarding unicast trace
+
+ip route 10.0.22.0/24 172.16.1.1
+ip route 192.168.20.0/24 172.16.1.1
+ip route 192.168.22.0/24 172.16.1.1
 
 interface Loopback0
   description Loopback
@@ -492,7 +493,7 @@ service timestamps log datetime msec
 no service password-encryption
 service compress-config
 no service config
-username rlaney privilege 15 secret 0 ralrox
+username rlaney privilege 15 secret 0 ralrox22
 crypto key generate rsa modulus 1024 
 ip classless
 ip subnet-zero
@@ -637,7 +638,7 @@ rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
-username rlaney password 5 $5$M68RP.GN$M.ILLBUaIz2JXOoUORYHgSJpdgYkZNIVkH9RtVf/Ul9  role network-operator
+username rlaney password 0 ralrox22 role network-operator
 username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
@@ -645,13 +646,14 @@ crypto key generate rsa modulus 1024
 vlan 1
 
 vrf context management
-  ip route 0.0.0.0/0 172.16.1.1
-hardware forwarding unicast trace
-
-vrf context default
   ip route 10.0.22.0/24 172.16.1.1
   ip route 192.168.20.0/24 172.16.1.1
   ip route 192.168.22.0/24 172.16.1.1
+hardware forwarding unicast trace
+
+ip route 10.0.22.0/24 172.16.1.1
+ip route 192.168.20.0/24 172.16.1.1
+ip route 192.168.22.0/24 172.16.1.1
 
 interface Loopback0
   description Loopback
@@ -871,7 +873,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox
+username rlaney privilege 15 secret 0 ralrox22
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -1101,7 +1103,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox
+username rlaney privilege 15 secret 0 ralrox22
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -1334,7 +1336,7 @@ rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
-username rlaney password 5 $5$M68RP.GN$M.ILLBUaIz2JXOoUORYHgSJpdgYkZNIVkH9RtVf/Ul9  role network-operator
+username rlaney password 0 ralrox22 role network-operator
 username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
@@ -1342,13 +1344,14 @@ crypto key generate rsa modulus 1024
 vlan 1
 
 vrf context management
-  ip route 0.0.0.0/0 172.16.1.1
-hardware forwarding unicast trace
-
-vrf context default
   ip route 10.0.22.0/24 172.16.1.1
   ip route 192.168.20.0/24 172.16.1.1
   ip route 192.168.22.0/24 172.16.1.1
+hardware forwarding unicast trace
+
+ip route 10.0.22.0/24 172.16.1.1
+ip route 192.168.20.0/24 172.16.1.1
+ip route 192.168.22.0/24 172.16.1.1
 
 interface Loopback0
   description Loopback
@@ -1580,7 +1583,7 @@ rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
-username rlaney password 5 $5$M68RP.GN$M.ILLBUaIz2JXOoUORYHgSJpdgYkZNIVkH9RtVf/Ul9  role network-operator
+username rlaney password 0 ralrox22 role network-operator
 username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
@@ -1588,13 +1591,14 @@ crypto key generate rsa modulus 1024
 vlan 1
 
 vrf context management
-  ip route 0.0.0.0/0 172.16.1.1
-hardware forwarding unicast trace
-
-vrf context default
   ip route 10.0.22.0/24 172.16.1.1
   ip route 192.168.20.0/24 172.16.1.1
   ip route 192.168.22.0/24 172.16.1.1
+hardware forwarding unicast trace
+
+ip route 10.0.22.0/24 172.16.1.1
+ip route 192.168.20.0/24 172.16.1.1
+ip route 192.168.22.0/24 172.16.1.1
 
 interface Loopback0
   description Loopback
@@ -1794,7 +1798,7 @@ service timestamps log datetime msec
 no service password-encryption
 service compress-config
 no service config
-username rlaney privilege 15 secret 0 ralrox
+username rlaney privilege 15 secret 0 ralrox22
 crypto key generate rsa modulus 1024 
 ip classless
 ip subnet-zero
@@ -1926,7 +1930,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox
+username rlaney privilege 15 secret 0 ralrox22
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -2156,7 +2160,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox
+username rlaney privilege 15 secret 0 ralrox22
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -2366,7 +2370,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox
+username rlaney privilege 15 secret 0 ralrox22
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -2576,7 +2580,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox
+username rlaney privilege 15 secret 0 ralrox22
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -2806,7 +2810,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox
+username rlaney privilege 15 secret 0 ralrox22
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -3048,7 +3052,7 @@ rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
-username rlaney password 5 $5$M68RP.GN$M.ILLBUaIz2JXOoUORYHgSJpdgYkZNIVkH9RtVf/Ul9  role network-operator
+username rlaney password 0 ralrox22 role network-operator
 username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
@@ -3056,13 +3060,14 @@ crypto key generate rsa modulus 1024
 vlan 1
 
 vrf context management
-  ip route 0.0.0.0/0 172.16.1.1
-hardware forwarding unicast trace
-
-vrf context default
   ip route 10.0.22.0/24 172.16.1.1
   ip route 192.168.20.0/24 172.16.1.1
   ip route 192.168.22.0/24 172.16.1.1
+hardware forwarding unicast trace
+
+ip route 10.0.22.0/24 172.16.1.1
+ip route 192.168.20.0/24 172.16.1.1
+ip route 192.168.22.0/24 172.16.1.1
 
 interface Loopback0
   description Loopback
@@ -3285,7 +3290,7 @@ rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
-username rlaney password 5 $5$M68RP.GN$M.ILLBUaIz2JXOoUORYHgSJpdgYkZNIVkH9RtVf/Ul9  role network-operator
+username rlaney password 0 ralrox22 role network-operator
 username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
@@ -3293,13 +3298,14 @@ crypto key generate rsa modulus 1024
 vlan 1
 
 vrf context management
-  ip route 0.0.0.0/0 172.16.1.1
-hardware forwarding unicast trace
-
-vrf context default
   ip route 10.0.22.0/24 172.16.1.1
   ip route 192.168.20.0/24 172.16.1.1
   ip route 192.168.22.0/24 172.16.1.1
+hardware forwarding unicast trace
+
+ip route 10.0.22.0/24 172.16.1.1
+ip route 192.168.20.0/24 172.16.1.1
+ip route 192.168.22.0/24 172.16.1.1
 
 interface Loopback0
   description Loopback
@@ -3522,7 +3528,7 @@ rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
-username rlaney password 5 $5$M68RP.GN$M.ILLBUaIz2JXOoUORYHgSJpdgYkZNIVkH9RtVf/Ul9  role network-operator
+username rlaney password 0 ralrox22 role network-operator
 username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
@@ -3530,13 +3536,14 @@ crypto key generate rsa modulus 1024
 vlan 1
 
 vrf context management
-  ip route 0.0.0.0/0 172.16.1.1
-hardware forwarding unicast trace
-
-vrf context default
   ip route 10.0.22.0/24 172.16.1.1
   ip route 192.168.20.0/24 172.16.1.1
   ip route 192.168.22.0/24 172.16.1.1
+hardware forwarding unicast trace
+
+ip route 10.0.22.0/24 172.16.1.1
+ip route 192.168.20.0/24 172.16.1.1
+ip route 192.168.22.0/24 172.16.1.1
 
 interface Loopback0
   description Loopback
@@ -3759,7 +3766,7 @@ rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
-username rlaney password 5 $5$M68RP.GN$M.ILLBUaIz2JXOoUORYHgSJpdgYkZNIVkH9RtVf/Ul9  role network-operator
+username rlaney password 0 ralrox22 role network-operator
 username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
@@ -3767,13 +3774,14 @@ crypto key generate rsa modulus 1024
 vlan 1
 
 vrf context management
-  ip route 0.0.0.0/0 172.16.1.1
-hardware forwarding unicast trace
-
-vrf context default
   ip route 10.0.22.0/24 172.16.1.1
   ip route 192.168.20.0/24 172.16.1.1
   ip route 192.168.22.0/24 172.16.1.1
+hardware forwarding unicast trace
+
+ip route 10.0.22.0/24 172.16.1.1
+ip route 192.168.20.0/24 172.16.1.1
+ip route 192.168.22.0/24 172.16.1.1
 
 interface Loopback0
   description Loopback
@@ -3984,7 +3992,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox
+username rlaney privilege 15 secret 0 ralrox22
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -4194,7 +4202,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox
+username rlaney privilege 15 secret 0 ralrox22
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero

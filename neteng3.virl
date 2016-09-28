@@ -238,6 +238,7 @@ end
         <extensions>
             <entry key="static_ip" type="String">172.16.1.134</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.134</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">! NX-OSv Config generated on 2016-06-27 07:13
 ! by autonetkit_0.21.4
 !
@@ -285,10 +286,7 @@ crypto key generate rsa modulus 1024
 
 vlan 1
 
-vrf context management
-  ip route 10.0.22.0/24 172.16.1.1
-  ip route 192.168.20.0/24 172.16.1.1
-  ip route 192.168.22.0/24 172.16.1.1
+
 hardware forwarding unicast trace
 
 ip route 10.0.22.0/24 172.16.1.1
@@ -473,7 +471,6 @@ router bgp 1
     !
     !
         </entry>
-            <entry key="Auto-generate config" type="Boolean">false</entry>
         </extensions>
         <interface id="0" name="Ethernet2/1" ipv4="11.0.0.22" netPrefixLenV4="30"/>
         <interface id="1" name="Ethernet2/2" ipv4="11.0.0.18" netPrefixLenV4="30"/>
@@ -597,6 +594,7 @@ end
         <extensions>
             <entry key="static_ip" type="String">172.16.1.135</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.135</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">! NX-OSv Config generated on 2016-06-27 07:13
 ! by autonetkit_0.21.4
 !
@@ -645,10 +643,7 @@ crypto key generate rsa modulus 1024
 
 vlan 1
 
-vrf context management
-  ip route 10.0.22.0/24 172.16.1.1
-  ip route 192.168.20.0/24 172.16.1.1
-  ip route 192.168.22.0/24 172.16.1.1
+
 hardware forwarding unicast trace
 
 ip route 10.0.22.0/24 172.16.1.1
@@ -833,7 +828,6 @@ router bgp 1
     !
     !
         </entry>
-            <entry key="Auto-generate config" type="Boolean">false</entry>
         </extensions>
         <interface id="0" name="Ethernet2/1" ipv4="11.0.128.29" netPrefixLenV4="30"/>
         <interface id="1" name="Ethernet2/2" ipv4="11.0.128.26" netPrefixLenV4="30"/>
@@ -1295,6 +1289,7 @@ end
         <extensions>
             <entry key="static_ip" type="String">172.16.1.125</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.125</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">! NX-OSv Config generated on 2016-06-27 07:13
 ! by autonetkit_0.21.4
 !
@@ -1343,10 +1338,7 @@ crypto key generate rsa modulus 1024
 
 vlan 1
 
-vrf context management
-  ip route 10.0.22.0/24 172.16.1.1
-  ip route 192.168.20.0/24 172.16.1.1
-  ip route 192.168.22.0/24 172.16.1.1
+
 hardware forwarding unicast trace
 
 ip route 10.0.22.0/24 172.16.1.1
@@ -1531,7 +1523,6 @@ router bgp 1
     !
     !
         </entry>
-            <entry key="Auto-generate config" type="Boolean">false</entry>
         </extensions>
         <interface id="0" name="Ethernet2/1" ipv4="11.0.128.58" netPrefixLenV4="30"/>
         <interface id="1" name="Ethernet2/2" ipv4="11.0.128.62" netPrefixLenV4="30"/>
@@ -1542,6 +1533,7 @@ router bgp 1
         <extensions>
             <entry key="static_ip" type="String">172.16.1.126</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.126</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">! NX-OSv Config generated on 2016-06-27 07:13
 ! by autonetkit_0.21.4
 !
@@ -1590,10 +1582,7 @@ crypto key generate rsa modulus 1024
 
 vlan 1
 
-vrf context management
-  ip route 10.0.22.0/24 172.16.1.1
-  ip route 192.168.20.0/24 172.16.1.1
-  ip route 192.168.22.0/24 172.16.1.1
+
 hardware forwarding unicast trace
 
 ip route 10.0.22.0/24 172.16.1.1
@@ -1778,7 +1767,6 @@ router bgp 1
     !
     !
         </entry>
-            <entry key="Auto-generate config" type="Boolean">false</entry>
         </extensions>
         <interface id="0" name="Ethernet2/1" ipv4="11.0.128.1" netPrefixLenV4="30"/>
         <interface id="1" name="Ethernet2/2" ipv4="11.0.128.22" netPrefixLenV4="30"/>
@@ -3011,7 +2999,8 @@ end
         <extensions>
             <entry key="static_ip" type="String">172.16.1.123</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.123</entry>
-            <entry key="config" type="string">! NX-OSv Config generated on 2016-06-27 07:13
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">! NX-OSv Config generated on 2016-06-27 07:13
 ! by autonetkit_0.21.4
 !
 version 6.2(1)
@@ -3059,10 +3048,7 @@ crypto key generate rsa modulus 1024
 
 vlan 1
 
-vrf context management
-  ip route 10.0.22.0/24 172.16.1.1
-  ip route 192.168.20.0/24 172.16.1.1
-  ip route 192.168.22.0/24 172.16.1.1
+
 hardware forwarding unicast trace
 
 ip route 10.0.22.0/24 172.16.1.1
@@ -3239,7 +3225,6 @@ router bgp 1
     !
     !
         </entry>
-            <entry key="Auto-generate config" type="Boolean">false</entry>
         </extensions>
         <interface id="0" name="Ethernet2/1" ipv4="11.0.128.61" netPrefixLenV4="30"/>
         <interface id="1" name="Ethernet2/2" ipv4="11.0.0.37" netPrefixLenV4="30"/>
@@ -3249,7 +3234,8 @@ router bgp 1
         <extensions>
             <entry key="static_ip" type="String">172.16.1.124</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.124</entry>
-            <entry key="config" type="string">! NX-OSv Config generated on 2016-06-27 07:13
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">! NX-OSv Config generated on 2016-06-27 07:13
 ! by autonetkit_0.21.4
 !
 version 6.2(1)
@@ -3297,10 +3283,7 @@ crypto key generate rsa modulus 1024
 
 vlan 1
 
-vrf context management
-  ip route 10.0.22.0/24 172.16.1.1
-  ip route 192.168.20.0/24 172.16.1.1
-  ip route 192.168.22.0/24 172.16.1.1
+
 hardware forwarding unicast trace
 
 ip route 10.0.22.0/24 172.16.1.1
@@ -3477,7 +3460,6 @@ router bgp 1
     !
     !
         </entry>
-            <entry key="Auto-generate config" type="Boolean">false</entry>
         </extensions>
         <interface id="0" name="Ethernet2/1" ipv4="11.0.128.21" netPrefixLenV4="30"/>
         <interface id="1" name="Ethernet2/2" ipv4="11.0.0.46" netPrefixLenV4="30"/>
@@ -3487,7 +3469,8 @@ router bgp 1
         <extensions>
             <entry key="static_ip" type="String">172.16.1.132</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.132</entry>
-            <entry key="config" type="string">! NX-OSv Config generated on 2016-06-27 07:13
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">! NX-OSv Config generated on 2016-06-27 07:13
 ! by autonetkit_0.21.4
 !
 version 6.2(1)
@@ -3535,10 +3518,7 @@ crypto key generate rsa modulus 1024
 
 vlan 1
 
-vrf context management
-  ip route 10.0.22.0/24 172.16.1.1
-  ip route 192.168.20.0/24 172.16.1.1
-  ip route 192.168.22.0/24 172.16.1.1
+
 hardware forwarding unicast trace
 
 ip route 10.0.22.0/24 172.16.1.1
@@ -3715,7 +3695,6 @@ router bgp 1
     !
     !
         </entry>
-            <entry key="Auto-generate config" type="Boolean">false</entry>
         </extensions>
         <interface id="0" name="Ethernet2/1" ipv4="11.0.0.17" netPrefixLenV4="30"/>
         <interface id="1" name="Ethernet2/2" ipv4="11.0.0.29" netPrefixLenV4="30"/>
@@ -3725,7 +3704,8 @@ router bgp 1
         <extensions>
             <entry key="static_ip" type="String">172.16.1.133</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.133</entry>
-            <entry key="config" type="string">! NX-OSv Config generated on 2016-06-27 07:13
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">! NX-OSv Config generated on 2016-06-27 07:13
 ! by autonetkit_0.21.4
 !
 version 6.2(1)
@@ -3773,10 +3753,7 @@ crypto key generate rsa modulus 1024
 
 vlan 1
 
-vrf context management
-  ip route 10.0.22.0/24 172.16.1.1
-  ip route 192.168.20.0/24 172.16.1.1
-  ip route 192.168.22.0/24 172.16.1.1
+
 hardware forwarding unicast trace
 
 ip route 10.0.22.0/24 172.16.1.1
@@ -3953,7 +3930,6 @@ router bgp 1
     !
     !
         </entry>
-            <entry key="Auto-generate config" type="Boolean">false</entry>
         </extensions>
         <interface id="0" name="Ethernet2/1" ipv4="11.0.128.25" netPrefixLenV4="30"/>
         <interface id="1" name="Ethernet2/2" ipv4="11.0.0.26" netPrefixLenV4="30"/>

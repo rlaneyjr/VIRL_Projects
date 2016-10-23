@@ -46,7 +46,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox22
+username rlaney privilege 15 secret 0 ralrox
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -63,6 +63,7 @@ line con 0
  password cisco
 !
 cdp run
+lldp run
 !
 !
 username cisco privilege 15 password 0 cisco
@@ -260,6 +261,7 @@ vdc sc8-nxos1 id 1
 feature telnet
 feature ospf
 feature bgp
+feature lldp
 
 username adminbackup password 5 ! role network-operator
 username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
@@ -279,7 +281,7 @@ rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
-username rlaney password 0 ralrox22 role network-operator
+username rlaney password 0 ralrox role network-operator
 username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
@@ -490,7 +492,7 @@ service timestamps log datetime msec
 no service password-encryption
 service compress-config
 no service config
-username rlaney privilege 15 secret 0 ralrox22
+username rlaney privilege 15 secret 0 ralrox
 crypto key generate rsa modulus 1024 
 ip classless
 ip subnet-zero
@@ -524,6 +526,7 @@ vlan 2
 !
 !
 cdp run
+lldp run
 !
 !
 !
@@ -614,9 +617,9 @@ vdc sc8-nxos2 id 1
   limit-resource m6route-mem minimum 8 maximum 8
 
 feature telnet
-
 feature ospf
 feature bgp
+feature lldp
 
 username adminbackup password 5 ! role network-operator
 username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
@@ -636,7 +639,7 @@ rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
-username rlaney password 0 ralrox22 role network-operator
+username rlaney password 0 ralrox role network-operator
 username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
@@ -867,7 +870,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox22
+username rlaney privilege 15 secret 0 ralrox
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -884,6 +887,7 @@ line con 0
  password cisco
 !
 cdp run
+lldp run
 !
 !
 username cisco privilege 15 password 0 cisco
@@ -1097,7 +1101,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox22
+username rlaney privilege 15 secret 0 ralrox
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -1114,6 +1118,7 @@ line con 0
  password cisco
 !
 cdp run
+lldp run
 !
 !
 username cisco privilege 15 password 0 cisco
@@ -1309,9 +1314,9 @@ vdc dc3-nxos1 id 1
   limit-resource m6route-mem minimum 8 maximum 8
 
 feature telnet
-
 feature ospf
 feature bgp
+feature lldp
 
 username adminbackup password 5 ! role network-operator
 username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
@@ -1331,7 +1336,7 @@ rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
-username rlaney password 0 ralrox22 role network-operator
+username rlaney password 0 ralrox role network-operator
 username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
@@ -1553,9 +1558,9 @@ vdc dc3-nxos2 id 1
   limit-resource m6route-mem minimum 8 maximum 8
 
 feature telnet
-
 feature ospf
 feature bgp
+feature lldp
 
 username adminbackup password 5 ! role network-operator
 username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
@@ -1575,7 +1580,7 @@ rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
-username rlaney password 0 ralrox22 role network-operator
+username rlaney password 0 ralrox role network-operator
 username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
@@ -1786,7 +1791,7 @@ service timestamps log datetime msec
 no service password-encryption
 service compress-config
 no service config
-username rlaney privilege 15 secret 0 ralrox22
+username rlaney privilege 15 secret 0 ralrox
 crypto key generate rsa modulus 1024 
 ip classless
 ip subnet-zero
@@ -1820,6 +1825,7 @@ vlan 2
 !
 !
 cdp run
+lldp run
 !
 !
 !
@@ -1918,7 +1924,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox22
+username rlaney privilege 15 secret 0 ralrox
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -1935,6 +1941,7 @@ line con 0
  password cisco
 !
 cdp run
+lldp run
 !
 !
 username cisco privilege 15 password 0 cisco
@@ -2148,7 +2155,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox22
+username rlaney privilege 15 secret 0 ralrox
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -2165,6 +2172,7 @@ line con 0
  password cisco
 !
 cdp run
+lldp run
 !
 !
 username cisco privilege 15 password 0 cisco
@@ -2358,7 +2366,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox22
+username rlaney privilege 15 secret 0 ralrox
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -2375,6 +2383,7 @@ line con 0
  password cisco
 !
 cdp run
+lldp run
 !
 !
 username cisco privilege 15 password 0 cisco
@@ -2568,7 +2577,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox22
+username rlaney privilege 15 secret 0 ralrox
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -2585,6 +2594,7 @@ line con 0
  password cisco
 !
 cdp run
+lldp run
 !
 !
 username cisco privilege 15 password 0 cisco
@@ -2798,7 +2808,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox22
+username rlaney privilege 15 secret 0 ralrox
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -2815,6 +2825,7 @@ line con 0
  password cisco
 !
 cdp run
+lldp run
 !
 !
 username cisco privilege 15 password 0 cisco
@@ -3019,9 +3030,9 @@ vdc dc3-core-nxos1 id 1
   limit-resource m6route-mem minimum 8 maximum 8
 
 feature telnet
-
 feature ospf
 feature bgp
+feature lldp
 
 username adminbackup password 5 ! role network-operator
 username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
@@ -3041,7 +3052,7 @@ rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
-username rlaney password 0 ralrox22 role network-operator
+username rlaney password 0 ralrox role network-operator
 username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
@@ -3254,9 +3265,9 @@ vdc dc3-core-nxos2 id 1
   limit-resource m6route-mem minimum 8 maximum 8
 
 feature telnet
-
 feature ospf
 feature bgp
+feature lldp
 
 username adminbackup password 5 ! role network-operator
 username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
@@ -3276,7 +3287,7 @@ rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
-username rlaney password 0 ralrox22 role network-operator
+username rlaney password 0 ralrox role network-operator
 username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
@@ -3489,9 +3500,9 @@ vdc sc8-core-nxos1 id 1
   limit-resource m6route-mem minimum 8 maximum 8
 
 feature telnet
-
 feature ospf
 feature bgp
+feature lldp
 
 username adminbackup password 5 ! role network-operator
 username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
@@ -3511,7 +3522,7 @@ rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
-username rlaney password 0 ralrox22 role network-operator
+username rlaney password 0 ralrox role network-operator
 username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
@@ -3724,9 +3735,9 @@ vdc sc8-core-nxos2 id 1
   limit-resource m6route-mem minimum 8 maximum 8
 
 feature telnet
-
 feature ospf
 feature bgp
+feature lldp
 
 username adminbackup password 5 ! role network-operator
 username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
@@ -3746,7 +3757,7 @@ rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
 rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
 rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
-username rlaney password 0 ralrox22 role network-operator
+username rlaney password 0 ralrox role network-operator
 username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
@@ -3968,7 +3979,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox22
+username rlaney privilege 15 secret 0 ralrox
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -3985,6 +3996,7 @@ line con 0
  password cisco
 !
 cdp run
+lldp run
 !
 !
 username cisco privilege 15 password 0 cisco
@@ -4178,7 +4190,7 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 no service config
-username rlaney privilege 15 secret 0 ralrox22
+username rlaney privilege 15 secret 0 ralrox
 crypto key generate rsa modulus 1024
 ip classless
 ip subnet-zero
@@ -4195,6 +4207,7 @@ line con 0
  password cisco
 !
 cdp run
+lldp run
 !
 !
 username cisco privilege 15 password 0 cisco

@@ -258,6 +258,14 @@ vdc sc8-nxos1 id 1
   limit-resource m4route-mem minimum 58 maximum 58
   limit-resource m6route-mem minimum 8 maximum 8
 
+vrf definition Mgmt-intf
+
+ address-family ipv4
+ exit-address-family
+
+ address-family ipv6
+ exit-address-family
+
 feature telnet
 feature ospf
 feature bgp
@@ -291,9 +299,9 @@ vlan 1
 
 hardware forwarding unicast trace
 
-ip route 10.0.22.0/24 172.16.1.1
-ip route 192.168.20.0/24 172.16.1.1
-ip route 192.168.22.0/24 172.16.1.1
+ip route 10.0.22.0/24 172.16.1.1 vrf Mgmt-intf
+ip route 192.168.20.0/24 172.16.1.1 vrf Mgmt-intf
+ip route 192.168.22.0/24 172.16.1.1 vrf Mgmt-intf
 
 interface Loopback0
   description Loopback
@@ -335,7 +343,7 @@ interface Ethernet2/4
 interface mgmt0
   description OOB Management
   duplex full
-  vrf member default
+  vrf member Mgmt-intf
   ip address 172.16.1.134/24
   mac-address fa16.3e00.0017
   no shutdown
@@ -616,6 +624,14 @@ vdc sc8-nxos2 id 1
   limit-resource m4route-mem minimum 58 maximum 58
   limit-resource m6route-mem minimum 8 maximum 8
 
+vrf definition Mgmt-intf
+
+ address-family ipv4
+ exit-address-family
+
+ address-family ipv6
+ exit-address-family
+
 feature telnet
 feature ospf
 feature bgp
@@ -649,9 +665,9 @@ vlan 1
 
 hardware forwarding unicast trace
 
-ip route 10.0.22.0/24 172.16.1.1
-ip route 192.168.20.0/24 172.16.1.1
-ip route 192.168.22.0/24 172.16.1.1
+ip route 10.0.22.0/24 172.16.1.1 vrf Mgmt-intf
+ip route 192.168.20.0/24 172.16.1.1 vrf Mgmt-intf
+ip route 192.168.22.0/24 172.16.1.1 vrf Mgmt-intf
 
 interface Loopback0
   description Loopback
@@ -696,7 +712,7 @@ interface mgmt0
   duplex full
   mac-address fa16.3e00.0024
   no shutdown
-  vrf member default
+  vrf member Mgmt-intf
 
 
 line console
@@ -1313,6 +1329,14 @@ vdc dc3-nxos1 id 1
   limit-resource m4route-mem minimum 58 maximum 58
   limit-resource m6route-mem minimum 8 maximum 8
 
+vrf definition Mgmt-intf
+
+ address-family ipv4
+ exit-address-family
+
+ address-family ipv6
+ exit-address-family
+
 feature telnet
 feature ospf
 feature bgp
@@ -1346,9 +1370,9 @@ vlan 1
 
 hardware forwarding unicast trace
 
-ip route 10.0.22.0/24 172.16.1.1
-ip route 192.168.20.0/24 172.16.1.1
-ip route 192.168.22.0/24 172.16.1.1
+ip route 10.0.22.0/24 172.16.1.1 vrf Mgmt-intf
+ip route 192.168.20.0/24 172.16.1.1 vrf Mgmt-intf
+ip route 192.168.22.0/24 172.16.1.1 vrf Mgmt-intf
 
 interface Loopback0
   description Loopback
@@ -1393,7 +1417,7 @@ interface mgmt0
   duplex full
   mac-address fa16.3e00.0009
   no shutdown
-  vrf member default
+  vrf member Mgmt-intf
 
 
 line console
@@ -1557,6 +1581,14 @@ vdc dc3-nxos2 id 1
   limit-resource m4route-mem minimum 58 maximum 58
   limit-resource m6route-mem minimum 8 maximum 8
 
+vrf definition Mgmt-intf
+
+ address-family ipv4
+ exit-address-family
+
+ address-family ipv6
+ exit-address-family
+
 feature telnet
 feature ospf
 feature bgp
@@ -1590,9 +1622,9 @@ vlan 1
 
 hardware forwarding unicast trace
 
-ip route 10.0.22.0/24 172.16.1.1
-ip route 192.168.20.0/24 172.16.1.1
-ip route 192.168.22.0/24 172.16.1.1
+ip route 10.0.22.0/24 172.16.1.1 vrf Mgmt-intf
+ip route 192.168.20.0/24 172.16.1.1 vrf Mgmt-intf
+ip route 192.168.22.0/24 172.16.1.1 vrf Mgmt-intf
 
 interface Loopback0
   description Loopback
@@ -1637,7 +1669,7 @@ interface mgmt0
   duplex full
   mac-address fa16.3e00.000e
   no shutdown
-  vrf member default
+  vrf member Mgmt-intf
 
 
 line console
@@ -3029,6 +3061,14 @@ vdc dc3-core-nxos1 id 1
   limit-resource m4route-mem minimum 58 maximum 58
   limit-resource m6route-mem minimum 8 maximum 8
 
+vrf definition Mgmt-intf
+
+ address-family ipv4
+ exit-address-family
+
+ address-family ipv6
+ exit-address-family
+
 feature telnet
 feature ospf
 feature bgp
@@ -3062,9 +3102,9 @@ vlan 1
 
 hardware forwarding unicast trace
 
-ip route 10.0.22.0/24 172.16.1.1
-ip route 192.168.20.0/24 172.16.1.1
-ip route 192.168.22.0/24 172.16.1.1
+ip route 10.0.22.0/24 172.16.1.1 vrf Mgmt-intf
+ip route 192.168.20.0/24 172.16.1.1 vrf Mgmt-intf
+ip route 192.168.22.0/24 172.16.1.1 vrf Mgmt-intf
 
 interface Loopback0
   description Loopback
@@ -3101,7 +3141,7 @@ interface mgmt0
   duplex full
   mac-address fa16.3e00.0004
   no shutdown
-  vrf member default
+  vrf member Mgmt-intf
 
 
 line console
@@ -3264,6 +3304,14 @@ vdc dc3-core-nxos2 id 1
   limit-resource m4route-mem minimum 58 maximum 58
   limit-resource m6route-mem minimum 8 maximum 8
 
+vrf definition Mgmt-intf
+
+ address-family ipv4
+ exit-address-family
+
+ address-family ipv6
+ exit-address-family
+
 feature telnet
 feature ospf
 feature bgp
@@ -3297,9 +3345,9 @@ vlan 1
 
 hardware forwarding unicast trace
 
-ip route 10.0.22.0/24 172.16.1.1
-ip route 192.168.20.0/24 172.16.1.1
-ip route 192.168.22.0/24 172.16.1.1
+ip route 10.0.22.0/24 172.16.1.1 vrf Mgmt-intf
+ip route 192.168.20.0/24 172.16.1.1 vrf Mgmt-intf
+ip route 192.168.22.0/24 172.16.1.1 vrf Mgmt-intf
 
 interface Loopback0
   description Loopback
@@ -3336,7 +3384,7 @@ interface mgmt0
   duplex full
   mac-address fa16.3e00.0012
   no shutdown
-  vrf member default
+  vrf member Mgmt-intf
 
 
 line console
@@ -3499,6 +3547,14 @@ vdc sc8-core-nxos1 id 1
   limit-resource m4route-mem minimum 58 maximum 58
   limit-resource m6route-mem minimum 8 maximum 8
 
+vrf definition Mgmt-intf
+
+ address-family ipv4
+ exit-address-family
+
+ address-family ipv6
+ exit-address-family
+
 feature telnet
 feature ospf
 feature bgp
@@ -3532,9 +3588,9 @@ vlan 1
 
 hardware forwarding unicast trace
 
-ip route 10.0.22.0/24 172.16.1.1
-ip route 192.168.20.0/24 172.16.1.1
-ip route 192.168.22.0/24 172.16.1.1
+ip route 10.0.22.0/24 172.16.1.1 vrf Mgmt-intf
+ip route 192.168.20.0/24 172.16.1.1 vrf Mgmt-intf
+ip route 192.168.22.0/24 172.16.1.1 vrf Mgmt-intf
 
 interface Loopback0
   description Loopback
@@ -3571,7 +3627,7 @@ interface mgmt0
   duplex full
   mac-address fa16.3e00.001b
   no shutdown
-  vrf member default
+  vrf member Mgmt-intf
 
 
 line console
@@ -3734,6 +3790,14 @@ vdc sc8-core-nxos2 id 1
   limit-resource m4route-mem minimum 58 maximum 58
   limit-resource m6route-mem minimum 8 maximum 8
 
+vrf definition Mgmt-intf
+
+ address-family ipv4
+ exit-address-family
+
+ address-family ipv6
+ exit-address-family
+
 feature telnet
 feature ospf
 feature bgp
@@ -3767,9 +3831,9 @@ vlan 1
 
 hardware forwarding unicast trace
 
-ip route 10.0.22.0/24 172.16.1.1
-ip route 192.168.20.0/24 172.16.1.1
-ip route 192.168.22.0/24 172.16.1.1
+ip route 10.0.22.0/24 172.16.1.1 vrf Mgmt-intf
+ip route 192.168.20.0/24 172.16.1.1 vrf Mgmt-intf
+ip route 192.168.22.0/24 172.16.1.1 vrf Mgmt-intf
 
 interface Loopback0
   description Loopback
@@ -3806,7 +3870,7 @@ interface mgmt0
   duplex full
   mac-address fa16.3e00.001f
   no shutdown
-  vrf member default
+  vrf member Mgmt-intf
 
 
 line console

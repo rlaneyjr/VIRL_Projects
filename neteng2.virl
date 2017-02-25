@@ -281,6 +281,7 @@ rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 username rlaney password 5 $5$TJL/72do$7qowcK1gPB0fJ86/LBjy4FpyeBDSynaODX5vYFcCQA9  role network-operator
 username rlaney role network-admin
 username rlaney role vdc-admin
+username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
 
@@ -635,6 +636,7 @@ rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
 username rlaney password 5 $5$M68RP.GN$M.ILLBUaIz2JXOoUORYHgSJpdgYkZNIVkH9RtVf/Ul9  role network-operator
 username rlaney role vdc-admin
+username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
 
@@ -1327,6 +1329,7 @@ rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
 username rlaney password 5 $5$M68RP.GN$M.ILLBUaIz2JXOoUORYHgSJpdgYkZNIVkH9RtVf/Ul9  role network-operator
 username rlaney role vdc-admin
+username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
 
@@ -1568,6 +1571,7 @@ rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
 username rlaney password 5 $5$M68RP.GN$M.ILLBUaIz2JXOoUORYHgSJpdgYkZNIVkH9RtVf/Ul9  role network-operator
 username rlaney role vdc-admin
+username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
 
@@ -3031,6 +3035,7 @@ rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
 username rlaney password 5 $5$M68RP.GN$M.ILLBUaIz2JXOoUORYHgSJpdgYkZNIVkH9RtVf/Ul9  role network-operator
 username rlaney role vdc-admin
+username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
 
@@ -3263,6 +3268,7 @@ rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
 username rlaney password 5 $5$M68RP.GN$M.ILLBUaIz2JXOoUORYHgSJpdgYkZNIVkH9RtVf/Ul9  role network-operator
 username rlaney role vdc-admin
+username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
 
@@ -3495,6 +3501,7 @@ rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 
 username rlaney password 5 $5$M68RP.GN$M.ILLBUaIz2JXOoUORYHgSJpdgYkZNIVkH9RtVf/Ul9  role network-operator
 username rlaney role vdc-admin
+username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
 
@@ -3728,6 +3735,7 @@ rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
 username rlaney password 5 $5$M68RP.GN$M.ILLBUaIz2JXOoUORYHgSJpdgYkZNIVkH9RtVf/Ul9  role network-operator
 username rlaney role network-admin
 username rlaney role vdc-admin
+username rlaney role network-admin
 username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
 crypto key generate rsa modulus 1024 
 

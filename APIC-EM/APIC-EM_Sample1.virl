@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+    <extensions>
+        <entry key="management_network" type="String">flat</entry>
+    </extensions>
+    <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="60,48">
+        <extensions>
+            <entry key="config" type="String">hostname IOSv1
+!
+aaa new-model
+!
+service timestamps debug datetime msec localtime
+service timestamps log datetime msec localtime
+!
+clock timezone JST +9
+!
+no ip domain-lookup
+ip domain name example.local
+!
+username USER privilege 15 password 0 PASS
+!
+interface GigabitEthernet0/0
+ ip address 10.100.4.1 255.255.0.0
+ no shutdown
+!
+interface GigabitEthernet0/1
+ ip address 10.0.12.1 255.255.255.0
+ ip ospf network point-to-point
+ ip ospf 65000 area 0.0.0.0
+ no shutdown
+!
+router ospf 65000
+ router-id 10.0.0.1
+ default-information originate always metric-type 1
+!
+ip route 0.0.0.0 0.0.0.0 10.100.254.254
+!
+snmp-server community PUBLIC RO
+!
+no banner exec ^C
+no banner incoming ^C
+no banner login ^C
+!
+line con 0
+ exec-timeout 300 0
+ privilege level 15
+ logging synchronous
+ length 0
+!
+line vty 0 4
+ exec-timeout 300 0
+ privilege level 15
+ logging synchronous
+ no login
+ length 0
+ transport input telnet ssh
+!
+end
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+    </node>
+    <node name="iosv-2" type="SIMPLE" subtype="IOSv" location="168,48">
+        <extensions>
+            <entry key="config" type="String">hostname IOSv2
+!
+aaa new-model
+!
+service timestamps debug datetime msec localtime
+service timestamps log datetime msec localtime
+!
+clock timezone JST +9
+!
+no ip domain-lookup
+ip domain name example.local
+!
+username USER privilege 15 password 0 PASS
+!
+interface GigabitEthernet0/1
+ ip address 10.0.12.2 255.255.255.0
+ ip ospf network point-to-point
+ ip ospf 65000 area 0.0.0.0
+ no shutdown
+!
+interface GigabitEthernet0/2
+ ip address 10.0.23.2 255.255.255.0
+ ip ospf network point-to-point
+ ip ospf 65000 area 0.0.0.0
+ no shutdown
+!
+router ospf 65000
+ router-id 10.0.0.2
+!
+snmp-server community PUBLIC RO
+!
+no banner exec ^C
+no banner incoming ^C
+no banner login ^C
+!
+line con 0
+ exec-timeout 300 0
+ privilege level 15
+ logging synchronous
+ length 0
+!
+line vty 0 4
+ exec-timeout 300 0
+ privilege level 15
+ logging synchronous
+ no login
+ length 0
+ transport input telnet ssh
+!
+end
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="iosv-3" type="SIMPLE" subtype="IOSv" location="276,48">
+        <extensions>
+            <entry key="config" type="String">hostname IOSv3
+!
+aaa new-model
+!
+service timestamps debug datetime msec localtime
+service timestamps log datetime msec localtime
+!
+clock timezone JST +9
+!
+no ip domain-lookup
+ip domain name example.local
+!
+username USER privilege 15 password 0 PASS
+!
+interface GigabitEthernet0/1
+ ip address 10.0.23.3 255.255.255.0
+ ip ospf network point-to-point
+ ip ospf 65000 area 0.0.0.0
+ no shutdown
+!
+interface GigabitEthernet0/2
+ ip address 10.0.34.3 255.255.255.0
+ ip ospf network point-to-point
+ ip ospf 65000 area 0.0.0.0
+ no shutdown
+!
+router ospf 65000
+ router-id 10.0.0.3
+!
+snmp-server community PUBLIC RO
+!
+no banner exec ^C
+no banner incoming ^C
+no banner login ^C
+!
+line con 0
+ exec-timeout 300 0
+ privilege level 15
+ logging synchronous
+ length 0
+!
+line vty 0 4
+ exec-timeout 300 0
+ privilege level 15
+ logging synchronous
+ no login
+ length 0
+ transport input telnet ssh
+!
+end
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="iosv-4" type="SIMPLE" subtype="IOSv" location="384,48">
+        <extensions>
+            <entry key="config" type="String">hostname IOSv4
+!
+aaa new-model
+!
+service timestamps debug datetime msec localtime
+service timestamps log datetime msec localtime
+!
+clock timezone JST +9
+!
+no ip domain-lookup
+ip domain name example.local
+!
+username USER privilege 15 password 0 PASS
+!
+interface GigabitEthernet0/1
+ ip address 10.0.34.4 255.255.255.0
+ ip ospf network point-to-point
+ ip ospf 65000 area 0.0.0.0
+ no shutdown
+!
+interface GigabitEthernet0/2
+ ip address 10.0.45.4 255.255.255.0
+ ip ospf network point-to-point
+ ip ospf 65000 area 0.0.0.0
+ no shutdown
+!
+router ospf 65000
+ router-id 10.0.0.4
+!
+snmp-server community PUBLIC RO
+!
+no banner exec ^C
+no banner incoming ^C
+no banner login ^C
+!
+line con 0
+ exec-timeout 300 0
+ privilege level 15
+ logging synchronous
+ length 0
+!
+line vty 0 4
+ exec-timeout 300 0
+ privilege level 15
+ logging synchronous
+ no login
+ length 0
+ transport input telnet ssh
+!
+end
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="iosv-5" type="SIMPLE" subtype="IOSv" location="492,48">
+        <extensions>
+            <entry key="config" type="String">hostname IOSv5
+!
+aaa new-model
+!
+service timestamps debug datetime msec localtime
+service timestamps log datetime msec localtime
+!
+clock timezone JST +9
+!
+no ip domain-lookup
+ip domain name example.local
+!
+username USER privilege 15 password 0 PASS
+!
+interface GigabitEthernet0/1
+ ip address 10.0.45.5 255.255.255.0
+ ip ospf network point-to-point
+ ip ospf 65000 area 0.0.0.0
+ no shutdown
+!
+router ospf 65000
+ router-id 10.0.0.5
+!
+ip route 0.0.0.0 0.0.0.0 10.100.254.254
+!
+snmp-server community PUBLIC RO
+!
+no banner exec ^C
+no banner incoming ^C
+no banner login ^C
+!
+line con 0
+ exec-timeout 300 0
+ privilege level 15
+ logging synchronous
+ length 0
+!
+line vty 0 4
+ exec-timeout 300 0
+ privilege level 15
+ logging synchronous
+ no login
+ length 0
+ transport input telnet ssh
+!
+end
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+    </node>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[1]" src="/virl:topology/virl:node[2]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[4]/virl:interface[1]" src="/virl:topology/virl:node[3]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[1]" src="/virl:topology/virl:node[4]/virl:interface[2]"/>
+</topology>

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+    <extensions>
+        <entry key="management_network" type="String">flat</entry>
+    </extensions>
+    <node name="DC2-OTV" type="SIMPLE" subtype="CSR1000v" location="264,60">
+        <extensions>
+            <entry key="config" type="String">hostname DC2-OTV
+!
+no ip domain lookup
+!
+otv site bridge-domain 100
+ otv isis hello-interval 3
+!
+otv site-identifier 0000.0000.0002
+!
+interface Overlay0
+ no ip address
+ no shutdown
+ otv join-interface GigabitEthernet2
+ otv use-adjacency-server 10.0.1.1 unicast-only
+ otv adjacency-server unicast-only
+ otv isis hello-interval 3
+ service instance 200 ethernet
+  encapsulation dot1q 200
+  bridge-domain 200
+!
+interface GigabitEthernet1
+ shutdown
+!
+interface GigabitEthernet2
+ ip address 10.0.2.2 255.255.255.0
+ no shutdown
+!
+interface GigabitEthernet3
+ no ip address
+ no shutdown
+ service instance 100 ethernet
+  encapsulation dot1q 100
+  bridge-domain 100
+ service instance 200 ethernet
+  encapsulation dot1q 200
+  bridge-domain 200
+!
+ip route 10.0.1.0 255.255.255.0 10.0.2.254
+!
+line con 0
+ exec-timeout 300 0
+ privilege level 15
+ length 0
+line vty 0 4
+ exec-timeout 300 0
+ privilege level 15
+ no login
+ length 0
+!
+end
+</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet2"/>
+        <interface id="1" name="GigabitEthernet3"/>
+    </node>
+    <node name="DC2-Host" type="SIMPLE" subtype="IOSv" location="264,180">
+        <extensions>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">hostname DC2-Host
+!
+service timestamps debug datetime msec localtime
+service timestamps log datetime msec localtime
+!
+clock timezone JST +9
+!
+no ip domain-lookup
+!
+interface GigabitEthernet0/1
+ no ip address
+ no shutdown
+!
+interface GigabitEthernet0/1.200
+ encapsulation dot1Q 200
+ ip address 192.168.200.22 255.255.255.0
+!
+no banner exec ^C
+no banner incoming ^C
+no banner login ^C
+!
+line con 0
+ exec-timeout 300 0
+ privilege level 15
+ logging synchronous
+ length 0
+!
+line vty 0 4
+ exec-timeout 300 0
+ privilege level 15
+ logging synchronous
+ no login
+ length 0
+ transport input telnet
+!
+end
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+    </node>
+    <node name="Core" type="SIMPLE" subtype="IOSv" location="180,60">
+        <extensions>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">hostname Core
+!
+service timestamps debug datetime msec localtime
+service timestamps log datetime msec localtime
+!
+clock timezone JST +9
+!
+no ip domain-lookup
+!
+interface GigabitEthernet0/1
+ ip address 10.0.1.254 255.255.255.0
+ no shutdown
+!
+interface GigabitEthernet0/2
+ ip address 10.0.2.254 255.255.255.0
+ no shutdown
+!
+no banner exec ^C
+no banner incoming ^C
+no banner login ^C
+!
+line con 0
+ exec-timeout 300 0
+ privilege level 15
+ logging synchronous
+ length 0
+!
+line vty 0 4
+ exec-timeout 300 0
+ privilege level 15
+ logging synchronous
+ no login
+ length 0
+ transport input telnet
+!
+end
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="DC1-OTV" type="SIMPLE" subtype="CSR1000v" location="60,60">
+        <extensions>
+            <entry key="config" type="String">hostname DC1-OTV
+!
+no ip domain lookup
+!
+otv site bridge-domain 100
+ otv isis hello-interval 3
+!
+otv site-identifier 0000.0000.0001
+!
+interface Overlay0
+ no ip address
+ no shutdown
+ otv join-interface GigabitEthernet2
+ otv adjacency-server unicast-only
+ otv isis hello-interval 3
+ service instance 200 ethernet
+  encapsulation dot1q 200
+  bridge-domain 200
+!
+interface GigabitEthernet1
+ shutdown
+!
+interface GigabitEthernet2
+ ip address 10.0.1.1 255.255.255.0
+ no shutdown
+!
+interface GigabitEthernet3
+ no ip address
+ no shutdown
+ service instance 100 ethernet
+  encapsulation dot1q 100
+  bridge-domain 100
+ service instance 200 ethernet
+  encapsulation dot1q 200
+  bridge-domain 200
+!
+ip route 10.0.2.0 255.255.255.0 10.0.1.254
+!
+line con 0
+ exec-timeout 300 0
+ privilege level 15
+ length 0
+line vty 0 4
+ exec-timeout 300 0
+ privilege level 15
+ no login
+ length 0
+!
+end
+</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet2"/>
+        <interface id="1" name="GigabitEthernet3"/>
+    </node>
+    <node name="DC1-Host" type="SIMPLE" subtype="IOSv" location="60,180">
+        <extensions>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+            <entry key="config" type="String">hostname DC1-Host
+!
+service timestamps debug datetime msec localtime
+service timestamps log datetime msec localtime
+!
+clock timezone JST +9
+!
+no ip domain-lookup
+!
+interface GigabitEthernet0/1
+ no ip address
+ no shutdown
+!
+interface GigabitEthernet0/1.200
+ encapsulation dot1Q 200
+ ip address 192.168.200.11 255.255.255.0
+!
+no banner exec ^C
+no banner incoming ^C
+no banner login ^C
+!
+line con 0
+ exec-timeout 300 0
+ privilege level 15
+ logging synchronous
+ length 0
+!
+line vty 0 4
+ exec-timeout 300 0
+ privilege level 15
+ logging synchronous
+ no login
+ length 0
+ transport input telnet
+!
+end
+</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+    </node>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[1]" src="/virl:topology/virl:node[4]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[2]" src="/virl:topology/virl:node[1]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[1]" src="/virl:topology/virl:node[4]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[2]"/>
+</topology>

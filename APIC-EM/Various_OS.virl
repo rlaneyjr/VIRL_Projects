@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+    <extensions>
+        <entry key="management_network" type="String">flat</entry>
+    </extensions>
+    <node name="5_ASAv" type="SIMPLE" subtype="ASAv" location="384,36"/>
+    <node name="2_CSR1000v" type="SIMPLE" subtype="CSR1000v" location="108,36"/>
+    <node name="3_XRv" type="SIMPLE" subtype="IOS XRv" location="216,36"/>
+    <node name="1_IOSv" type="SIMPLE" subtype="IOSv" location="36,36"/>
+    <node name="4_NX-OSv" type="SIMPLE" subtype="NX-OSv" location="288,36"/>
+</topology>

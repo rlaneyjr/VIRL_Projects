@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.95" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.95/virl.xsd">
     <extensions>
         <entry key="AutoNetkit.enable_cdp" type="Boolean">true</entry>
         <entry key="AutoNetkit.enable_routing" type="Boolean">false</entry>
@@ -10,14 +10,14 @@
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
             <entry key="config" type="String">!
-! Last configuration change at 01:08:26 UTC Mon Mar 7 2016 by cisco
+! Last configuration change at 03:05:02 UTC Wed Mar 15 2017 by cisco
 !
 version 15.6
 service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 !
-hostname rtr-A
+hostname r1
 !
 boot-start-marker
 boot-end-marker
@@ -64,7 +64,7 @@ multilink bundle-name authenticated
 !
 !
 !
-username cisco privilege 15 secret 5 $1$bTAC$03v9I/iGiE8JktxXxVWLt/
+username cisco privilege 15 secret 5 $1$e/oR$6Z.OB8GUDryfS6TUtxZka0
 !
 redundancy
 !
@@ -89,7 +89,7 @@ interface Loopback0
 interface GigabitEthernet0/0
  description OOB Management
  vrf forwarding Mgmt-intf
- ip address 10.200.1.241 255.255.255.0
+ ip address 172.16.1.166 255.255.255.0
  duplex full
  speed auto
  media-type rj45
@@ -113,8 +113,7 @@ ip forward-protocol nd
 !
 no ip http server
 no ip http secure-server
-ip route vrf Mgmt-intf 10.0.22.0 255.255.255.0 10.200.1.1
-ip route vrf Mgmt-intf 192.168.22.0 255.255.255.0 10.200.1.1
+ip route vrf Mgmt-intf 10.0.22.0 255.255.255.0 172.16.1.1
 ip ssh server algorithm authentication password
 !
 !
@@ -170,14 +169,14 @@ end</entry>
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
             <entry key="config" type="String">!
-! Last configuration change at 01:09:37 UTC Mon Mar 7 2016 by cisco
+! Last configuration change at 03:02:08 UTC Wed Mar 15 2017 by cisco
 !
 version 15.6
 service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 !
-hostname rtr-B
+hostname r2
 !
 boot-start-marker
 boot-end-marker
@@ -224,7 +223,7 @@ multilink bundle-name authenticated
 !
 !
 !
-username cisco privilege 15 secret 5 $1$tJTj$dVmruP2RUWG4mfylb5E0w1
+username cisco privilege 15 secret 5 $1$oK1k$1KHziS89LsrNO6tTAyNw0.
 !
 redundancy
 !
@@ -249,7 +248,7 @@ interface Loopback0
 interface GigabitEthernet0/0
  description OOB Management
  vrf forwarding Mgmt-intf
- ip address 10.200.1.242 255.255.255.0
+ ip address 172.16.1.164 255.255.255.0
  duplex full
  speed auto
  media-type rj45
@@ -266,8 +265,7 @@ ip forward-protocol nd
 !
 no ip http server
 no ip http secure-server
-ip route vrf Mgmt-intf 10.0.22.0 255.255.255.0 10.200.1.1
-ip route vrf Mgmt-intf 192.168.22.0 255.255.255.0 10.200.1.1
+ip route vrf Mgmt-intf 10.0.22.0 255.255.255.0 172.16.1.1
 ip ssh server algorithm authentication password
 !
 !
@@ -322,14 +320,14 @@ end</entry>
         <extensions>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
             <entry key="config" type="String">!
-! Last configuration change at 01:10:32 UTC Mon Mar 7 2016 by cisco
+! Last configuration change at 03:03:08 UTC Wed Mar 15 2017 by cisco
 !
 version 15.6
 service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
 !
-hostname rtr-C
+hostname r3
 !
 boot-start-marker
 boot-end-marker
@@ -376,7 +374,7 @@ multilink bundle-name authenticated
 !
 !
 !
-username cisco privilege 15 secret 5 $1$.7ZV$ggLjuZa4pknht2qr4H2Il0
+username cisco privilege 15 secret 5 $1$p/XS$GkmWfRY9H7r2YnBTok8oH0
 !
 redundancy
 !
@@ -401,7 +399,7 @@ interface Loopback0
 interface GigabitEthernet0/0
  description OOB Management
  vrf forwarding Mgmt-intf
- ip address 10.200.1.243 255.255.255.0
+ ip address 172.16.1.165 255.255.255.0
  duplex full
  speed auto
  media-type rj45
@@ -418,8 +416,7 @@ ip forward-protocol nd
 !
 no ip http server
 no ip http secure-server
-ip route vrf Mgmt-intf 10.0.22.0 255.255.255.0 10.200.1.1
-ip route vrf Mgmt-intf 192.168.22.0 255.255.255.0 10.200.1.1
+ip route vrf Mgmt-intf 10.0.22.0 255.255.255.0 172.16.1.1
 ip ssh server algorithm authentication password
 !
 !
@@ -470,6 +467,7 @@ end</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.6" netPrefixLenV4="30"/>
     </node>
+    <annotations/>
     <connection dst="/virl:topology/virl:node[2]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[1]"/>
     <connection dst="/virl:topology/virl:node[3]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[2]"/>
 </topology>

@@ -51,11 +51,45 @@ crypto key generate rsa modulus 1024
 username rlaney privilege 15 secret 0 ralrox
 crypto key generate rsa modulus 1024 
 !
+ip ssh version 2
+ip ssh pubkey-chain
+  username rlaney
+   key-hash ssh-rsa 9A7F401B0C0D96316B7790A03D2E9983 rlaney@MonsterMacBook.local
+ip scp server enable
+!
 line con 0
- password cisco
 line aux 0
 line vty 0 4
  exec-timeout 0 0
- password cisco
  login local
  transport input telnet ssh
+!
+ip route 10.0.22.0 255.255.255.0 172.16.1.1
+ip route 172.16.20.0 255.255.255.0 172.16.1.1
+ip route 192.168.22.0 255.255.255.0 172.16.1.1
+
+
+ip ssh version 2
+ip ssh pubkey-chain
+  username rlaney
+   key-hash ssh-rsa 9A7F401B0C0D96316B7790A03D2E9983 rlaney@MonsterMacBook.local
+ip scp server enable
+
+cloudmon-sw1#show ip ssh
+SSH Enabled - version 2.0
+Authentication timeout: 120 secs; Authentication retries: 3
+Minimum expected Diffie Hellman key size : 1024 bits
+IOS Keys in SECSH format(ssh-rsa, base64 encoded):
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCEr9VgglKBXB0ncGKtDowJ7ClqOUFpKcesFGil9gF5
+6i0zrftlI9DjzUfQyBsTutjWIPhBmTuYKg+G7nQqv0fLX+0MwaE19d+i+QZghuBqAOkM+fldB42Ko7qQ
+1cYUJf1yd4Z2fTWzPmvB8Cxs5tYgT9WYT9+4BXIXN+hdu8sJXQ==
+
+Nexus Config
+username etnoc password 5 $1$/aNkjvck$sBGjxyobq20AsYMZY8.lV.  role network-admin
+snmp-server user etnoc network-admin auth md5 0x148b693031fd00d25a6a6584ab3dd4db priv 0x148b693031fd00d25a6a6584ab3dd4db localizedkey
+username rlaney password 5 $1$uaoSYUDc$s9Fp2LznfJFInMKwJK90j/  role network-admin
+snmp-server user rlaney network-admin auth md5 0x6d5bbc070c32130e2d80e9a47120f4b1 priv 0x6d5bbc070c32130e2d80e9a47120f4b1 localizedkey
+username rlaney sshkey ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDADlj9xBCPuvpzUojX9nWp1AN80KNIiLQxjKsIqHcRVCy3xvo11jpVm50TC3A4jX6f+gJJYL0tvpsy2FRCahnPb4wT98N8VuTA8UW+3xYW2HN1f5RHst7gnqqphY1JmmfZC84KVZefCjrXLEGLAAI/3ibmAfrR4wWmjwTgi25dfmDwF+TAaWiio0kAlPBIR/e/8Ue53AOfKGaeLBa+6Gfu9YkhvojTPtT98KXrj04a63D1KNmAJNl94IXOBbmmyzA4yN7HaS5k7jtb3OU0nZyVsGmsJfl72u74MKqYPA5DylDArISGVSOtEPCQgIgEbFjKpQasYVoSbkgIFRdd6jRY9IBcJ1F6F0mylkqx3FIb9uHnSHtDTowbqzzQ+GvQdqng5+y9X948rdPefqBwuadTahWwAXnSUObSOLy/XuyI0pfVVhTktYT8rM9rdUT6Ic/gXSexEAU4vtuMvry4AdYvZWYp2B97SExnArspDxiJVfRJOa51KBF3GGJAMvPFt4liH2KxNnsDHsjGeZkmCeUXbARW3KMtVzlMeLuNpdR/pKlcWBZLbz4FLma785ZhjhLt4c48yBF62bx9XKZe7iNIe8fndqIzWIL76r6hSfjujL5P7SDSUXVzghgq3wWf1kH/Y4rh0dGVkUpVuFa1WaUbBHn5u8sw29blQzcxmM7L2w== HET Secrets
+
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDADlj9xBCPuvpzUojX9nWp1AN80KNIiLQxjKsIqHcRVCy3xvo11jpVm50TC3A4jX6f+gJJYL0tvpsy2FRCahnPb4wT98N8VuTA8UW+3xYW2HN1f5RHst7gnqqphY1JmmfZC84KVZefCjrXLEGLAAI/3ibmAfrR4wWmjwTgi25dfmDwF+TAaWiio0kAlPBIR/e/8Ue53AOfKGaeLBa+6Gfu9YkhvojTPtT98KXrj04a63D1KNmAJNl94IXOBbmmyzA4yN7HaS5k7jtb3OU0nZyVsGmsJfl72u74MKqYPA5DylDArISGVSOtEPCQgIgEbFjKpQasYVoSbkgIFRdd6jRY9IBcJ1F6F0mylkqx3FIb9uHnSHtDTowbqzzQ+GvQdqng5+y9X948rdPefqBwuadTahWwAXnSUObSOLy/XuyI0pfVVhTktYT8rM9rdUT6Ic/gXSexEAU4vtuMvry4AdYvZWYp2B97SExnArspDxiJVfRJOa51KBF3GGJAMvPFt4liH2KxNnsDHsjGeZkmCeUXbARW3KMtVzlMeLuNpdR/pKlcWBZLbz4FLma785ZhjhLt4c48yBF62bx9XKZe7iNIe8fndqIzWIL76r6hSfjujL5P7SDSUXVzghgq3wWf1kH/Y4rh0dGVkUpVuFa1WaUbBHn5u8sw29blQzcxmM7L2w== HET Secrets

@@ -101,6 +101,13 @@ spanning-tree extend system-id
 !
 !
 username cisco privilege 15 secret 5 $1$1blY$BMyAzQHogT21k6yP8UazJ.
+username rlaney privilege 15 secret 0 ralrox
+crypto key generate rsa modulus 1024
+ip ssh version 2
+ip ssh pubkey-chain
+  username rlaney
+   key-hash ssh-rsa 9A7F401B0C0D96316B7790A03D2E9983 rlaney@MonsterMacBook.local
+ip scp server enable
 !
 redundancy
 !
@@ -377,6 +384,13 @@ spanning-tree extend system-id
 !
 !
 username cisco privilege 15 secret 5 $1$KM4b$gxPozPB9nNWIRwQEsEnBf0
+username rlaney privilege 15 secret 0 ralrox
+crypto key generate rsa modulus 1024
+ip ssh version 2
+ip ssh pubkey-chain
+  username rlaney
+   key-hash ssh-rsa 9A7F401B0C0D96316B7790A03D2E9983 rlaney@MonsterMacBook.local
+ip scp server enable
 !
 redundancy
 !
@@ -587,6 +601,10 @@ username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51  role network-admin
 username adminbackup password 5 !  role network-operator
 username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
 username cisco role network-admin
+username rlaney password 0 ralrox role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+crypto key generate rsa modulus 1024
 username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
 ip domain-lookup
 snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
@@ -759,6 +777,10 @@ username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51  role network-admin
 username adminbackup password 5 !  role network-operator
 username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
 username cisco role network-admin
+username rlaney password 0 ralrox role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+crypto key generate rsa modulus 1024
 username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
 ip domain-lookup
 snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
@@ -937,6 +959,10 @@ username adminbackup passphrase  lifetime 99999 warntime 14 gracetime 3
 username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
 username cisco role network-admin
 username cisco passphrase  lifetime 99999 warntime 14 gracetime 3
+username rlaney password 0 ralrox role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+crypto key generate rsa modulus 1024
 username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
 username lab passphrase  lifetime 99999 warntime 14 gracetime 3
 no password strength-check
@@ -1866,11 +1892,6 @@ ip forward-protocol nd
 no ip http server
 no ip http secure-server
 !
-ip ssh version 2
-ip ssh pubkey-chain
-  username rlaney
-   key-hash ssh-rsa 9A7F401B0C0D96316B7790A03D2E9983 rlaney@MonsterMacBook.local
-ip scp server enable
 !
 !
 !
@@ -1955,6 +1976,10 @@ username adminbackup passphrase  lifetime 99999 warntime 14 gracetime 3
 username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
 username cisco role network-admin
 username cisco passphrase  lifetime 99999 warntime 14 gracetime 3
+username rlaney password 0 ralrox role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+crypto key generate rsa modulus 1024
 username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
 username lab passphrase  lifetime 99999 warntime 14 gracetime 3
 no password strength-check
@@ -2881,6 +2906,13 @@ spanning-tree extend system-id
 !
 !
 username cisco privilege 15 secret 5 $1$.Wds$qU9/uIx7XN9W8LeJMelx71
+username rlaney privilege 15 secret 0 ralrox
+crypto key generate rsa modulus 1024
+ip ssh version 2
+ip ssh pubkey-chain
+  username rlaney
+   key-hash ssh-rsa 9A7F401B0C0D96316B7790A03D2E9983 rlaney@MonsterMacBook.local
+ip scp server enable
 !
 redundancy
 !
@@ -3157,6 +3189,13 @@ spanning-tree extend system-id
 !
 !
 username cisco privilege 15 secret 5 $1$rQqB$sIAnMhDSn39mFh7mAfsYm1
+username rlaney privilege 15 secret 0 ralrox
+crypto key generate rsa modulus 1024
+ip ssh version 2
+ip ssh pubkey-chain
+  username rlaney
+   key-hash ssh-rsa 9A7F401B0C0D96316B7790A03D2E9983 rlaney@MonsterMacBook.local
+ip scp server enable
 !
 redundancy
 !
@@ -3367,6 +3406,10 @@ username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51  role network-admin
 username adminbackup password 5 !  role network-operator
 username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
 username cisco role network-admin
+username rlaney password 0 ralrox role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+crypto key generate rsa modulus 1024
 username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
 ip domain-lookup
 snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
@@ -3539,6 +3582,10 @@ username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51  role network-admin
 username adminbackup password 5 !  role network-operator
 username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
 username cisco role network-admin
+username rlaney password 0 ralrox role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+crypto key generate rsa modulus 1024
 username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
 ip domain-lookup
 snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
@@ -3717,6 +3764,10 @@ username adminbackup passphrase  lifetime 99999 warntime 14 gracetime 3
 username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
 username cisco role network-admin
 username cisco passphrase  lifetime 99999 warntime 14 gracetime 3
+username rlaney password 0 ralrox role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+crypto key generate rsa modulus 1024
 username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
 username lab passphrase  lifetime 99999 warntime 14 gracetime 3
 no password strength-check
@@ -4583,6 +4634,10 @@ username adminbackup passphrase  lifetime 99999 warntime 14 gracetime 3
 username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
 username cisco role network-admin
 username cisco passphrase  lifetime 99999 warntime 14 gracetime 3
+username rlaney password 0 ralrox role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+crypto key generate rsa modulus 1024
 username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
 username lab passphrase  lifetime 99999 warntime 14 gracetime 3
 no password strength-check
@@ -5474,6 +5529,13 @@ multilink bundle-name authenticated
 !
 !
 username cisco privilege 15 secret 5 $1$1aKW$fgywPuorRK4PnWp4j46f1.
+username rlaney privilege 15 secret 0 ralrox
+crypto key generate rsa modulus 1024
+ip ssh version 2
+ip ssh pubkey-chain
+  username rlaney
+   key-hash ssh-rsa 9A7F401B0C0D96316B7790A03D2E9983 rlaney@MonsterMacBook.local
+ip scp server enable
 !
 redundancy
 !

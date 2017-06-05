@@ -9,6 +9,7 @@
     </extensions>
     <node name="dc5-gw1" type="SIMPLE" subtype="CSR1000v" location="753,147" ipv4="192.168.0.1">
         <extensions>
+            <entry key="static_ip" type="String">172.16.1.57</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.57</entry>
             <entry key="config" type="String">!
 ! Last configuration change at 16:33:15 UTC Tue May 23 2017
@@ -293,8 +294,8 @@ end</entry>
     </node>
     <node name="dc5-gw2" type="SIMPLE" subtype="CSR1000v" location="753,328" ipv4="192.168.0.4">
         <extensions>
-            <entry key="static_ip" type="String">172.16.1.57</entry>
-            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.57</entry>
+            <entry key="static_ip" type="String">172.16.1.58</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.58</entry>
             <entry key="config" type="String">!
 ! Last configuration change at 16:33:11 UTC Tue May 23 2017
 !

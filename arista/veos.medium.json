@@ -1,21 +1,21 @@
 {
   "dynamic-subtypes": [
     {
-      "interface_range": 22, 
-      "config_disk_type": "disk", 
-      "baseline_image": "vEOS", 
-      "baseline_flavor": "vEOS.medium", 
-      "hw_vm_extra": "", 
-      "plugin_desc": "Arista vEOS", 
-      "interface_pattern": "Ethernet{0}", 
-      "interface_management": "Management1", 
-      "gui_visible": true, 
-      "cli_serial": 1, 
-      "hw_ram": 2048, 
-      "plugin_name": "vEOS", 
-      "interface_first": 1, 
-      "config_file": "/veos_config.txt", 
-      "gui_icon": "iosvl2", 
+      "interface_range": 22,
+      "config_disk_type": "disk",
+      "baseline_image": "vEOS",
+      "baseline_flavor": "vEOS.medium",
+      "hw_vm_extra": "",
+      "plugin_desc": "Arista vEOS",
+      "interface_pattern": "Ethernet{0}",
+      "interface_management": "Management1",
+      "gui_visible": true,
+      "cli_serial": 1,
+      "hw_ram": 2048,
+      "plugin_name": "vEOS-Medium", 
+      "interface_first": 1,
+      "config_file": "/veos_config.txt",
+      "gui_icon": "iosvl2",
       "plugin_base": "generic"
     }
   ]

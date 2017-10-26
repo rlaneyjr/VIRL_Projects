@@ -3,10 +3,12 @@
     <extensions>
         <entry key="management_network" type="String">flat</entry>
         <entry key="AutoNetkit.enable_cdp" type="Boolean">true</entry>
+        <entry key="AutoNetkit.address_family" type="String">v4</entry>
+        <entry key="AutoNetkit.enable_OnePK" type="Boolean">false</entry>
     </extensions>
     <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="422,93" ipv4="192.168.0.2">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2017-10-08 19:54
+            <entry key="config" type="string">! IOS Config generated on 2017-10-26 01:39
 ! by autonetkit_0.23.5
 !
 hostname iosv-1
@@ -143,7 +145,7 @@ end</entry>
     </node>
     <node name="iosv-2" type="SIMPLE" subtype="IOSv" location="722,91" ipv4="192.168.0.3">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2017-10-08 19:54
+            <entry key="config" type="string">! IOS Config generated on 2017-10-26 01:39
 ! by autonetkit_0.23.5
 !
 hostname iosv-2
@@ -280,7 +282,7 @@ end</entry>
     </node>
     <node name="iosv-3" type="SIMPLE" subtype="IOSv" location="353,209" ipv4="192.168.0.4">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2017-10-08 19:54
+            <entry key="config" type="string">! IOS Config generated on 2017-10-26 01:39
 ! by autonetkit_0.23.5
 !
 hostname iosv-3
@@ -417,7 +419,7 @@ end</entry>
     </node>
     <node name="iosv-4" type="SIMPLE" subtype="IOSv" location="497,209" ipv4="192.168.0.5">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2017-10-08 19:54
+            <entry key="config" type="string">! IOS Config generated on 2017-10-26 01:39
 ! by autonetkit_0.23.5
 !
 hostname iosv-4
@@ -554,7 +556,7 @@ end</entry>
     </node>
     <node name="iosv-5" type="SIMPLE" subtype="IOSv" location="653,209" ipv4="192.168.0.6">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2017-10-08 19:54
+            <entry key="config" type="string">! IOS Config generated on 2017-10-26 01:39
 ! by autonetkit_0.23.5
 !
 hostname iosv-5
@@ -691,7 +693,7 @@ end</entry>
     </node>
     <node name="iosv-6" type="SIMPLE" subtype="IOSv" location="809,209" ipv4="192.168.0.7">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2017-10-08 19:54
+            <entry key="config" type="string">! IOS Config generated on 2017-10-26 01:39
 ! by autonetkit_0.23.5
 !
 hostname iosv-6
@@ -828,7 +830,7 @@ end</entry>
     </node>
     <node name="iosvl2-1" type="SIMPLE" subtype="IOSvL2" location="589,328">
         <extensions>
-            <entry key="config" type="string">! IOSvL2 Config generated on 2017-10-08 19:54
+            <entry key="config" type="string">! IOSvL2 Config generated on 2017-10-26 01:39
 ! by autonetkit_0.23.5
 !
 version 15.2
@@ -1018,13 +1020,17 @@ write_files:
     #!/bin/sh
     ifconfig eth1 up 10.0.0.1 netmask 255.255.255.248
     route add -net 10.0.0.0/16 gw 10.0.0.2 dev eth1
-    route add -net 192.168.0.0/28 gw 10.0.0.2 dev eth1
+    route add -net 192.168.0.2/31 gw 10.0.0.2 dev eth1
+    route add -net 192.168.0.4/30 gw 10.0.0.2 dev eth1
     route add -net 10.0.0.0/16 gw 10.0.0.3 dev eth1
-    route add -net 192.168.0.0/28 gw 10.0.0.3 dev eth1
+    route add -net 192.168.0.2/31 gw 10.0.0.3 dev eth1
+    route add -net 192.168.0.4/30 gw 10.0.0.3 dev eth1
     route add -net 10.0.0.0/16 gw 10.0.0.4 dev eth1
-    route add -net 192.168.0.0/28 gw 10.0.0.4 dev eth1
+    route add -net 192.168.0.2/31 gw 10.0.0.4 dev eth1
+    route add -net 192.168.0.4/30 gw 10.0.0.4 dev eth1
     route add -net 10.0.0.0/16 gw 10.0.0.5 dev eth1
-    route add -net 192.168.0.0/28 gw 10.0.0.5 dev eth1
+    route add -net 192.168.0.2/31 gw 10.0.0.5 dev eth1
+    route add -net 192.168.0.4/30 gw 10.0.0.5 dev eth1
     exit 0
 </entry>
         </extensions>

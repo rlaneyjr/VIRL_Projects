@@ -2,13 +2,15 @@
 <topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.95" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.95/virl.xsd">
     <extensions>
         <entry key="AutoNetkit.enable_cdp" type="Boolean">true</entry>
-        <entry key="management_lxc" type="Boolean">false</entry>
         <entry key="AutoNetkit.enable_routing" type="Boolean">true</entry>
-        <entry key="management_network" type="String">exclusive</entry>
+        <entry key="management_network" type="String">flat</entry>
+        <entry key="management_lxc" type="Boolean">true</entry>
+        <entry key="AutoNetkit.enable_OnePK" type="Boolean">true</entry>
+        <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
     </extensions>
-    <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="435,183" ipv4="192.168.0.1">
+    <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="244,284" ipv4="192.168.0.2">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2017-10-26 22:45
+            <entry key="config" type="string">! IOS Config generated on 2017-10-26 23:37
 ! by autonetkit_0.23.5
 !
 hostname iosv-1
@@ -56,9 +58,17 @@ line con 0
 cdp run
 !
 !
+username cisco privilege 15 password 0 cisco
+ !
+ onep
+ transport type tls disable-remotecert-validation
+  start
+ service set vty
+!
+!
 interface Loopback0
   description Loopback
-  ip address 192.168.0.1 255.255.255.255
+  ip address 192.168.0.2 255.255.255.255
 !
 interface GigabitEthernet0/0
   description OOB Management
@@ -71,56 +81,80 @@ interface GigabitEthernet0/0
   no shutdown
 !
 interface GigabitEthernet0/1
-  description to coreos-1
-  ip address 10.0.0.6 255.255.255.252
+  description to iosxrv9000-1
+  ip address 10.0.0.17 255.255.255.252
   cdp enable
-  ip ospf cost 1
   duplex full
   speed auto
   no shutdown
 !
 interface GigabitEthernet0/2
-  description to flat-1
-  no ip address
+  description to nx-osv9000-1
+  ip address 10.0.0.13 255.255.255.252
   cdp enable
   duplex full
   speed auto
   no shutdown
 !
 interface GigabitEthernet0/3
-  description to iosv-2
-  ip address 10.0.0.9 255.255.255.252
+  description to coreos-1
+  ip address 10.0.0.6 255.255.255.252
   cdp enable
-  ip ospf cost 1
   duplex full
   speed auto
   no shutdown
 !
 !
 !
-router ospf 1
-  network 192.168.0.1 0.0.0.0 area 0
-  log-adjacency-changes
-  passive-interface Loopback0
-  network 10.0.0.4 0.0.0.3 area 0
-  network 10.0.0.8 0.0.0.3 area 0
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.0.0.4 0.0.0.3
+  network 10.0.0.12 0.0.0.3
+  network 10.0.0.16 0.0.0.3
+  network 192.168.0.2 0.0.0.0
+ exit-address-family
+ !
 !
 !
 router bgp 1
-  bgp router-id 192.168.0.1
+  bgp router-id 192.168.0.2
   no synchronization
 ! ibgp
   ! ibgp peers
   !
-  neighbor 192.168.0.3 remote-as 1
-  neighbor 192.168.0.3 description iBGP peer iosv-2
-  neighbor 192.168.0.3 update-source Loopback0
+  neighbor 192.168.0.4 remote-as 1
+  neighbor 192.168.0.4 description iBGP peer iosv-2
+  neighbor 192.168.0.4 update-source Loopback0
+  !
+  neighbor 192.168.0.7 remote-as 1
+  neighbor 192.168.0.7 description iBGP peer iosxrv9000-1
+  neighbor 192.168.0.7 update-source Loopback0
+  !
+  neighbor 192.168.0.5 remote-as 1
+  neighbor 192.168.0.5 description iBGP peer iosxrv9000-2
+  neighbor 192.168.0.5 update-source Loopback0
+  !
+  neighbor 192.168.0.6 remote-as 1
+  neighbor 192.168.0.6 description iBGP peer nx-osv9000-1
+  neighbor 192.168.0.6 update-source Loopback0
+  !
+  neighbor 192.168.0.8 remote-as 1
+  neighbor 192.168.0.8 description iBGP peer nx-osv9000-2
+  neighbor 192.168.0.8 update-source Loopback0
 !
 !
  !
  address-family ipv4
-  network 192.168.0.1 mask 255.255.255.255
-  neighbor 192.168.0.3 activate
+  network 192.168.0.2 mask 255.255.255.255
+  neighbor 192.168.0.4 activate
+  neighbor 192.168.0.7 activate
+  neighbor 192.168.0.5 activate
+  neighbor 192.168.0.6 activate
+  neighbor 192.168.0.8 activate
  exit-address-family
 !
 !
@@ -128,13 +162,13 @@ router bgp 1
 end</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
         </extensions>
-        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.6" netPrefixLenV4="30"/>
-        <interface id="1" name="GigabitEthernet0/2"/>
-        <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.0.9" netPrefixLenV4="30"/>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.17" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.13" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.0.6" netPrefixLenV4="30"/>
     </node>
-    <node name="iosv-2" type="SIMPLE" subtype="IOSv" location="699,183" ipv4="192.168.0.3">
+    <node name="iosv-2" type="SIMPLE" subtype="IOSv" location="740,282" ipv4="192.168.0.4">
         <extensions>
-            <entry key="config" type="string">! IOS Config generated on 2017-10-26 22:45
+            <entry key="config" type="string">! IOS Config generated on 2017-10-26 23:37
 ! by autonetkit_0.23.5
 !
 hostname iosv-2
@@ -182,9 +216,17 @@ line con 0
 cdp run
 !
 !
+username cisco privilege 15 password 0 cisco
+ !
+ onep
+ transport type tls disable-remotecert-validation
+  start
+ service set vty
+!
+!
 interface Loopback0
   description Loopback
-  ip address 192.168.0.3 255.255.255.255
+  ip address 192.168.0.4 255.255.255.255
 !
 interface GigabitEthernet0/0
   description OOB Management
@@ -197,56 +239,80 @@ interface GigabitEthernet0/0
   no shutdown
 !
 interface GigabitEthernet0/1
-  description to coreos-2
-  ip address 10.0.0.14 255.255.255.252
+  description to nx-osv9000-2
+  ip address 10.0.0.25 255.255.255.252
   cdp enable
-  ip ospf cost 1
   duplex full
   speed auto
   no shutdown
 !
 interface GigabitEthernet0/2
-  description to snat-1
-  no ip address
+  description to iosxrv9000-2
+  ip address 10.0.0.21 255.255.255.252
   cdp enable
   duplex full
   speed auto
   no shutdown
 !
 interface GigabitEthernet0/3
-  description to iosv-1
+  description to coreos-2
   ip address 10.0.0.10 255.255.255.252
   cdp enable
-  ip ospf cost 1
   duplex full
   speed auto
   no shutdown
 !
 !
 !
-router ospf 1
-  network 192.168.0.3 0.0.0.0 area 0
-  log-adjacency-changes
-  passive-interface Loopback0
-  network 10.0.0.12 0.0.0.3 area 0
-  network 10.0.0.8 0.0.0.3 area 0
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.0.0.8 0.0.0.3
+  network 10.0.0.20 0.0.0.3
+  network 10.0.0.24 0.0.0.3
+  network 192.168.0.4 0.0.0.0
+ exit-address-family
+ !
 !
 !
 router bgp 1
-  bgp router-id 192.168.0.3
+  bgp router-id 192.168.0.4
   no synchronization
 ! ibgp
   ! ibgp peers
   !
-  neighbor 192.168.0.1 remote-as 1
-  neighbor 192.168.0.1 description iBGP peer iosv-1
-  neighbor 192.168.0.1 update-source Loopback0
+  neighbor 192.168.0.2 remote-as 1
+  neighbor 192.168.0.2 description iBGP peer iosv-1
+  neighbor 192.168.0.2 update-source Loopback0
+  !
+  neighbor 192.168.0.7 remote-as 1
+  neighbor 192.168.0.7 description iBGP peer iosxrv9000-1
+  neighbor 192.168.0.7 update-source Loopback0
+  !
+  neighbor 192.168.0.5 remote-as 1
+  neighbor 192.168.0.5 description iBGP peer iosxrv9000-2
+  neighbor 192.168.0.5 update-source Loopback0
+  !
+  neighbor 192.168.0.6 remote-as 1
+  neighbor 192.168.0.6 description iBGP peer nx-osv9000-1
+  neighbor 192.168.0.6 update-source Loopback0
+  !
+  neighbor 192.168.0.8 remote-as 1
+  neighbor 192.168.0.8 description iBGP peer nx-osv9000-2
+  neighbor 192.168.0.8 update-source Loopback0
 !
 !
  !
  address-family ipv4
-  network 192.168.0.3 mask 255.255.255.255
-  neighbor 192.168.0.1 activate
+  network 192.168.0.4 mask 255.255.255.255
+  neighbor 192.168.0.2 activate
+  neighbor 192.168.0.7 activate
+  neighbor 192.168.0.5 activate
+  neighbor 192.168.0.6 activate
+  neighbor 192.168.0.8 activate
  exit-address-family
 !
 !
@@ -254,17 +320,595 @@ router bgp 1
 end</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
         </extensions>
-        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.14" netPrefixLenV4="30"/>
-        <interface id="1" name="GigabitEthernet0/2"/>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.25" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.21" netPrefixLenV4="30"/>
         <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.0.10" netPrefixLenV4="30"/>
     </node>
-    <node name="flat-1" type="ASSET" subtype="FLAT" location="556,71">
-        <interface id="0" name="link0"/>
+    <node name="iosxrv9000-1" type="SIMPLE" subtype="IOS XRv 9000" location="366,154" ipv4="192.168.0.7">
+        <extensions>
+            <entry key="config" type="string">!  IOS-XR9000v Config generated on 2017-10-26 23:37
+! by autonetkit_0.23.5
+!
+hostname iosxrv9000-1
+service timestamps log datetime msec
+service timestamps debug datetime msec
+telnet vrf default ipv4 server max-servers 10
+telnet vrf Mgmt-intf ipv4 server max-servers 10
+domain lookup disable
+vrf Mgmt-intf
+ address-family ipv4 unicast
+ !
+ address-family ipv6 unicast
+ !
+!
+domain name virl.info
+ssh server v2
+ssh server vrf Mgmt-intf
+!
+line template vty
+timestamp
+exec-timeout 720 0
+!
+line console
+exec-timeout 0 0
+!
+line default
+exec-timeout 720 0
+!
+vty-pool default 0 50
+control-plane
+ management-plane
+  inband
+   interface all
+    allow all
+   !
+  !
+ !
+!
+username cisco
+group root-lr
+group cisco-support
+password cisco
+!
+username admin
+group root-lr
+group cisco-support
+password admin
+!
+username lab
+group root-lr
+group cisco-support
+password lab
+!
+!
+cdp
+!
+!
+interface Loopback0
+  description Loopback
+  ipv4 address 192.168.0.7 255.255.255.255
+!
+interface GigabitEthernet0/0/0/0
+  description to iosv-1
+  ipv4 address 10.0.0.18 255.255.255.252
+  cdp
+  no shutdown
+!
+interface GigabitEthernet0/0/0/1
+  description to nx-osv9000-2
+  ipv4 address 10.0.0.29 255.255.255.252
+  cdp
+  no shutdown
+!
+interface MgmtEth0/RP0/CPU0/0
+  description OOB Management
+  ! Configured on launch
+  vrf Mgmt-intf
+  no ipv4 address
+  cdp
+  no shutdown
+!
+!
+router eigrp 1
+ address-family ipv4
+  router-id 192.168.0.7
+  interface GigabitEthernet0/0/0/0
+  !
+  interface GigabitEthernet0/0/0/1
+  !
+  interface Loopback0
+    passive-interface
+  !
+ !
+!
+route-policy bgp_in
+  pass
+end-policy
+!
+route-policy bgp_out
+  pass
+end-policy
+!
+router bgp 1
+  bgp router-id 192.168.0.7
+  address-family ipv4 unicast
+    network 192.168.0.7/32
+  !
+! iBGP
+!
+! iBGP peers
+  !
+  neighbor 192.168.0.2
+    description iBGP peer iosv-1
+    remote-as 1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.4
+    description iBGP peer iosv-2
+    remote-as 1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.5
+    description iBGP peer iosxrv9000-2
+    remote-as 1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.6
+    description iBGP peer nx-osv9000-1
+    remote-as 1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.8
+    description iBGP peer nx-osv9000-2
+    remote-as 1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+!
+        </entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/0/0/0" ipv4="10.0.0.18" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/0/0/1" ipv4="10.0.0.29" netPrefixLenV4="30"/>
     </node>
-    <node name="snat-1" type="ASSET" subtype="SNAT" location="557,308">
-        <interface id="0" name="link0"/>
+    <node name="iosxrv9000-2" type="SIMPLE" subtype="IOS XRv 9000" location="610,157" vmImage="IOS XRv 9000 [0cb7fe4e-2d6e-4d9f-b893-3790bef76d14]" vmFlavor="IOS XRv 9000 [db06bba2-a81f-44c8-9ff7-0d15fc2bf9c9]" ipv4="192.168.0.5">
+        <extensions>
+            <entry key="config" type="string">!  IOS-XR9000v Config generated on 2017-10-26 23:37
+! by autonetkit_0.23.5
+!
+hostname iosxrv9000-2
+service timestamps log datetime msec
+service timestamps debug datetime msec
+telnet vrf default ipv4 server max-servers 10
+telnet vrf Mgmt-intf ipv4 server max-servers 10
+domain lookup disable
+vrf Mgmt-intf
+ address-family ipv4 unicast
+ !
+ address-family ipv6 unicast
+ !
+!
+domain name virl.info
+ssh server v2
+ssh server vrf Mgmt-intf
+!
+line template vty
+timestamp
+exec-timeout 720 0
+!
+line console
+exec-timeout 0 0
+!
+line default
+exec-timeout 720 0
+!
+vty-pool default 0 50
+control-plane
+ management-plane
+  inband
+   interface all
+    allow all
+   !
+  !
+ !
+!
+username cisco
+group root-lr
+group cisco-support
+password cisco
+!
+username admin
+group root-lr
+group cisco-support
+password admin
+!
+username lab
+group root-lr
+group cisco-support
+password lab
+!
+!
+cdp
+!
+!
+interface Loopback0
+  description Loopback
+  ipv4 address 192.168.0.5 255.255.255.255
+!
+interface GigabitEthernet0/0/0/0
+  description to nx-osv9000-1
+  ipv4 address 10.0.0.33 255.255.255.252
+  cdp
+  no shutdown
+!
+interface GigabitEthernet0/0/0/1
+  description to iosv-2
+  ipv4 address 10.0.0.22 255.255.255.252
+  cdp
+  no shutdown
+!
+interface MgmtEth0/RP0/CPU0/0
+  description OOB Management
+  ! Configured on launch
+  vrf Mgmt-intf
+  no ipv4 address
+  cdp
+  no shutdown
+!
+!
+router eigrp 1
+ address-family ipv4
+  router-id 192.168.0.5
+  interface GigabitEthernet0/0/0/0
+  !
+  interface GigabitEthernet0/0/0/1
+  !
+  interface Loopback0
+    passive-interface
+  !
+ !
+!
+route-policy bgp_in
+  pass
+end-policy
+!
+route-policy bgp_out
+  pass
+end-policy
+!
+router bgp 1
+  bgp router-id 192.168.0.5
+  address-family ipv4 unicast
+    network 192.168.0.5/32
+  !
+! iBGP
+!
+! iBGP peers
+  !
+  neighbor 192.168.0.2
+    description iBGP peer iosv-1
+    remote-as 1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.4
+    description iBGP peer iosv-2
+    remote-as 1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.7
+    description iBGP peer iosxrv9000-1
+    remote-as 1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.6
+    description iBGP peer nx-osv9000-1
+    remote-as 1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.8
+    description iBGP peer nx-osv9000-2
+    remote-as 1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+!
+        </entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/0/0/0" ipv4="10.0.0.33" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/0/0/1" ipv4="10.0.0.22" netPrefixLenV4="30"/>
     </node>
-    <node name="coreos-1" type="SIMPLE" subtype="CoreOS" location="273,58">
+    <node name="nx-osv9000-1" type="SIMPLE" subtype="NX-OSv 9000" location="365,397" ipv4="192.168.0.6">
+        <extensions>
+            <entry key="config" type="string">! NX-OSv Config generated on 2017-10-26 23:37
+! by autonetkit_0.23.5
+!
+version 6.2(1)
+license grace-period
+!
+hostname nx-osv9000-1
+vdc nx-osv9000-1 id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+
+feature eigrp
+feature bgp
+
+username adminbackup password 5 ! role network-operator
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1 role network-operator
+username cisco role network-admin
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00 role network-admin
+no password strength-check
+ip domain-lookup
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-admin
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+
+
+vlan 1
+
+vrf context management
+hardware forwarding unicast trace
+
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.6/32
+  ip router eigrp 1
+
+interface Ethernet1/1
+  description to iosv-1
+  no switchport
+  ip address 10.0.0.14/30
+  ip router eigrp 1
+  mac-address fa16.3e00.0001
+  no shutdown
+
+interface Ethernet1/2
+  description to iosxrv9000-2
+  no switchport
+  ip address 10.0.0.34/30
+  ip router eigrp 1
+  mac-address fa16.3e00.0002
+  no shutdown
+
+interface mgmt0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  mac-address fa16.3e00.0003
+  no shutdown
+  vrf member management
+
+
+line console
+line vty
+router eigrp 1
+ autonomous-system 1
+ router-id 192.168.0.6
+ address-family ipv4 unicast
+router bgp 1
+  router-id 192.168.0.6
+  address-family ipv4 unicast
+    network 192.168.0.6/32
+  !
+! iBGP
+!
+! iBGP peers
+  !
+  neighbor 192.168.0.2 remote-as 1
+    description iBGP peer iosv-1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.4 remote-as 1
+    description iBGP peer iosv-2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.7 remote-as 1
+    description iBGP peer iosxrv9000-1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.5 remote-as 1
+    description iBGP peer iosxrv9000-2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.8 remote-as 1
+    description iBGP peer nx-osv9000-2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+        </entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+        </extensions>
+        <interface id="0" name="Ethernet1/1" ipv4="10.0.0.14" netPrefixLenV4="30"/>
+        <interface id="1" name="Ethernet1/2" ipv4="10.0.0.34" netPrefixLenV4="30"/>
+    </node>
+    <node name="nx-osv9000-2" type="SIMPLE" subtype="NX-OSv 9000" location="618,396" ipv4="192.168.0.8">
+        <extensions>
+            <entry key="config" type="string">! NX-OSv Config generated on 2017-10-26 23:37
+! by autonetkit_0.23.5
+!
+version 6.2(1)
+license grace-period
+!
+hostname nx-osv9000-2
+vdc nx-osv9000-2 id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+
+feature eigrp
+feature bgp
+
+username adminbackup password 5 ! role network-operator
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51 role network-admin
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1 role network-operator
+username cisco role network-admin
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00 role network-admin
+no password strength-check
+ip domain-lookup
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-admin
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+
+
+vlan 1
+
+vrf context management
+hardware forwarding unicast trace
+
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.8/32
+  ip router eigrp 1
+
+interface Ethernet1/1
+  description to iosxrv9000-1
+  no switchport
+  ip address 10.0.0.30/30
+  ip router eigrp 1
+  mac-address fa16.3e00.0004
+  no shutdown
+
+interface Ethernet1/2
+  description to iosv-2
+  no switchport
+  ip address 10.0.0.26/30
+  ip router eigrp 1
+  mac-address fa16.3e00.0005
+  no shutdown
+
+interface mgmt0
+  description OOB Management
+  ! Configured on launch
+  no ip address
+  mac-address fa16.3e00.0006
+  no shutdown
+  vrf member management
+
+
+line console
+line vty
+router eigrp 1
+ autonomous-system 1
+ router-id 192.168.0.8
+ address-family ipv4 unicast
+router bgp 1
+  router-id 192.168.0.8
+  address-family ipv4 unicast
+    network 192.168.0.8/32
+  !
+! iBGP
+!
+! iBGP peers
+  !
+  neighbor 192.168.0.2 remote-as 1
+    description iBGP peer iosv-1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.4 remote-as 1
+    description iBGP peer iosv-2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.7 remote-as 1
+    description iBGP peer iosxrv9000-1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.5 remote-as 1
+    description iBGP peer iosxrv9000-2
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+  !
+  neighbor 192.168.0.6 remote-as 1
+    description iBGP peer nx-osv9000-1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+        </entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+        </extensions>
+        <interface id="0" name="Ethernet1/1" ipv4="10.0.0.30" netPrefixLenV4="30"/>
+        <interface id="1" name="Ethernet1/2" ipv4="10.0.0.26" netPrefixLenV4="30"/>
+    </node>
+    <node name="coreos-1" type="SIMPLE" subtype="CoreOS" location="144,480">
         <extensions>
             <entry key="config" type="string">#cloud-config
 coreos:
@@ -302,16 +946,16 @@ write_files:
   content: |-
     #!/bin/sh
     ifconfig eth1 up 10.0.0.5 netmask 255.255.255.252
-    route add -host 192.168.0.1 gw 10.0.0.6 dev eth1
-    route add -host 192.168.0.3 gw 10.0.0.6 dev eth1
-    route add -net 10.0.0.4/30 gw 10.0.0.6 dev eth1
-    route add -net 10.0.0.8/29 gw 10.0.0.6 dev eth1
+    route add -host 192.168.0.2 gw 10.0.0.6 dev eth1
+    route add -host 192.168.0.8 gw 10.0.0.6 dev eth1
+    route add -net 10.0.0.0/8 gw 10.0.0.6 dev eth1
+    route add -net 192.168.0.4/30 gw 10.0.0.6 dev eth1
     exit 0
 </entry>
         </extensions>
         <interface id="0" name="eth1" ipv4="10.0.0.5" netPrefixLenV4="30"/>
     </node>
-    <node name="coreos-2" type="SIMPLE" subtype="CoreOS" location="894,357">
+    <node name="coreos-2" type="SIMPLE" subtype="CoreOS" location="840,480">
         <extensions>
             <entry key="config" type="string">#cloud-config
 coreos:
@@ -348,20 +992,23 @@ write_files:
   permissions: '0755'
   content: |-
     #!/bin/sh
-    ifconfig eth1 up 10.0.0.13 netmask 255.255.255.252
-    route add -host 192.168.0.1 gw 10.0.0.14 dev eth1
-    route add -host 192.168.0.3 gw 10.0.0.14 dev eth1
-    route add -net 10.0.0.4/30 gw 10.0.0.14 dev eth1
-    route add -net 10.0.0.8/29 gw 10.0.0.14 dev eth1
+    ifconfig eth1 up 10.0.0.9 netmask 255.255.255.252
+    route add -host 192.168.0.2 gw 10.0.0.10 dev eth1
+    route add -host 192.168.0.8 gw 10.0.0.10 dev eth1
+    route add -net 10.0.0.0/8 gw 10.0.0.10 dev eth1
+    route add -net 192.168.0.4/30 gw 10.0.0.10 dev eth1
     exit 0
 </entry>
         </extensions>
-        <interface id="0" name="eth1" ipv4="10.0.0.13" netPrefixLenV4="30"/>
+        <interface id="0" name="eth1" ipv4="10.0.0.9" netPrefixLenV4="30"/>
     </node>
     <annotations/>
-    <connection dst="/virl:topology/virl:node[1]/virl:interface[1]" src="/virl:topology/virl:node[5]/virl:interface[1]"/>
-    <connection dst="/virl:topology/virl:node[3]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[2]"/>
-    <connection dst="/virl:topology/virl:node[2]/virl:interface[1]" src="/virl:topology/virl:node[6]/virl:interface[1]"/>
-    <connection dst="/virl:topology/virl:node[4]/virl:interface[1]" src="/virl:topology/virl:node[2]/virl:interface[2]"/>
-    <connection dst="/virl:topology/virl:node[2]/virl:interface[3]" src="/virl:topology/virl:node[1]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[1]" src="/virl:topology/virl:node[3]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[4]/virl:interface[1]" src="/virl:topology/virl:node[5]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[1]" src="/virl:topology/virl:node[6]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[2]" src="/virl:topology/virl:node[4]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[1]/virl:interface[3]" src="/virl:topology/virl:node[7]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[8]/virl:interface[1]" src="/virl:topology/virl:node[2]/virl:interface[3]"/>
 </topology>

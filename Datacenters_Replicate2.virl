@@ -1,0 +1,3175 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.95" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.95/virl.xsd">
+    <extensions>
+        <entry key="management_network" type="String">flat</entry>
+        <entry key="AutoNetkit.enable_cdp" type="Boolean">true</entry>
+        <entry key="AutoNetkit.enable_OnePK" type="Boolean">false</entry>
+        <entry key="AutoNetkit.IGP" type="String">eigrp</entry>
+        <entry key="AutoNetkit.infrastructure_only" type="Boolean">false</entry>
+    </extensions>
+    <node name="dc5-gw1" type="SIMPLE" subtype="CSR1000v" location="753,147" ipv4="192.168.0.1">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.57</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.57</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 16:33:15 UTC Tue May 23 2017
+!
+version 16.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
+!
+hostname dc5-gw1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition mgmt
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+ipv6 unicast-routing
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-3952209364
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3952209364
+ revocation-check none
+ rsakeypair TP-self-signed-3952209364
+!
+!
+crypto pki certificate chain TP-self-signed-3952209364
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9PVMIDSBORT
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+!
+spanning-tree extend system-id
+!
+!
+username cisco privilege 15 secret 5 $1$1blY$BMyAzQHogT21k6yP8UazJ.
+username rlaney privilege 15 secret 0 ralrox
+crypto key generate rsa modulus 1024
+ip ssh version 2
+ip ssh pubkey-chain
+  username rlaney
+   key-hash ssh-rsa 9A7F401B0C0D96316B7790A03D2E9983 rlaney@MonsterMacBook.local
+ip scp server enable
+!
+redundancy
+!
+!
+!
+!
+!
+cdp run
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.1 255.255.255.255
+!
+interface GigabitEthernet1
+ description OOB Management
+ vrf forwarding mgmt
+ ip address 172.16.1.57 255.255.255.0
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet2
+ description to internet
+ ip address 10.0.0.13 255.255.255.252
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet3
+ description to dc5-core1
+ ip address 10.0.0.30 255.255.255.252
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet4
+ description to dc5-core2
+ ip address 10.0.0.38 255.255.255.252
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.0.0.12 0.0.0.3
+  network 10.0.0.28 0.0.0.3
+  network 10.0.0.36 0.0.0.3
+  network 192.168.0.1 0.0.0.0
+ exit-address-family
+!
+router bgp 1
+ bgp router-id 192.168.0.1
+ bgp log-neighbor-changes
+ neighbor 192.168.0.2 remote-as 1
+ neighbor 192.168.0.2 description iBGP peer dc5-core1
+ neighbor 192.168.0.2 update-source Loopback0
+ neighbor 192.168.0.3 remote-as 1
+ neighbor 192.168.0.3 description iBGP peer dc5-core2
+ neighbor 192.168.0.3 update-source Loopback0
+ neighbor 192.168.0.4 remote-as 1
+ neighbor 192.168.0.4 description iBGP peer dc5-gw2
+ neighbor 192.168.0.4 update-source Loopback0
+ neighbor 192.168.0.5 remote-as 1
+ neighbor 192.168.0.5 description iBGP peer sc10-gw1
+ neighbor 192.168.0.5 update-source Loopback0
+ neighbor 192.168.0.6 remote-as 1
+ neighbor 192.168.0.6 description iBGP peer sc10-core1
+ neighbor 192.168.0.6 update-source Loopback0
+ neighbor 192.168.0.7 remote-as 1
+ neighbor 192.168.0.7 description iBGP peer sc10-core2
+ neighbor 192.168.0.7 update-source Loopback0
+ neighbor 192.168.0.8 remote-as 1
+ neighbor 192.168.0.8 description iBGP peer sc10-gw2
+ neighbor 192.168.0.8 update-source Loopback0
+ neighbor 192.168.0.9 remote-as 1
+ neighbor 192.168.0.9 description iBGP peer dc5-5k1
+ neighbor 192.168.0.9 update-source Loopback0
+ neighbor 192.168.0.10 remote-as 1
+ neighbor 192.168.0.10 description iBGP peer dc5-5k2
+ neighbor 192.168.0.10 update-source Loopback0
+ neighbor 192.168.0.11 remote-as 1
+ neighbor 192.168.0.11 description iBGP peer sc10-5k1
+ neighbor 192.168.0.11 update-source Loopback0
+ neighbor 192.168.0.12 remote-as 1
+ neighbor 192.168.0.12 description iBGP peer sc10-5k2
+ neighbor 192.168.0.12 update-source Loopback0
+ neighbor 192.168.0.13 remote-as 1
+ neighbor 192.168.0.13 description iBGP peer internet
+ neighbor 192.168.0.13 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.1 mask 255.255.255.255
+  neighbor 192.168.0.2 activate
+  neighbor 192.168.0.3 activate
+  neighbor 192.168.0.4 activate
+  neighbor 192.168.0.5 activate
+  neighbor 192.168.0.6 activate
+  neighbor 192.168.0.7 activate
+  neighbor 192.168.0.8 activate
+  neighbor 192.168.0.9 activate
+  neighbor 192.168.0.10 activate
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.12 activate
+  neighbor 192.168.0.13 activate
+ exit-address-family
+!
+
+threat-visibility
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+control-plane
+!
+ !
+ !
+ !
+ !
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet2" ipv4="10.0.0.13" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet3" ipv4="10.0.0.30" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet4" ipv4="10.0.0.38" netPrefixLenV4="30"/>
+    </node>
+    <node name="dc5-gw2" type="SIMPLE" subtype="CSR1000v" location="753,328" ipv4="192.168.0.4">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.58</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.58</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 16:33:11 UTC Tue May 23 2017
+!
+version 16.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
+!
+hostname dc5-gw2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition mgmt
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+ipv6 unicast-routing
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-1421480557
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1421480557
+ revocation-check none
+ rsakeypair TP-self-signed-1421480557
+!
+!
+crypto pki certificate chain TP-self-signed-1421480557
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 95C945Q2KWX
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+!
+spanning-tree extend system-id
+!
+!
+username cisco privilege 15 secret 5 $1$KM4b$gxPozPB9nNWIRwQEsEnBf0
+username rlaney privilege 15 secret 0 ralrox
+crypto key generate rsa modulus 1024
+ip ssh version 2
+ip ssh pubkey-chain
+  username rlaney
+   key-hash ssh-rsa 9A7F401B0C0D96316B7790A03D2E9983 rlaney@MonsterMacBook.local
+ip scp server enable
+!
+redundancy
+!
+!
+!
+!
+!
+cdp run
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.4 255.255.255.255
+!
+interface GigabitEthernet1
+ description OOB Management
+ vrf forwarding mgmt
+ ip address 172.16.1.58 255.255.255.0
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet2
+ description to internet
+ ip address 10.0.0.17 255.255.255.252
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet3
+ description to dc5-core2
+ ip address 10.0.0.42 255.255.255.252
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet4
+ description to dc5-core1
+ ip address 10.0.0.34 255.255.255.252
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.0.0.16 0.0.0.3
+  network 10.0.0.32 0.0.0.3
+  network 10.0.0.40 0.0.0.3
+  network 192.168.0.4 0.0.0.0
+ exit-address-family
+!
+router bgp 1
+ bgp router-id 192.168.0.4
+ bgp log-neighbor-changes
+ neighbor 192.168.0.1 remote-as 1
+ neighbor 192.168.0.1 description iBGP peer dc5-gw1
+ neighbor 192.168.0.1 update-source Loopback0
+ neighbor 192.168.0.2 remote-as 1
+ neighbor 192.168.0.2 description iBGP peer dc5-core1
+ neighbor 192.168.0.2 update-source Loopback0
+ neighbor 192.168.0.3 remote-as 1
+ neighbor 192.168.0.3 description iBGP peer dc5-core2
+ neighbor 192.168.0.3 update-source Loopback0
+ neighbor 192.168.0.5 remote-as 1
+ neighbor 192.168.0.5 description iBGP peer sc10-gw1
+ neighbor 192.168.0.5 update-source Loopback0
+ neighbor 192.168.0.6 remote-as 1
+ neighbor 192.168.0.6 description iBGP peer sc10-core1
+ neighbor 192.168.0.6 update-source Loopback0
+ neighbor 192.168.0.7 remote-as 1
+ neighbor 192.168.0.7 description iBGP peer sc10-core2
+ neighbor 192.168.0.7 update-source Loopback0
+ neighbor 192.168.0.8 remote-as 1
+ neighbor 192.168.0.8 description iBGP peer sc10-gw2
+ neighbor 192.168.0.8 update-source Loopback0
+ neighbor 192.168.0.9 remote-as 1
+ neighbor 192.168.0.9 description iBGP peer dc5-5k1
+ neighbor 192.168.0.9 update-source Loopback0
+ neighbor 192.168.0.10 remote-as 1
+ neighbor 192.168.0.10 description iBGP peer dc5-5k2
+ neighbor 192.168.0.10 update-source Loopback0
+ neighbor 192.168.0.11 remote-as 1
+ neighbor 192.168.0.11 description iBGP peer sc10-5k1
+ neighbor 192.168.0.11 update-source Loopback0
+ neighbor 192.168.0.12 remote-as 1
+ neighbor 192.168.0.12 description iBGP peer sc10-5k2
+ neighbor 192.168.0.12 update-source Loopback0
+ neighbor 192.168.0.13 remote-as 1
+ neighbor 192.168.0.13 description iBGP peer internet
+ neighbor 192.168.0.13 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.4 mask 255.255.255.255
+  neighbor 192.168.0.1 activate
+  neighbor 192.168.0.2 activate
+  neighbor 192.168.0.3 activate
+  neighbor 192.168.0.5 activate
+  neighbor 192.168.0.6 activate
+  neighbor 192.168.0.7 activate
+  neighbor 192.168.0.8 activate
+  neighbor 192.168.0.9 activate
+  neighbor 192.168.0.10 activate
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.12 activate
+  neighbor 192.168.0.13 activate
+ exit-address-family
+!
+
+threat-visibility
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+control-plane
+!
+ !
+ !
+ !
+ !
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet2" ipv4="10.0.0.17" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet3" ipv4="10.0.0.42" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet4" ipv4="10.0.0.34" netPrefixLenV4="30"/>
+    </node>
+    <node name="dc5-core1" type="SIMPLE" subtype="NX-OSv 9000" location="524,88" ipv4="192.168.0.2">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.55</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.55</entry>
+            <entry key="config" type="String">!Command: show running-config
+!Time: Wed May 24 03:24:55 2017
+
+version 7.0(3)I5(1)
+power redundancy-mode combined force
+
+hostname dc5-core1
+vdc dc5-core1 id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 511
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+feature bgp
+feature eigrp
+
+no password strength-check
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51  role network-admin
+username adminbackup password 5 !  role network-operator
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
+username cisco role network-admin
+username rlaney password 0 ralrox role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+crypto key generate rsa modulus 1024
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
+ip domain-lookup
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+
+vlan 1
+
+vrf context mgmt
+hardware forwarding unicast trace
+
+
+interface Ethernet1/1
+  description to dc5-gw1
+  no switchport
+  mac-address fa16.3e00.0001
+  ip address 10.0.0.29/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet1/2
+  description to dc5-5k1
+  no switchport
+  mac-address fa16.3e00.0002
+  ip address 10.0.0.46/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet1/3
+  description to dc5-gw2
+  no switchport
+  mac-address fa16.3e00.0003
+  ip address 10.0.0.33/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet1/4
+  description to dc5-5k2
+  no switchport
+  mac-address fa16.3e00.0004
+  ip address 10.0.0.50/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet1/5
+
+interface Ethernet1/6
+
+interface Ethernet1/7
+
+interface Ethernet1/8
+
+interface Ethernet1/9
+
+interface mgmt0
+  description OOB Management
+  vrf member mgmt
+  ip address 172.16.1.55/24
+
+interface loopback0
+  description Loopback
+  ip address 192.168.0.2/32
+  ip router eigrp 1
+line console
+line vty
+router eigrp 1
+  autonomous-system 1
+  router-id 192.168.0.2
+  address-family ipv4 unicast
+router bgp 1
+  router-id 192.168.0.2
+  address-family ipv4 unicast
+    network 192.168.0.2/32
+  neighbor 192.168.0.1
+    remote-as 1
+    description iBGP peer dc5-gw1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.3
+    remote-as 1
+    description iBGP peer dc5-core2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.4
+    remote-as 1
+    description iBGP peer dc5-gw2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.5
+    remote-as 1
+    description iBGP peer sc10-gw1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.6
+    remote-as 1
+    description iBGP peer sc10-core1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.7
+    remote-as 1
+    description iBGP peer sc10-core2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.8
+    remote-as 1
+    description iBGP peer sc10-gw2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.9
+    remote-as 1
+    description iBGP peer dc5-5k1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.10
+    remote-as 1
+    description iBGP peer dc5-5k2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.11
+    remote-as 1
+    description iBGP peer sc10-5k1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.12
+    remote-as 1
+    description iBGP peer sc10-5k2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.13
+    remote-as 1
+    description iBGP peer internet
+    update-source loopback0
+    address-family ipv4 unicast</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="Ethernet1/1" ipv4="10.0.0.29" netPrefixLenV4="30"/>
+        <interface id="1" name="Ethernet1/2" ipv4="10.0.0.46" netPrefixLenV4="30"/>
+        <interface id="2" name="Ethernet1/3" ipv4="10.0.0.33" netPrefixLenV4="30"/>
+        <interface id="3" name="Ethernet1/4" ipv4="10.0.0.50" netPrefixLenV4="30"/>
+    </node>
+    <node name="dc5-core2" type="SIMPLE" subtype="NX-OSv 9000" location="524,365" ipv4="192.168.0.3">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.56</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.56</entry>
+            <entry key="config" type="String">!Command: show running-config
+!Time: Wed May 24 03:24:55 2017
+
+version 7.0(3)I5(1)
+power redundancy-mode combined force
+
+hostname dc5-core2
+vdc dc5-core2 id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 511
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+feature bgp
+feature eigrp
+
+no password strength-check
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51  role network-admin
+username adminbackup password 5 !  role network-operator
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
+username cisco role network-admin
+username rlaney password 0 ralrox role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+crypto key generate rsa modulus 1024
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
+ip domain-lookup
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+
+vlan 1
+
+vrf context mgmt
+hardware forwarding unicast trace
+
+
+interface Ethernet1/1
+  description to dc5-gw2
+  no switchport
+  mac-address fa16.3e00.0006
+  ip address 10.0.0.41/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet1/2
+  description to dc5-5k2
+  no switchport
+  mac-address fa16.3e00.0007
+  ip address 10.0.0.58/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet1/3
+  description to dc5-gw1
+  no switchport
+  mac-address fa16.3e00.0008
+  ip address 10.0.0.37/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet1/4
+  description to dc5-5k1
+  no switchport
+  mac-address fa16.3e00.0009
+  ip address 10.0.0.54/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet1/5
+
+interface Ethernet1/6
+
+interface Ethernet1/7
+
+interface Ethernet1/8
+
+interface Ethernet1/9
+
+interface mgmt0
+  description OOB Management
+  vrf member mgmt
+  ip address 172.16.1.56/24
+
+interface loopback0
+  description Loopback
+  ip address 192.168.0.3/32
+  ip router eigrp 1
+line console
+line vty
+router eigrp 1
+  autonomous-system 1
+  router-id 192.168.0.3
+  address-family ipv4 unicast
+router bgp 1
+  router-id 192.168.0.3
+  address-family ipv4 unicast
+    network 192.168.0.3/32
+  neighbor 192.168.0.1
+    remote-as 1
+    description iBGP peer dc5-gw1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.2
+    remote-as 1
+    description iBGP peer dc5-core1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.4
+    remote-as 1
+    description iBGP peer dc5-gw2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.5
+    remote-as 1
+    description iBGP peer sc10-gw1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.6
+    remote-as 1
+    description iBGP peer sc10-core1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.7
+    remote-as 1
+    description iBGP peer sc10-core2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.8
+    remote-as 1
+    description iBGP peer sc10-gw2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.9
+    remote-as 1
+    description iBGP peer dc5-5k1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.10
+    remote-as 1
+    description iBGP peer dc5-5k2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.11
+    remote-as 1
+    description iBGP peer sc10-5k1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.12
+    remote-as 1
+    description iBGP peer sc10-5k2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.13
+    remote-as 1
+    description iBGP peer internet
+    update-source loopback0
+    address-family ipv4 unicast</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="Ethernet1/1" ipv4="10.0.0.41" netPrefixLenV4="30"/>
+        <interface id="1" name="Ethernet1/2" ipv4="10.0.0.58" netPrefixLenV4="30"/>
+        <interface id="2" name="Ethernet1/3" ipv4="10.0.0.37" netPrefixLenV4="30"/>
+        <interface id="3" name="Ethernet1/4" ipv4="10.0.0.54" netPrefixLenV4="30"/>
+    </node>
+    <node name="dc5-5k2" type="SIMPLE" subtype="NX-OSv" location="320,305" ipv4="192.168.0.10">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.54</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.54</entry>
+            <entry key="config" type="String">!Command: show running-config
+!Time: Wed May 24 03:25:03 2017
+
+version 7.3(0)D1(1)
+power redundancy-mode redundant
+license grace-period
+
+hostname dc5-5k2
+vdc dc5-5k2 id 1
+  limit-resource module-type m1 m1xl m2xl f2e 
+  allocate interface Ethernet2/1-48
+  allocate interface Ethernet3/1-48
+  allocate interface Ethernet4/1-48
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+feature bgp
+feature eigrp
+
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51  role network-admin
+username adminbackup password 5 !  role network-operator
+username adminbackup passphrase  lifetime 99999 warntime 14 gracetime 3
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
+username cisco role network-admin
+username cisco passphrase  lifetime 99999 warntime 14 gracetime 3
+username rlaney password 0 ralrox role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+crypto key generate rsa modulus 1024
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
+username lab passphrase  lifetime 99999 warntime 14 gracetime 3
+no password strength-check
+ip domain-lookup
+vlan dot1Q tag native
+system default switchport
+system jumbomtu 0
+no logging event trunk-status enable
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-admin auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-operator
+snmp-server user admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey engineID 128:0:0:9:3:0:0:0:0:0:0
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+snmp-server enable traps link
+
+vlan 1
+
+vrf context mgmt
+hardware forwarding unicast trace
+
+
+interface mgmt0
+  description OOB Management
+  duplex full
+  vrf member mgmt
+  ip address 172.16.1.54/24
+
+interface Ethernet2/1
+  description to dc5-core2
+  no switchport
+  mac-address fa16.3e00.0005
+  ip address 10.0.0.57/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet2/2
+  description to dc5-sw1
+  no switchport
+  mac-address fa16.3e00.0006
+  ip address 10.0.0.6/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet2/3
+  description to dc5-core1
+  no switchport
+  mac-address fa16.3e00.0007
+  ip address 10.0.0.49/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet2/4
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/5
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/6
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/7
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/8
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/9
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/10
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+
+interface loopback0
+  description Loopback
+  ip address 192.168.0.10/32
+  ip router eigrp 1
+line console
+line vty
+boot kickstart bootflash:/titanium-d1-kickstart.7.3.0.D1.1.bin
+boot system bootflash:/titanium-d1.7.3.0.D1.1.bin 
+router eigrp 1
+  autonomous-system 1
+  router-id 192.168.0.10
+  address-family ipv4 unicast
+router bgp 1
+  router-id 192.168.0.10
+  address-family ipv4 unicast
+    network 192.168.0.10/32
+  neighbor 192.168.0.1 remote-as 1
+    description iBGP peer dc5-gw1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.2 remote-as 1
+    description iBGP peer dc5-core1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.3 remote-as 1
+    description iBGP peer dc5-core2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.4 remote-as 1
+    description iBGP peer dc5-gw2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.5 remote-as 1
+    description iBGP peer sc10-gw1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.6 remote-as 1
+    description iBGP peer sc10-core1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.7 remote-as 1
+    description iBGP peer sc10-core2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.8 remote-as 1
+    description iBGP peer sc10-gw2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.9 remote-as 1
+    description iBGP peer dc5-5k1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.11 remote-as 1
+    description iBGP peer sc10-5k1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.12 remote-as 1
+    description iBGP peer sc10-5k2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.13 remote-as 1
+    description iBGP peer internet
+    update-source loopback0
+    address-family ipv4 unicast
+no system default switchport shutdown</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="Ethernet2/1" ipv4="10.0.0.57" netPrefixLenV4="30"/>
+        <interface id="1" name="Ethernet2/2" ipv4="10.0.0.6" netPrefixLenV4="30"/>
+        <interface id="2" name="Ethernet2/3" ipv4="10.0.0.49" netPrefixLenV4="30"/>
+    </node>
+    <node name="dc5-sw1" type="SIMPLE" subtype="IOSvL2" location="153,228">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.59</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.59</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 18:10:14 UTC Tue May 23 2017
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname dc5-sw1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition mgmt
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable password cisco
+!
+no aaa new-model
+!
+!
+!
+!
+!
+vtp domain virl.lab
+vtp mode transparent
+!
+!
+!
+no ip domain-lookup
+ip domain-name icloudmon.local
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+vlan 2
+ name ank_vlan2
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ no ip address
+!
+interface GigabitEthernet0/0
+ description OOB management
+ no switchport
+ vrf forwarding mgmt
+ ip address 172.16.1.59 255.255.255.0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ description to dc5-5k2
+ switchport access vlan 2
+ switchport mode access
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ description to dc5-5k1
+ switchport access vlan 2
+ switchport mode access
+ media-type rj45
+ negotiation auto
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ password cisco
+line aux 0
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login
+ transport input telnet ssh
+!
+!
+end</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <node name="dc5-5k1" type="SIMPLE" subtype="NX-OSv" location="320,149" ipv4="192.168.0.9">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.53</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.53</entry>
+            <entry key="config" type="String">!Command: show running-config
+!Time: Wed May 24 03:25:02 2017
+
+version 7.3(0)D1(1)
+power redundancy-mode redundant
+license grace-period
+
+hostname dc5-5k1
+vdc dc5-5k1 id 1
+  limit-resource module-type m1 m1xl m2xl f2e 
+  allocate interface Ethernet2/1-48
+  allocate interface Ethernet3/1-48
+  allocate interface Ethernet4/1-48
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+feature bgp
+feature eigrp
+
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51  role network-admin
+username adminbackup password 5 !  role network-operator
+username adminbackup passphrase  lifetime 99999 warntime 14 gracetime 3
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
+username cisco role network-admin
+username cisco passphrase  lifetime 99999 warntime 14 gracetime 3
+username rlaney password 0 ralrox role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+crypto key generate rsa modulus 1024
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
+username lab passphrase  lifetime 99999 warntime 14 gracetime 3
+no password strength-check
+ip domain-lookup
+vlan dot1Q tag native
+system default switchport
+system jumbomtu 0
+no logging event trunk-status enable
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-admin auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-operator
+snmp-server user admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey engineID 128:0:0:9:3:0:0:0:0:0:0
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+snmp-server enable traps link
+
+vlan 1
+
+vrf context mgmt
+hardware forwarding unicast trace
+
+
+interface mgmt0
+  description OOB Management
+  duplex full
+  vrf member mgmt
+  ip address 172.16.1.53/24
+
+interface Ethernet2/1
+  description to dc5-core1
+  no switchport
+  mac-address fa16.3e00.0001
+  ip address 10.0.0.45/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet2/2
+  description to dc5-sw1
+  no switchport
+  mac-address fa16.3e00.0002
+  ip address 10.0.0.5/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet2/3
+  description to dc5-core2
+  no switchport
+  mac-address fa16.3e00.0003
+  ip address 10.0.0.53/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet2/4
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/5
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/6
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/7
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/8
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/9
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/10
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+
+interface loopback0
+  description Loopback
+  ip address 192.168.0.9/32
+  ip router eigrp 1
+line console
+line vty
+boot kickstart bootflash:/titanium-d1-kickstart.7.3.0.D1.1.bin
+boot system bootflash:/titanium-d1.7.3.0.D1.1.bin 
+router eigrp 1
+  autonomous-system 1
+  router-id 192.168.0.9
+  address-family ipv4 unicast
+router bgp 1
+  router-id 192.168.0.9
+  address-family ipv4 unicast
+    network 192.168.0.9/32
+  neighbor 192.168.0.1 remote-as 1
+    description iBGP peer dc5-gw1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.2 remote-as 1
+    description iBGP peer dc5-core1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.3 remote-as 1
+    description iBGP peer dc5-core2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.4 remote-as 1
+    description iBGP peer dc5-gw2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.5 remote-as 1
+    description iBGP peer sc10-gw1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.6 remote-as 1
+    description iBGP peer sc10-core1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.7 remote-as 1
+    description iBGP peer sc10-core2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.8 remote-as 1
+    description iBGP peer sc10-gw2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.10 remote-as 1
+    description iBGP peer dc5-5k2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.11 remote-as 1
+    description iBGP peer sc10-5k1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.12 remote-as 1
+    description iBGP peer sc10-5k2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.13 remote-as 1
+    description iBGP peer internet
+    update-source loopback0
+    address-family ipv4 unicast
+no system default switchport shutdown</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="Ethernet2/1" ipv4="10.0.0.45" netPrefixLenV4="30"/>
+        <interface id="1" name="Ethernet2/2" ipv4="10.0.0.5" netPrefixLenV4="30"/>
+        <interface id="2" name="Ethernet2/3" ipv4="10.0.0.53" netPrefixLenV4="30"/>
+    </node>
+    <node name="sc10-gw1" type="SIMPLE" subtype="CSR1000v" location="1106,146" ipv4="192.168.0.5">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.65</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.65</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 16:33:53 UTC Tue May 23 2017
+!
+version 16.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
+!
+hostname sc10-gw1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition mgmt
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+ipv6 unicast-routing
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-3130598256
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-3130598256
+ revocation-check none
+ rsakeypair TP-self-signed-3130598256
+!
+!
+crypto pki certificate chain TP-self-signed-3130598256
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9WOFEMJPZA8
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+!
+spanning-tree extend system-id
+!
+!
+username cisco privilege 15 secret 5 $1$.Wds$qU9/uIx7XN9W8LeJMelx71
+username rlaney privilege 15 secret 0 ralrox
+crypto key generate rsa modulus 1024
+ip ssh version 2
+ip ssh pubkey-chain
+  username rlaney
+   key-hash ssh-rsa 9A7F401B0C0D96316B7790A03D2E9983 rlaney@MonsterMacBook.local
+ip scp server enable
+!
+redundancy
+!
+!
+!
+!
+!
+cdp run
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.5 255.255.255.255
+!
+interface GigabitEthernet1
+ description OOB Management
+ vrf forwarding mgmt
+ ip address 172.16.1.65 255.255.255.0
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet2
+ description to sc10-core1
+ ip address 10.0.0.62 255.255.255.252
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet3
+ description to sc10-core2
+ ip address 10.0.0.70 255.255.255.252
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet4
+ description to internet
+ ip address 10.0.0.22 255.255.255.252
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.0.0.20 0.0.0.3
+  network 10.0.0.60 0.0.0.3
+  network 10.0.0.68 0.0.0.3
+  network 192.168.0.5 0.0.0.0
+ exit-address-family
+!
+router bgp 1
+ bgp router-id 192.168.0.5
+ bgp log-neighbor-changes
+ neighbor 192.168.0.1 remote-as 1
+ neighbor 192.168.0.1 description iBGP peer dc5-gw1
+ neighbor 192.168.0.1 update-source Loopback0
+ neighbor 192.168.0.2 remote-as 1
+ neighbor 192.168.0.2 description iBGP peer dc5-core1
+ neighbor 192.168.0.2 update-source Loopback0
+ neighbor 192.168.0.3 remote-as 1
+ neighbor 192.168.0.3 description iBGP peer dc5-core2
+ neighbor 192.168.0.3 update-source Loopback0
+ neighbor 192.168.0.4 remote-as 1
+ neighbor 192.168.0.4 description iBGP peer dc5-gw2
+ neighbor 192.168.0.4 update-source Loopback0
+ neighbor 192.168.0.6 remote-as 1
+ neighbor 192.168.0.6 description iBGP peer sc10-core1
+ neighbor 192.168.0.6 update-source Loopback0
+ neighbor 192.168.0.7 remote-as 1
+ neighbor 192.168.0.7 description iBGP peer sc10-core2
+ neighbor 192.168.0.7 update-source Loopback0
+ neighbor 192.168.0.8 remote-as 1
+ neighbor 192.168.0.8 description iBGP peer sc10-gw2
+ neighbor 192.168.0.8 update-source Loopback0
+ neighbor 192.168.0.9 remote-as 1
+ neighbor 192.168.0.9 description iBGP peer dc5-5k1
+ neighbor 192.168.0.9 update-source Loopback0
+ neighbor 192.168.0.10 remote-as 1
+ neighbor 192.168.0.10 description iBGP peer dc5-5k2
+ neighbor 192.168.0.10 update-source Loopback0
+ neighbor 192.168.0.11 remote-as 1
+ neighbor 192.168.0.11 description iBGP peer sc10-5k1
+ neighbor 192.168.0.11 update-source Loopback0
+ neighbor 192.168.0.12 remote-as 1
+ neighbor 192.168.0.12 description iBGP peer sc10-5k2
+ neighbor 192.168.0.12 update-source Loopback0
+ neighbor 192.168.0.13 remote-as 1
+ neighbor 192.168.0.13 description iBGP peer internet
+ neighbor 192.168.0.13 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.5 mask 255.255.255.255
+  neighbor 192.168.0.1 activate
+  neighbor 192.168.0.2 activate
+  neighbor 192.168.0.3 activate
+  neighbor 192.168.0.4 activate
+  neighbor 192.168.0.6 activate
+  neighbor 192.168.0.7 activate
+  neighbor 192.168.0.8 activate
+  neighbor 192.168.0.9 activate
+  neighbor 192.168.0.10 activate
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.12 activate
+  neighbor 192.168.0.13 activate
+ exit-address-family
+!
+
+threat-visibility
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+control-plane
+!
+ !
+ !
+ !
+ !
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet2" ipv4="10.0.0.62" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet3" ipv4="10.0.0.70" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet4" ipv4="10.0.0.22" netPrefixLenV4="30"/>
+    </node>
+    <node name="sc10-gw2" type="SIMPLE" subtype="CSR1000v" location="1106,322" ipv4="192.168.0.8">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.66</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.66</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 16:33:55 UTC Tue May 23 2017
+!
+version 16.5
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+platform console serial
+!
+hostname sc10-gw2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition mgmt
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+ipv6 unicast-routing
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+! 
+! 
+! 
+! 
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-1591021824
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1591021824
+ revocation-check none
+ rsakeypair TP-self-signed-1591021824
+!
+!
+crypto pki certificate chain TP-self-signed-1591021824
+ certificate self-signed 01 nvram:IOS-Self-Sig#1.cer
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9GYBXTQG86D
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+!
+spanning-tree extend system-id
+!
+!
+username cisco privilege 15 secret 5 $1$rQqB$sIAnMhDSn39mFh7mAfsYm1
+username rlaney privilege 15 secret 0 ralrox
+crypto key generate rsa modulus 1024
+ip ssh version 2
+ip ssh pubkey-chain
+  username rlaney
+   key-hash ssh-rsa 9A7F401B0C0D96316B7790A03D2E9983 rlaney@MonsterMacBook.local
+ip scp server enable
+!
+redundancy
+!
+!
+!
+!
+!
+cdp run
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+! 
+! 
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.8 255.255.255.255
+!
+interface GigabitEthernet1
+ description OOB Management
+ vrf forwarding mgmt
+ ip address 172.16.1.66 255.255.255.0
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet2
+ description to sc10-core2
+ ip address 10.0.0.74 255.255.255.252
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet3
+ description to sc10-core1
+ ip address 10.0.0.66 255.255.255.252
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet4
+ description to internet
+ ip address 10.0.0.26 255.255.255.252
+ negotiation auto
+ cdp enable
+ no mop enabled
+ no mop sysid
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.0.0.24 0.0.0.3
+  network 10.0.0.64 0.0.0.3
+  network 10.0.0.72 0.0.0.3
+  network 192.168.0.8 0.0.0.0
+ exit-address-family
+!
+router bgp 1
+ bgp router-id 192.168.0.8
+ bgp log-neighbor-changes
+ neighbor 192.168.0.1 remote-as 1
+ neighbor 192.168.0.1 description iBGP peer dc5-gw1
+ neighbor 192.168.0.1 update-source Loopback0
+ neighbor 192.168.0.2 remote-as 1
+ neighbor 192.168.0.2 description iBGP peer dc5-core1
+ neighbor 192.168.0.2 update-source Loopback0
+ neighbor 192.168.0.3 remote-as 1
+ neighbor 192.168.0.3 description iBGP peer dc5-core2
+ neighbor 192.168.0.3 update-source Loopback0
+ neighbor 192.168.0.4 remote-as 1
+ neighbor 192.168.0.4 description iBGP peer dc5-gw2
+ neighbor 192.168.0.4 update-source Loopback0
+ neighbor 192.168.0.5 remote-as 1
+ neighbor 192.168.0.5 description iBGP peer sc10-gw1
+ neighbor 192.168.0.5 update-source Loopback0
+ neighbor 192.168.0.6 remote-as 1
+ neighbor 192.168.0.6 description iBGP peer sc10-core1
+ neighbor 192.168.0.6 update-source Loopback0
+ neighbor 192.168.0.7 remote-as 1
+ neighbor 192.168.0.7 description iBGP peer sc10-core2
+ neighbor 192.168.0.7 update-source Loopback0
+ neighbor 192.168.0.9 remote-as 1
+ neighbor 192.168.0.9 description iBGP peer dc5-5k1
+ neighbor 192.168.0.9 update-source Loopback0
+ neighbor 192.168.0.10 remote-as 1
+ neighbor 192.168.0.10 description iBGP peer dc5-5k2
+ neighbor 192.168.0.10 update-source Loopback0
+ neighbor 192.168.0.11 remote-as 1
+ neighbor 192.168.0.11 description iBGP peer sc10-5k1
+ neighbor 192.168.0.11 update-source Loopback0
+ neighbor 192.168.0.12 remote-as 1
+ neighbor 192.168.0.12 description iBGP peer sc10-5k2
+ neighbor 192.168.0.12 update-source Loopback0
+ neighbor 192.168.0.13 remote-as 1
+ neighbor 192.168.0.13 description iBGP peer internet
+ neighbor 192.168.0.13 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.8 mask 255.255.255.255
+  neighbor 192.168.0.1 activate
+  neighbor 192.168.0.2 activate
+  neighbor 192.168.0.3 activate
+  neighbor 192.168.0.4 activate
+  neighbor 192.168.0.5 activate
+  neighbor 192.168.0.6 activate
+  neighbor 192.168.0.7 activate
+  neighbor 192.168.0.9 activate
+  neighbor 192.168.0.10 activate
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.12 activate
+  neighbor 192.168.0.13 activate
+ exit-address-family
+!
+
+threat-visibility
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh server algorithm authentication password
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+control-plane
+!
+ !
+ !
+ !
+ !
+!
+!
+!
+!
+!
+line con 0
+ password cisco
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!
+!
+!
+end</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet2" ipv4="10.0.0.74" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet3" ipv4="10.0.0.66" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet4" ipv4="10.0.0.26" netPrefixLenV4="30"/>
+    </node>
+    <node name="sc10-core1" type="SIMPLE" subtype="NX-OSv 9000" location="1296,89" ipv4="192.168.0.6">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.63</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.63</entry>
+            <entry key="config" type="String">!Command: show running-config
+!Time: Wed May 24 03:24:55 2017
+
+version 7.0(3)I5(1)
+power redundancy-mode combined force
+
+hostname sc10-core1
+vdc sc10-core1 id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 511
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+feature bgp
+feature eigrp
+
+no password strength-check
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51  role network-admin
+username adminbackup password 5 !  role network-operator
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
+username cisco role network-admin
+username rlaney password 0 ralrox role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+crypto key generate rsa modulus 1024
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
+ip domain-lookup
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+
+vlan 1
+
+vrf context mgmt
+hardware forwarding unicast trace
+
+
+interface Ethernet1/1
+  description to sc10-gw1
+  no switchport
+  mac-address fa16.3e00.000b
+  ip address 10.0.0.61/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet1/2
+  description to sc10-gw2
+  no switchport
+  mac-address fa16.3e00.000c
+  ip address 10.0.0.65/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet1/3
+  description to sc10-5k1
+  no switchport
+  mac-address fa16.3e00.000d
+  ip address 10.0.0.78/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet1/4
+  description to sc10-5k2
+  no switchport
+  mac-address fa16.3e00.000e
+  ip address 10.0.0.82/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet1/5
+
+interface Ethernet1/6
+
+interface Ethernet1/7
+
+interface Ethernet1/8
+
+interface Ethernet1/9
+
+interface mgmt0
+  description OOB Management
+  vrf member mgmt
+  ip address 172.16.1.63/24
+
+interface loopback0
+  description Loopback
+  ip address 192.168.0.6/32
+  ip router eigrp 1
+line console
+line vty
+router eigrp 1
+  autonomous-system 1
+  router-id 192.168.0.6
+  address-family ipv4 unicast
+router bgp 1
+  router-id 192.168.0.6
+  address-family ipv4 unicast
+    network 192.168.0.6/32
+  neighbor 192.168.0.1
+    remote-as 1
+    description iBGP peer dc5-gw1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.2
+    remote-as 1
+    description iBGP peer dc5-core1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.3
+    remote-as 1
+    description iBGP peer dc5-core2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.4
+    remote-as 1
+    description iBGP peer dc5-gw2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.5
+    remote-as 1
+    description iBGP peer sc10-gw1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.7
+    remote-as 1
+    description iBGP peer sc10-core2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.8
+    remote-as 1
+    description iBGP peer sc10-gw2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.9
+    remote-as 1
+    description iBGP peer dc5-5k1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.10
+    remote-as 1
+    description iBGP peer dc5-5k2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.11
+    remote-as 1
+    description iBGP peer sc10-5k1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.12
+    remote-as 1
+    description iBGP peer sc10-5k2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.13
+    remote-as 1
+    description iBGP peer internet
+    update-source loopback0
+    address-family ipv4 unicast</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="Ethernet1/1" ipv4="10.0.0.61" netPrefixLenV4="30"/>
+        <interface id="1" name="Ethernet1/2" ipv4="10.0.0.65" netPrefixLenV4="30"/>
+        <interface id="2" name="Ethernet1/3" ipv4="10.0.0.78" netPrefixLenV4="30"/>
+        <interface id="3" name="Ethernet1/4" ipv4="10.0.0.82" netPrefixLenV4="30"/>
+    </node>
+    <node name="sc10-core2" type="SIMPLE" subtype="NX-OSv 9000" location="1296,364" ipv4="192.168.0.7">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.64</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.64</entry>
+            <entry key="config" type="String">!Command: show running-config
+!Time: Wed May 24 03:24:56 2017
+
+version 7.0(3)I5(1)
+power redundancy-mode combined force
+
+hostname sc10-core2
+vdc sc10-core2 id 1
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 511
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+feature bgp
+feature eigrp
+
+no password strength-check
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51  role network-admin
+username adminbackup password 5 !  role network-operator
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
+username cisco role network-admin
+username rlaney password 0 ralrox role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+crypto key generate rsa modulus 1024
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
+ip domain-lookup
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-operator auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+
+vlan 1
+
+vrf context mgmt
+hardware forwarding unicast trace
+
+
+interface Ethernet1/1
+  description to sc10-gw2
+  no switchport
+  mac-address fa16.3e00.0010
+  ip address 10.0.0.73/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet1/2
+  description to sc10-gw1
+  no switchport
+  mac-address fa16.3e00.0011
+  ip address 10.0.0.69/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet1/3
+  description to sc10-5k2
+  no switchport
+  mac-address fa16.3e00.0012
+  ip address 10.0.0.90/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet1/4
+  description to sc10-5k1
+  no switchport
+  mac-address fa16.3e00.0013
+  ip address 10.0.0.86/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet1/5
+
+interface Ethernet1/6
+
+interface Ethernet1/7
+
+interface Ethernet1/8
+
+interface Ethernet1/9
+
+interface mgmt0
+  description OOB Management
+  vrf member mgmt
+  ip address 172.16.1.64/24
+
+interface loopback0
+  description Loopback
+  ip address 192.168.0.7/32
+  ip router eigrp 1
+line console
+line vty
+router eigrp 1
+  autonomous-system 1
+  router-id 192.168.0.7
+  address-family ipv4 unicast
+router bgp 1
+  router-id 192.168.0.7
+  address-family ipv4 unicast
+    network 192.168.0.7/32
+  neighbor 192.168.0.1
+    remote-as 1
+    description iBGP peer dc5-gw1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.2
+    remote-as 1
+    description iBGP peer dc5-core1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.3
+    remote-as 1
+    description iBGP peer dc5-core2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.4
+    remote-as 1
+    description iBGP peer dc5-gw2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.5
+    remote-as 1
+    description iBGP peer sc10-gw1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.6
+    remote-as 1
+    description iBGP peer sc10-core1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.8
+    remote-as 1
+    description iBGP peer sc10-gw2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.9
+    remote-as 1
+    description iBGP peer dc5-5k1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.10
+    remote-as 1
+    description iBGP peer dc5-5k2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.11
+    remote-as 1
+    description iBGP peer sc10-5k1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.12
+    remote-as 1
+    description iBGP peer sc10-5k2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.13
+    remote-as 1
+    description iBGP peer internet
+    update-source loopback0
+    address-family ipv4 unicast</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="Ethernet1/1" ipv4="10.0.0.73" netPrefixLenV4="30"/>
+        <interface id="1" name="Ethernet1/2" ipv4="10.0.0.69" netPrefixLenV4="30"/>
+        <interface id="2" name="Ethernet1/3" ipv4="10.0.0.90" netPrefixLenV4="30"/>
+        <interface id="3" name="Ethernet1/4" ipv4="10.0.0.86" netPrefixLenV4="30"/>
+    </node>
+    <node name="sc10-5k1" type="SIMPLE" subtype="NX-OSv" location="1509,146" ipv4="192.168.0.11">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.61</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.61</entry>
+            <entry key="config" type="String">!Command: show running-config
+!Time: Wed May 24 03:25:04 2017
+
+version 7.3(0)D1(1)
+power redundancy-mode redundant
+license grace-period
+
+hostname sc10-5k1
+vdc sc10-5k1 id 1
+  limit-resource module-type m1 m1xl m2xl f2e 
+  allocate interface Ethernet2/1-48
+  allocate interface Ethernet3/1-48
+  allocate interface Ethernet4/1-48
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+feature bgp
+feature eigrp
+
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51  role network-admin
+username adminbackup password 5 !  role network-operator
+username adminbackup passphrase  lifetime 99999 warntime 14 gracetime 3
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
+username cisco role network-admin
+username cisco passphrase  lifetime 99999 warntime 14 gracetime 3
+username rlaney password 0 ralrox role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+crypto key generate rsa modulus 1024
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
+username lab passphrase  lifetime 99999 warntime 14 gracetime 3
+no password strength-check
+ip domain-lookup
+vlan dot1Q tag native
+system default switchport
+system jumbomtu 0
+no logging event trunk-status enable
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-admin auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-operator
+snmp-server user admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey engineID 128:0:0:9:3:0:0:0:0:0:0
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+snmp-server enable traps link
+
+vlan 1
+
+vrf context mgmt
+hardware forwarding unicast trace
+
+
+interface mgmt0
+  description OOB Management
+  duplex full
+  vrf member mgmt
+  ip address 172.16.1.61/24
+
+interface Ethernet2/1
+  description to sc10-core1
+  no switchport
+  mac-address fa16.3e00.0009
+  ip address 10.0.0.77/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet2/2
+  description to sc10-sw1
+  no switchport
+  mac-address fa16.3e00.000a
+  ip address 10.0.0.9/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet2/3
+  description to sc10-core2
+  no switchport
+  mac-address fa16.3e00.000b
+  ip address 10.0.0.85/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet2/4
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/5
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/6
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/7
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/8
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/9
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/10
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+
+interface loopback0
+  description Loopback
+  ip address 192.168.0.11/32
+  ip router eigrp 1
+line console
+line vty
+boot kickstart bootflash:/titanium-d1-kickstart.7.3.0.D1.1.bin
+boot system bootflash:/titanium-d1.7.3.0.D1.1.bin 
+router eigrp 1
+  autonomous-system 1
+  router-id 192.168.0.11
+  address-family ipv4 unicast
+router bgp 1
+  router-id 192.168.0.11
+  address-family ipv4 unicast
+    network 192.168.0.11/32
+  neighbor 192.168.0.1 remote-as 1
+    description iBGP peer dc5-gw1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.2 remote-as 1
+    description iBGP peer dc5-core1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.3 remote-as 1
+    description iBGP peer dc5-core2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.4 remote-as 1
+    description iBGP peer dc5-gw2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.5 remote-as 1
+    description iBGP peer sc10-gw1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.6 remote-as 1
+    description iBGP peer sc10-core1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.7 remote-as 1
+    description iBGP peer sc10-core2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.8 remote-as 1
+    description iBGP peer sc10-gw2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.9 remote-as 1
+    description iBGP peer dc5-5k1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.10 remote-as 1
+    description iBGP peer dc5-5k2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.12 remote-as 1
+    description iBGP peer sc10-5k2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.13 remote-as 1
+    description iBGP peer internet
+    update-source loopback0
+    address-family ipv4 unicast
+no system default switchport shutdown</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="Ethernet2/1" ipv4="10.0.0.77" netPrefixLenV4="30"/>
+        <interface id="1" name="Ethernet2/2" ipv4="10.0.0.9" netPrefixLenV4="30"/>
+        <interface id="2" name="Ethernet2/3" ipv4="10.0.0.85" netPrefixLenV4="30"/>
+    </node>
+    <node name="sc10-5k2" type="SIMPLE" subtype="NX-OSv" location="1509,303" ipv4="192.168.0.12">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.62</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.62</entry>
+            <entry key="config" type="String">!Command: show running-config
+!Time: Wed May 24 03:25:00 2017
+
+version 7.3(0)D1(1)
+power redundancy-mode redundant
+license grace-period
+
+hostname sc10-5k2
+vdc sc10-5k2 id 1
+  limit-resource module-type m1 m1xl m2xl f2e 
+  allocate interface Ethernet2/1-48
+  allocate interface Ethernet3/1-48
+  allocate interface Ethernet4/1-48
+  limit-resource vlan minimum 16 maximum 4094
+  limit-resource vrf minimum 2 maximum 4096
+  limit-resource port-channel minimum 0 maximum 768
+  limit-resource u4route-mem minimum 96 maximum 96
+  limit-resource u6route-mem minimum 24 maximum 24
+  limit-resource m4route-mem minimum 58 maximum 58
+  limit-resource m6route-mem minimum 8 maximum 8
+
+feature telnet
+feature bgp
+feature eigrp
+
+username admin password 5 $1$KuOSBsvW$Cy0TSD..gEBGBPjzpDgf51  role network-admin
+username adminbackup password 5 !  role network-operator
+username adminbackup passphrase  lifetime 99999 warntime 14 gracetime 3
+username cisco password 5 $1$Nk7ZkwH0$fyiRmMMfIheqE3BqvcL0C1  role network-operator
+username cisco role network-admin
+username cisco passphrase  lifetime 99999 warntime 14 gracetime 3
+username rlaney password 0 ralrox role network-operator
+username rlaney role network-admin
+username rlaney passphrase  lifetime 99999 warntime 14 gracetime 3
+crypto key generate rsa modulus 1024
+username lab password 5 $1$buoy/oqy$.EXQz8rCn72ii8qtdldj00  role network-admin
+username lab passphrase  lifetime 99999 warntime 14 gracetime 3
+no password strength-check
+ip domain-lookup
+vlan dot1Q tag native
+system default switchport
+system jumbomtu 0
+no logging event trunk-status enable
+copp profile strict
+snmp-server user lab network-admin auth md5 0x5ceb414591539ee35159fca86fdfa101 priv 0x5ceb414591539ee35159fca86fdfa101 localizedkey
+snmp-server user admin network-admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey
+snmp-server user cisco network-admin auth md5 0x55b3c64a53fb95518e75358ee75e82e9 priv 0x55b3c64a53fb95518e75358ee75e82e9 localizedkey
+snmp-server user cisco network-operator
+snmp-server user admin auth md5 0x328945d53e05e8e7207f8c20b142f0b7 priv 0x328945d53e05e8e7207f8c20b142f0b7 localizedkey engineID 128:0:0:9:3:0:0:0:0:0:0
+rmon event 1 log trap public description FATAL(1) owner PMON@FATAL
+rmon event 2 log trap public description CRITICAL(2) owner PMON@CRITICAL
+rmon event 3 log trap public description ERROR(3) owner PMON@ERROR
+rmon event 4 log trap public description WARNING(4) owner PMON@WARNING
+rmon event 5 log trap public description INFORMATION(5) owner PMON@INFO
+snmp-server enable traps link
+
+vlan 1
+
+vrf context mgmt
+hardware forwarding unicast trace
+
+
+interface mgmt0
+  description OOB Management
+  duplex full
+  vrf member mgmt
+  ip address 172.16.1.62/24
+
+interface Ethernet2/1
+  description to sc10-core2
+  no switchport
+  mac-address fa16.3e00.000d
+  ip address 10.0.0.89/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet2/2
+  description to sc10-sw1
+  no switchport
+  mac-address fa16.3e00.000e
+  ip address 10.0.0.10/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet2/3
+  description to sc10-core1
+  no switchport
+  mac-address fa16.3e00.000f
+  ip address 10.0.0.81/30
+  ip router eigrp 1
+  no shutdown
+
+interface Ethernet2/4
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/5
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/6
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/7
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/8
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/9
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+interface Ethernet2/10
+  shutdown
+  no switchport
+  mac-address 0000.0000.002f
+
+
+interface loopback0
+  description Loopback
+  ip address 192.168.0.12/32
+  ip router eigrp 1
+line console
+line vty
+boot kickstart bootflash:/titanium-d1-kickstart.7.3.0.D1.1.bin
+boot system bootflash:/titanium-d1.7.3.0.D1.1.bin 
+router eigrp 1
+  autonomous-system 1
+  router-id 192.168.0.12
+  address-family ipv4 unicast
+router bgp 1
+  router-id 192.168.0.12
+  address-family ipv4 unicast
+    network 192.168.0.12/32
+  neighbor 192.168.0.1 remote-as 1
+    description iBGP peer dc5-gw1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.2 remote-as 1
+    description iBGP peer dc5-core1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.3 remote-as 1
+    description iBGP peer dc5-core2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.4 remote-as 1
+    description iBGP peer dc5-gw2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.5 remote-as 1
+    description iBGP peer sc10-gw1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.6 remote-as 1
+    description iBGP peer sc10-core1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.7 remote-as 1
+    description iBGP peer sc10-core2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.8 remote-as 1
+    description iBGP peer sc10-gw2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.9 remote-as 1
+    description iBGP peer dc5-5k1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.10 remote-as 1
+    description iBGP peer dc5-5k2
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.11 remote-as 1
+    description iBGP peer sc10-5k1
+    update-source loopback0
+    address-family ipv4 unicast
+  neighbor 192.168.0.13 remote-as 1
+    description iBGP peer internet
+    update-source loopback0
+    address-family ipv4 unicast
+no system default switchport shutdown</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="Ethernet2/1" ipv4="10.0.0.89" netPrefixLenV4="30"/>
+        <interface id="1" name="Ethernet2/2" ipv4="10.0.0.10" netPrefixLenV4="30"/>
+        <interface id="2" name="Ethernet2/3" ipv4="10.0.0.81" netPrefixLenV4="30"/>
+    </node>
+    <node name="internet" type="SIMPLE" subtype="IOSv" location="919,228" ipv4="192.168.0.13">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.60</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.60</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 16:31:13 UTC Tue May 23 2017
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname internet
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition mgmt
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable password cisco
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name virl.info
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+username cisco privilege 15 secret 5 $1$1aKW$fgywPuorRK4PnWp4j46f1.
+username rlaney privilege 15 secret 0 ralrox
+crypto key generate rsa modulus 1024
+ip ssh version 2
+ip ssh pubkey-chain
+  username rlaney
+   key-hash ssh-rsa 9A7F401B0C0D96316B7790A03D2E9983 rlaney@MonsterMacBook.local
+ip scp server enable
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ ip address 192.168.0.13 255.255.255.255
+!
+interface GigabitEthernet0/0
+ description OOB Management
+ vrf forwarding mgmt
+ ip address 172.16.1.60 255.255.255.0
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ description to dc5-gw1
+ ip address 10.0.0.14 255.255.255.252
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description to dc5-gw2
+ ip address 10.0.0.18 255.255.255.252
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/3
+ description to sc10-gw1
+ ip address 10.0.0.21 255.255.255.252
+ duplex full
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/4
+ description to sc10-gw2
+ ip address 10.0.0.25 255.255.255.252
+ duplex full
+ speed auto
+ media-type rj45
+!
+!
+router eigrp as1
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+  exit-af-topology
+  network 10.0.0.12 0.0.0.3
+  network 10.0.0.16 0.0.0.3
+  network 10.0.0.20 0.0.0.3
+  network 10.0.0.24 0.0.0.3
+  network 192.168.0.13 0.0.0.0
+ exit-address-family
+!
+router bgp 1
+ bgp router-id 192.168.0.13
+ bgp log-neighbor-changes
+ neighbor 192.168.0.1 remote-as 1
+ neighbor 192.168.0.1 description iBGP peer dc5-gw1
+ neighbor 192.168.0.1 update-source Loopback0
+ neighbor 192.168.0.2 remote-as 1
+ neighbor 192.168.0.2 description iBGP peer dc5-core1
+ neighbor 192.168.0.2 update-source Loopback0
+ neighbor 192.168.0.3 remote-as 1
+ neighbor 192.168.0.3 description iBGP peer dc5-core2
+ neighbor 192.168.0.3 update-source Loopback0
+ neighbor 192.168.0.4 remote-as 1
+ neighbor 192.168.0.4 description iBGP peer dc5-gw2
+ neighbor 192.168.0.4 update-source Loopback0
+ neighbor 192.168.0.5 remote-as 1
+ neighbor 192.168.0.5 description iBGP peer sc10-gw1
+ neighbor 192.168.0.5 update-source Loopback0
+ neighbor 192.168.0.6 remote-as 1
+ neighbor 192.168.0.6 description iBGP peer sc10-core1
+ neighbor 192.168.0.6 update-source Loopback0
+ neighbor 192.168.0.7 remote-as 1
+ neighbor 192.168.0.7 description iBGP peer sc10-core2
+ neighbor 192.168.0.7 update-source Loopback0
+ neighbor 192.168.0.8 remote-as 1
+ neighbor 192.168.0.8 description iBGP peer sc10-gw2
+ neighbor 192.168.0.8 update-source Loopback0
+ neighbor 192.168.0.9 remote-as 1
+ neighbor 192.168.0.9 description iBGP peer dc5-5k1
+ neighbor 192.168.0.9 update-source Loopback0
+ neighbor 192.168.0.10 remote-as 1
+ neighbor 192.168.0.10 description iBGP peer dc5-5k2
+ neighbor 192.168.0.10 update-source Loopback0
+ neighbor 192.168.0.11 remote-as 1
+ neighbor 192.168.0.11 description iBGP peer sc10-5k1
+ neighbor 192.168.0.11 update-source Loopback0
+ neighbor 192.168.0.12 remote-as 1
+ neighbor 192.168.0.12 description iBGP peer sc10-5k2
+ neighbor 192.168.0.12 update-source Loopback0
+ !
+ address-family ipv4
+  network 192.168.0.13 mask 255.255.255.255
+  neighbor 192.168.0.1 activate
+  neighbor 192.168.0.2 activate
+  neighbor 192.168.0.3 activate
+  neighbor 192.168.0.4 activate
+  neighbor 192.168.0.5 activate
+  neighbor 192.168.0.6 activate
+  neighbor 192.168.0.7 activate
+  neighbor 192.168.0.8 activate
+  neighbor 192.168.0.9 activate
+  neighbor 192.168.0.10 activate
+  neighbor 192.168.0.11 activate
+  neighbor 192.168.0.12 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip ssh server algorithm authentication password
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ password cisco
+line aux 0
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+no scheduler allocate
+!
+end</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.14" netPrefixLenV4="30"/>
+        <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.18" netPrefixLenV4="30"/>
+        <interface id="2" name="GigabitEthernet0/3" ipv4="10.0.0.21" netPrefixLenV4="30"/>
+        <interface id="3" name="GigabitEthernet0/4" ipv4="10.0.0.25" netPrefixLenV4="30"/>
+    </node>
+    <node name="sc10-sw1" type="SIMPLE" subtype="IOSvL2" location="1675,228">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.67</entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string">172.16.1.67</entry>
+            <entry key="config" type="String">!
+! Last configuration change at 16:31:46 UTC Tue May 23 2017
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname sc10-sw1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition mgmt
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable password cisco
+!
+no aaa new-model
+!
+!
+!
+!
+!
+vtp domain virl.lab
+vtp mode transparent
+!
+!
+!
+no ip domain-lookup
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+vlan 2
+ name ank_vlan2
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description Loopback
+ no ip address
+!
+interface GigabitEthernet0/0
+ description OOB management
+ no switchport
+ vrf forwarding mgmt
+ ip address 172.16.1.67 255.255.255.0
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ description to sc10-5k1
+ switchport access vlan 2
+ switchport mode access
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ description to sc10-5k2
+ switchport access vlan 2
+ switchport mode access
+ media-type rj45
+ negotiation auto
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ password cisco
+line aux 0
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login
+ transport input telnet ssh
+!
+!
+end</entry>
+            <entry key="Auto-generate config" type="Boolean">false</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/1"/>
+        <interface id="1" name="GigabitEthernet0/2"/>
+    </node>
+    <annotations>
+        <rect x="64" y="39" radius="10" width="1695" height="414" fill="CCCCCC" stroke-width="3"/>
+        <rect x="1054" y="60" radius="10" width="667" height="371" fill="FFA09C"/>
+        <rect x="104" y="56" radius="10" width="696" height="372" fill="C1D7FF"/>
+        <text x="130" y="378" font-size="24" bold="true">DC5</text>
+        <text x="1634" y="380" font-size="24" bold="true">SC10</text>
+        <ellipse x="849" y="174" width="136" height="105" fill="BFFFBB"/>
+    </annotations>
+    <connection dst="/virl:topology/virl:node[3]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[4]/virl:interface[1]" src="/virl:topology/virl:node[2]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[7]/virl:interface[1]" src="/virl:topology/virl:node[3]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[1]" src="/virl:topology/virl:node[4]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[1]" src="/virl:topology/virl:node[5]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[6]/virl:interface[2]" src="/virl:topology/virl:node[7]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[2]/virl:interface[3]" src="/virl:topology/virl:node[3]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[1]/virl:interface[3]" src="/virl:topology/virl:node[4]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[5]/virl:interface[3]" src="/virl:topology/virl:node[3]/virl:interface[4]"/>
+    <connection dst="/virl:topology/virl:node[4]/virl:interface[4]" src="/virl:topology/virl:node[7]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[10]/virl:interface[1]" src="/virl:topology/virl:node[8]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[11]/virl:interface[1]" src="/virl:topology/virl:node[9]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[10]/virl:interface[2]" src="/virl:topology/virl:node[9]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[11]/virl:interface[2]" src="/virl:topology/virl:node[8]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[12]/virl:interface[1]" src="/virl:topology/virl:node[10]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[13]/virl:interface[1]" src="/virl:topology/virl:node[11]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[13]/virl:interface[3]" src="/virl:topology/virl:node[10]/virl:interface[4]"/>
+    <connection dst="/virl:topology/virl:node[12]/virl:interface[3]" src="/virl:topology/virl:node[11]/virl:interface[4]"/>
+    <connection dst="/virl:topology/virl:node[14]/virl:interface[1]" src="/virl:topology/virl:node[1]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[14]/virl:interface[2]" src="/virl:topology/virl:node[2]/virl:interface[1]"/>
+    <connection dst="/virl:topology/virl:node[14]/virl:interface[3]" src="/virl:topology/virl:node[8]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[14]/virl:interface[4]" src="/virl:topology/virl:node[9]/virl:interface[3]"/>
+    <connection dst="/virl:topology/virl:node[15]/virl:interface[1]" src="/virl:topology/virl:node[12]/virl:interface[2]"/>
+    <connection dst="/virl:topology/virl:node[15]/virl:interface[2]" src="/virl:topology/virl:node[13]/virl:interface[2]"/>
+</topology>

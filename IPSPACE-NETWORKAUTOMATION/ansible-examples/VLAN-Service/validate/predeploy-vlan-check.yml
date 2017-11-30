@@ -1,0 +1,7 @@
+#
+# Check for unique VLANs using a custom Jinja2 filter plugin
+#
+- assert:
+    that: not services|dupattr(attr='vlan')
+    msg:  "Duplicate VLAN: {{services|dupattr(attr='vlan')}}"
+  run_once: true

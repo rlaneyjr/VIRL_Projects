@@ -1,0 +1,206 @@
+<p>To work on this lab on your own machine, you will need to install <a href="https://www.python.org/downloads/">Python</a> and <a href="https://pip.pypa.io/en/latest/installing.html">Pip</a>, and clone the project code.</p>
+<p>Once you have done that, the project uses standard Python mechanisms, Pip with the <code>src/setup.py</code> script, and <a href="https://virtualenv.pypa.io/en/latest/">virtualenv</a> as required, to install all other required components, as explained below.</p>
+<p>When your environment is setup correctly, you should create a network profile, in the <code>src/settings</code> directory and set that via the NETWORK-PROFILE environment variable, as described below.</p>
+<h1 id="windows">Windows</h1>
+<p>Mac OS X and Linux are quite similar in how one uses them for development. Windows has its own personality when it comes to developer tools though, so we have to treat Windows specially in these instructions. One of the very useful tools, which, if you are a Windows user you should install <em>now</em>, is <a href="https://github.com/msysgit/msysgit/releases/">GitBash</a>. GitBash usefully provides both a Git client <em>and</em> a Bash shell. Also see this guide to <a href="https://openhatch.org/missions/windows-setup/install-git-bash">installing GitBash</a>. The instructions we provide below for Windows work with GitBash.</p>
+<h1 id="install-python">Install Python</h1>
+<p>Whilst the code will work with Python 2.7, we recommend that you install Python 3.x for your operating system. Download the installer here: https://www.python.org/downloads/.</p>
+<p>On Windows Python is installed by default in <code>C:\Python34</code> (for Python 3). After having installed Python, you will need to add that location, and the location of the Scripts sub-directory (for Pip) to your path, as shown below.</p>
+<div class="figure">
+<img src="byod_images/windows_pip_path.png" alt="Windows Pip Path" /><p class="caption">Windows Pip Path</p>
+</div>
+<h2 id="check-your-python-install">Check Your Python install</h2>
+<p>If you are using Mac OS X or Linux, enter <code>python3</code> to check the version, and expect to see something like:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">python3</span> 
+<span class="kw">Python</span> 3.4.3 (v3.4.3:9b73f1c3e601, Feb 23 2015, 02:52:03) 
+[<span class="kw">GCC</span> 4.2.1 (Apple Inc. build 5666) <span class="kw">(dot</span> 3<span class="kw">)</span>] <span class="kw">on</span> darwin
+<span class="kw">Type</span> <span class="st">&quot;help&quot;</span>, <span class="st">&quot;copyright&quot;</span>, <span class="st">&quot;credits&quot;</span> or <span class="st">&quot;license&quot;</span> for more information.
+<span class="kw">&gt;&gt;&gt;</span> ^<span class="kw">D</span></code></pre>
+<p>The <code>^D</code> shown above exits from the Python shell.</p>
+<p>On Windows, open a Bash shell with GitBash and enter <code>python</code> at the CLI to check the Python version. If you have only installed Python3, and you have set the path as illustrated above, you should expect to see something like the example below.</p>
+<div class="figure">
+<img src="byod_images/windows_python_bash.png" alt="Windows Python3 in a Git Bash shell" /><p class="caption">Windows Python3 in a Git Bash shell</p>
+</div>
+<h1 id="install-pip">Install Pip</h1>
+<p>Pip is the <a href="https://python-packaging-user-guide.readthedocs.org/en/latest/current.html">PyPA recommended tool</a> for installing Python packages.</p>
+<p>To install Pip for Python 3 on Mac OS X or Linux, use these commands at the CLI:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">curl</span> -O https://raw.githubusercontent.com/pypa/pip/master/contrib/get-pip.py
+$ <span class="kw">sudo</span> python3 get-pip.py</code></pre>
+<p>And expect to see something like this:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">curl</span> -O https://raw.githubusercontent.com/pypa/pip/master/contrib/get-pip.py
+  <span class="kw">%</span> Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 <span class="kw">Dload</span>  Upload   Total   Spent    Left  Speed
+<span class="kw">100</span> 1387k  100 1387k    0     0   346k      0  0:00:04  0:00:04 --:--:--  346k
+
+$ <span class="kw">sudo</span> python3 get-pip.py
+<span class="kw">Password</span>:
+<span class="kw">...</span>
+<span class="kw">Collecting</span> pip
+  <span class="kw">Downloading</span> pip-6.1.1-py2.py3-none-any.whl (1.1MB)
+    <span class="kw">100%</span> <span class="kw">|</span>████████████████████████████████| <span class="kw">1.1MB</span> 446kB/s 
+<span class="kw">Installing</span> collected packages: pip
+  <span class="kw">Found</span> existing installation: pip 6.0.8
+    <span class="kw">Uninstalling</span> pip-6.0.8:
+      <span class="kw">Successfully</span> uninstalled pip-6.0.8
+<span class="kw">Successfully</span> installed pip-6.1.1</code></pre>
+<p>On Windows, Pip comes with Python 3.4, and is in the <code>Scripts</code> sub-directory of the Python install directory. If you added the <code>C:\Python34\Scripts</code> directory to your path as shown above, then you should be good.</p>
+<h1 id="installing-git">Installing Git</h1>
+<p><a href="http://git-scm.com/">Git</a> is a source code management (SCM) tool. There are many <a href="http://git-scm.com/downloads/guis">Git UI tools available</a>. The Git CLI client is installed with one of the platform specific <a href="http://git-scm.com/downloads">Git downloads</a>.</p>
+<p>On Windows, you can use GitBash as recommended above.</p>
+<h1 id="cloning-the-code">Cloning the Code</h1>
+<p>Assuming you have a Git client installed, you can clone the project code. If you do not have a Git Client, see above. For a project hosted in GitHub, such as the <a href="https://github.com/CiscoDevNet/cosc-learning-labs">COSC Learning Lab</a> you can <a href="https://help.github.com/articles/fork-a-repo/">fork a repository</a> using the &quot;Fork&quot; button at the top right of a project page, as illustrated below.</p>
+<div class="figure">
+<img src="byod_images/fork.png" alt="Forking a GitHub project" /><p class="caption">Forking a GitHub project</p>
+</div>
+<p>Or you can just clone the project using the URL copied to the clipboard as shown below:</p>
+<div class="figure">
+<img src="byod_images/github_clone.png" alt="Copying the project URL in GitHub" /><p class="caption">Copying the project URL in GitHub</p>
+</div>
+<p>The command to use the URL is the same for Linux, Max OS X or Windows. By convention, one clones Git projects into the <code>git</code> sub-directory of one's <code>$HOME</code> directory. These commands will work with a shell on Linux or Mac OS X and a GitBahs shell on windows:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cd</span> <span class="ot">$HOME</span>
+$ <span class="kw">mkdir</span> git
+$ <span class="kw">cd</span> git
+$ <span class="kw">git</span> clone <span class="kw">&lt;</span>repository URL<span class="kw">&gt;</span></code></pre>
+<h1 id="setting-up-the-environment">Setting Up the Environment</h1>
+<p>Having installed Python and Pip, on Linux and Mac OSX you can then use <code>pip3 install -e</code> in the project <code>src</code> directory, which, in turn, uses the contents of the <code>setup.py</code> script to install required components in your environment.</p>
+<p>On Windows, you will likely need to install the <code>lxml</code> library manually, and then run the <code>pip install -e .</code> command, as shown below. The pre-packaged binaries can be obtained from <a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml">Christoph Gohlke's Unofficial Windows Binaries for Python Extension Packages site</a>, and then follow the <a href="https://pip.pypa.io/en/latest/user_guide.html#installing-from-wheels">Installing from Wheels guide</a>.</p>
+<div class="figure">
+<img src="byod_images/windows_lxml_install.png" alt="Windows Installing the lxml Python Package" /><p class="caption">Windows Installing the lxml Python Package</p>
+</div>
+<p>Then, on Windows, you can run the <code>pip install -e .</code> command, as shown below:</p>
+<div class="figure">
+<img src="byod_images/windows_pip_setup.png" alt="Windows Installing the lxml Python Package" /><p class="caption">Windows Installing the lxml Python Package</p>
+</div>
+<p>On Mac OS X, you can use <a href="http://brew.sh/">Home Brew</a> to install the 'lxml' package, which will put in place the header files needed to complete the <code>pip</code> install below. This requires a few additional steps as illustrated below:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">brew</span> install libxml2
+$ <span class="kw">sudo</span> ln -s /usr/local/Cellar/libxml2/2.9.2/include/libxml2 /usr/include/libxml2</code></pre>
+<p>The latter step, with the symbolic link for the directory, is required as the <code>pip</code> install looks for the <code>libxml2</code> header file in <code>/usr/include/libxml2</code>.</p>
+<p>The outcome, of running the <code>pip install -e .</code> command, is that the Python packages of this project will be appended to the Python <em>path</em>, and all required packages will be downloaded and appended to the Python <em>path</em>.</p>
+<p>On Linux and Mac OS X, There are two suggested techniques for achieving the required integration: * Modify the current Python environment of your computer, which is suitable for a Dev VM, say, which would only be used for single project. * Create and modify a virtual, temporary Python environment, which is recommended when you have multiple projects being developed in parallel on your own laptop, say.</p>
+<p>Note that the first option below, which has to be run as <code>sudo</code> will create a <code>src/COSC_Learning_Lab.egg-info</code> owned by root. If you choose the vitualenv option below, then you will need to delete the <code>COSC_Learning_Lab.egg-info</code> directory owned by root first.</p>
+<h2 id="modify-the-current-python-environment-of-your-computer">Modify the Current Python Environment of Your Computer</h2>
+<p>This technique is recommended when your computer is a virtual computer, such as Ubuntu running on VMWare, dedicated to this single project. The commands below should be run from the <code>cosc-learning-labs/src</code> directory.</p>
+<h4 id="python-2">Python 2</h4>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sudo</span> pip install -e .</code></pre>
+<h4 id="python-3">Python 3</h4>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sudo</span> pip3 install -e .</code></pre>
+<p>On Mac OS X or Linux, that looks like this (with an example from the COSC Learning Lab project being run in the <code>src</code> directory):</p>
+<pre><code>$ sudo pip3 install -e .
+...
+Obtaining file:...git/cosc-learning-labs/src
+Collecting requests (from COSC-Learning-Lab==1.0)
+  Downloading requests-2.7.0-py2.py3-none-any.whl (470kB)
+    100% |################################| 471kB 1.1MB/s 
+Collecting ipaddress (from COSC-Learning-Lab==1.0)
+  Downloading ipaddress-1.0.7.tar.gz
+Collecting lxml (from COSC-Learning-Lab==1.0)
+  Downloading lxml-3.4.4.tar.gz (3.5MB)
+    100% |################################| 3.5MB 146kB/s 
+    Building lxml version 3.4.4.
+    Building without Cython.
+    Using build configuration of libxslt 1.1.28
+  ...
+Installing collected packages: COSC-Learning-Lab, lxml, ipaddress, requests
+  Running setup.py develop for COSC-Learning-Lab
+    Creating /Library/Frameworks/Python.framework/Versions/3.4/lib/python3.4/site-packages/COSC-Learning-Lab.egg-link (link to .)
+    Adding COSC-Learning-Lab 1.0 to easy-install.pth file
+  Running setup.py install for lxml
+    Building lxml version 3.4.4.
+    Building without Cython.
+    Using build configuration of libxslt 1.1.28
+    building &#39;lxml.etree&#39; extension
+...  
+Running setup.py install for ipaddress
+
+Successfully installed COSC-Learning-Lab ipaddress-1.0.7 lxml-3.4.4 requests-2.7.0</code></pre>
+<h2 id="create-and-modify-a-virtual-temporary-python-environment">Create and Modify a Virtual, Temporary, Python Environment</h2>
+<p>This technique is recommended when your computer is used to run multiple Python projects or multiple versions of Python. If you have already used the previous option to setup your global environment, then you don't need to do this too.</p>
+<p>There are multiple tools that provide a virtual environment. The example below uses <a href="https://virtualenv.pypa.io/en/latest/">virtualenv</a>. See also: <a href="https://docs.python.org/3/library/venv.html">venv</a>, <a href="https://github.com/yyuu/pyenv">pyenv</a>, <a href="https://github.com/saghul/pythonz">pythonz</a>.</p>
+<p>On Ubuntu, Mac OS X and other Linux/Unix variants, the commands below should be run from the <code>cosc-learning-labs</code> directory:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">sudo</span> pip install virtualenv 
+$ <span class="kw">cd</span> ~/git/cosc-learning-labs
+$ <span class="kw">virtualenv</span> env
+
+<span class="kw">Using</span> base prefix <span class="st">&#39;/Library/Frameworks/Python.framework/Versions/3.4&#39;</span>
+<span class="kw">New</span> python executable in env/bin/python3
+<span class="kw">Also</span> creating executable in env/bin/python
+<span class="kw">Installing</span> setuptools, pip...done.
+
+$ <span class="kw">source</span> env/bin/activate
+
+$ <span class="kw">env/bin/pip3</span> install -e src
+
+<span class="kw">Obtaining</span> file:///.../git/cosc-learning-labs/src
+<span class="kw">Collecting</span> requests (from COSC-Learning-Lab==1.0)
+  <span class="kw">Using</span> cached requests-2.7.0-py2.py3-none-any.whl
+<span class="kw">Collecting</span> ipaddress (from COSC-Learning-Lab==1.0)
+  <span class="kw">Using</span> cached ipaddress-1.0.7.tar.gz
+<span class="kw">Collecting</span> lxml (from COSC-Learning-Lab==1.0)
+  <span class="kw">Using</span> cached lxml-3.4.4.tar.gz
+<span class="kw">Collecting</span> logilab-common (from COSC-Learning-Lab==1.0)
+  <span class="kw">Using</span> cached logilab-common-0.63.2.tar.gz
+<span class="kw">Collecting</span> six<span class="kw">&gt;</span>=1.4.0 (from logilab-common-<span class="kw">&gt;</span>COSC-Learning-Lab==1.0)
+  <span class="kw">Using</span> cached six-1.9.0-py2.py3-none-any.whl
+<span class="kw">Installing</span> collected packages: requests, ipaddress, lxml, six, logilab-common, COSC-Learning-Lab
+  <span class="kw">Running</span> setup.py install for ipaddress
+  <span class="kw">Running</span> setup.py install for lxml
+  <span class="kw">Running</span> setup.py install for logilab-common
+  <span class="kw">Running</span> setup.py develop for COSC-Learning-Lab
+<span class="kw">Successfully</span> installed COSC-Learning-Lab ipaddress-1.0.7 logilab-common-0.63.2 lxml-3.4.4 requests-2.7.0 six-1.9.0
+<span class="kw">(env)</span></code></pre>
+<p>To run the test suite:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cd</span> ~/git/cosc-learning-labs/src
+$ <span class="kw">python3</span> setup.py test –a ../test</code></pre>
+<p>See also: <a href="testing.md">detailed instructions for testing</a></p>
+<p>The <code>env/bin/activate</code> command, above, enters a shell or mode. When you are finished with the virtualenv:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">deactivate</span> </code></pre>
+<h1 id="creating-and-setting-the-network-profile">Creating and Setting the Network Profile</h1>
+<p>The network profile settings file defines variables and data that the learning lab code needs to identify the controller and network elements that are being used in a given instance of the lab.</p>
+<p>The first step us to set an environment variable, <code>NETWORK_PROFILE</code>, to the name of a settings fle. We shall use <code>learning_lab.py</code> in this example, which is based Mac OS X or Linux.</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">export</span> <span class="ot">NETWORK_PROFILE=</span>learning_lab</code></pre>
+<p>The settings are read from the <code>settings</code> Python module, which is in:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">~/git/cosc-learning-labs/src/settings</span></code></pre>
+<p>In this example, then, to display the settings:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cat</span> ~/git/cosc-learning-labs/src/settings/learning_lab.py</code></pre>
+<p>Which would look like this for the open source <a href="http://www.opendaylight.org/">OpenDaylight Controller</a> (yours may differ for IP addresses):</p>
+<pre class="sourceCode python"><code class="sourceCode python">odl_server_hostname = <span class="st">&#39;198.18.1.25:8181&#39;</span>
+
+odl_server_url_prefix = <span class="st">&quot;http://</span><span class="ot">%s</span><span class="st">/restconf/&quot;</span> % odl_server_hostname
+
+config = {
+    <span class="st">&#39;odl_server&#39;</span> : {
+        <span class="st">&#39;url_prefix&#39;</span> : odl_server_url_prefix,
+        <span class="co">&#39;username&#39;</span> : <span class="st">&#39;admin&#39;</span>,
+        <span class="co">&#39;password&#39;</span> : <span class="st">&#39;admin&#39;</span>},
+ <span class="co">&#39;network_device&#39;</span>: {<span class="st">&#39;kcy&#39;</span>:{
+                     <span class="st">&#39;address&#39;</span>: <span class="st">&#39;198.18.1.50&#39;</span>,
+                     <span class="co">&#39;port&#39;</span>: <span class="dv">830</span>,
+                     <span class="co">&#39;password&#39;</span>: <span class="st">&#39;cisco&#39;</span>,
+                     <span class="co">&#39;username&#39;</span>: <span class="st">&#39;cisco&#39;</span>},
+...</code></pre>
+<p>Which says that there is a controller at <code>198.18.1.25</code> with the REST API exposed on port <code>8181</code>, for which the credentials are &quot;admin/admin&quot;, and that there is a network element, with a management IP address of <code>198.18.1.50</code>, managed via Netconf, on port 830, with the credentials &quot;cisco/cisco&quot;. Note that the management network must be reachable from where the controller is running.</p>
+<p>If you are using the commercial <a href="http://www.cisco.com/c/en/us/products/cloud-systems-management/open-sdn-controller/index.html">Cisco Open SDN Controller</a>, then you would have settings like this:</p>
+<pre class="sourceCode python"><code class="sourceCode python">odl_server_url_prefix = <span class="st">&quot;https://</span><span class="ot">%s</span><span class="st">/controller/restconf/&quot;</span> % odl_server_hostname
+
+config = {
+    <span class="st">&#39;odl_server&#39;</span> : {
+        <span class="st">&#39;url_prefix&#39;</span> : odl_server_url_prefix,
+        <span class="co">&#39;username&#39;</span> : <span class="st">&#39;token&#39;</span>,
+        <span class="co">&#39;password&#39;</span> : cosc_authentication_token(odl_server_hostname, <span class="dv">8181</span>, <span class="st">&#39;admin&#39;</span>, <span class="st">&#39;cisco123&#39;</span>)},
+...</code></pre>
+<p>Which uses an OAuth authentication token.</p>
+<p>Using GitBash on Windows, and with a shell on Linux and Mac OS X, you should see something like:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">export</span> <span class="ot">NETWORK_PROFILE=</span>dcloud_v2
+$ <span class="kw">./00_controller.py</span> 
+<span class="kw">cosc</span> authentication url: https://198.18.1.25/controller-auth
+<span class="kw">cosc</span> authentication parameters:
+   <span class="kw">username</span> = admin
+   <span class="kw">scope</span> = sdn
+   <span class="kw">password</span> = cisco123
+   <span class="kw">grant_type</span> = password
+<span class="kw">cosc</span> authentication status code: 201
+<span class="kw">odl_url_prefix</span>: https://198.18.1.25/controller/restconf/
+<span class="kw">odl_username</span>: token
+<span class="kw">odl_password</span>: 798fb3d3-1a77-391c-b0b5-b6038297706f
+<span class="kw">status</span> code: 200
+<span class="kw">status</span>: OK</code></pre>

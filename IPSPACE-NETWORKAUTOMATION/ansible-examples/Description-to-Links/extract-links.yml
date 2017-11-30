@@ -1,0 +1,13 @@
+---
+- hosts: all
+  tasks:
+  - name: Collect SNMP facts
+    snmp_facts:
+      host: "{{ansible_host|default(inventory_hostname)}}"
+      version: v2
+      community: cisco
+    tags: [ facts ]
+
+  - name: Generate links
+    template: src={{template|default('links.j2')}} dest=./{{output|default('links.txt')}}
+    run_once: true

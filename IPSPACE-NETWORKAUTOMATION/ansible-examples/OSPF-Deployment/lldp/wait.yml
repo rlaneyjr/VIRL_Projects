@@ -1,0 +1,8 @@
+#
+# Wait for LLDP to start after enabling LLDP on fabric devices
+#
+---
+- name: Wait for LLDP to start
+  pause: seconds=15 prompt="Waiting for LLDP to start"
+  tags: [ validate ]
+  when: wait_flag is defined

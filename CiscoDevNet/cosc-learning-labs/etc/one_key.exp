@@ -1,0 +1,73 @@
+#!/usr/bin/expect -f
+
+# Copyright 2015 Cisco Systems, Inc.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+# 
+# http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+# an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
+
+#
+#   Niklas Montin, 20140522 for odl automation
+#
+set force_conservative 0
+# set to 1 to force conservative mode even if
+# script wasn't run conservatively originally
+
+#
+proc login {user pass} {
+    expect {
+        "Username:" {
+            send "$user\r"
+            expect "*assword:"
+            send "$pass\r"
+            expect "*#"
+            send -- "crypto key generate dsa\r"
+            expect {
+                "*1024]" {
+                    send -- "\r"
+                    send -- "\r"
+                    expect "*#"
+                    send_user "New key set\r"
+                    send_user " \n\r"
+                }
+                "*yes/no]:" {
+                    send -- "no\r"
+                    send_user "Crypto key was set\r"
+                    send_user " \n\r"
+                }
+            }
+
+        }
+        "*No route*" {
+            log_user 1
+            send_user " Router is Down\r"
+            send_user " \n\r"
+            exit
+        }
+    }
+}
+
+
+set username cisco
+set password cisco
+set routers { 198.18.1.50 198.18.1.51 198.18.1.52 198.18.1.53 198.18.1.54 198.18.1.55 198.18.1.56 198.18.1.57 }
+
+set timeout 6000
+set fail 0
+log_user 0
+
+set name [lindex $argv 0]
+
+log_user 0
+spawn telnet $name
+login $username $password
+log_user 1
+
+
+
+send_user " \n\r"

@@ -1,0 +1,6 @@
+export NETWORK_PROFILE=dcloud
+cd ~/git/cosc-learning-labs
+git pull
+cd ~/git/cosc-learning-labs/src/
+sudo pip install -e .
+cd ~/git/cosc-learning-labs/src/learning_lab

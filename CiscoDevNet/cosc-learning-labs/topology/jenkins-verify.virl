@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+    <extensions>
+        <entry type="String" key="management_network">flat</entry>
+    </extensions>
+    <node ipv4="192.168.0.1" location="233,136" subtype="IOS XRv" type="SIMPLE" name="iosxrv-1">
+        <extensions>
+            <entry type="string" key="config">!  IOS-XR Config generated on 2015-02-24 00:06
+! by autonetkit_0.13.3
+!
+hostname iosxrv-1
+service timestamps log datetime msec
+service timestamps debug datetime msec
+telnet vrf default ipv4 server max-servers 10
+domain lookup disable
+line template vty
+timestamp
+exec-timeout 720 0
+!
+line console
+exec-timeout 0 0
+!
+line default
+exec-timeout 720 0
+!
+vty-pool default 0 50
+control-plane
+ management-plane
+  inband
+   interface all
+    allow all
+   !
+  !
+ !
+!
+!
+ssh server v2
+ssh server netconf port 830
+ssh timeout 120
+netconf agent ssh
+!
+!
+interface Loopback0
+  description Loopback
+  ipv4 address 192.168.0.1 255.255.255.255
+!
+interface GigabitEthernet0/0/0/0
+  description to iosxrv-2
+  ipv4 address 10.0.0.21 255.255.255.252
+  no shutdown
+!
+interface GigabitEthernet0/0/0/1
+  description to http-client
+  ipv4 address 10.0.0.10 255.255.255.252
+  no shutdown
+!
+interface GigabitEthernet0/0/0/2
+  description to cosc-server
+  ipv4 address 10.0.0.14 255.255.255.252
+  no shutdown
+!
+interface mgmteth0/0/CPU0/0
+  description OOB Management
+  ! Configured on launch
+  no ipv4 address
+  no shutdown
+!
+!
+router ospf 1
+  log adjacency changes
+  area 0
+    interface GigabitEthernet0/0/0/0
+      cost 1
+    !
+    interface GigabitEthernet0/0/0/1
+      cost 1
+    !
+    interface GigabitEthernet0/0/0/2
+      cost 1
+    !
+    interface Loopback0
+      passive enable
+    !
+  !
+!
+route-policy bgp_in
+  pass
+end-policy
+!
+route-policy bgp_out
+  pass
+end-policy
+!
+router bgp 1
+  bgp router-id 192.168.0.1
+  address-family ipv4 unicast
+    network 192.168.0.1/32
+  !
+! iBGP
+!
+! iBGP peers
+  !
+  neighbor 192.168.0.2
+    description iBGP peer iosxrv-2
+    remote-as 1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+!
+        </entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+            <entry type="String" key="AutoNetkit.custom_config_global">ssh server v2
+ssh server netconf port 830
+ssh timeout 120
+netconf agent ssh</entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.0.0.21" name="GigabitEthernet0/0/0/0" id="0"/>
+        <interface netPrefixLenV4="30" ipv4="10.0.0.10" name="GigabitEthernet0/0/0/1" id="1"/>
+        <interface netPrefixLenV4="30" ipv4="10.0.0.14" name="GigabitEthernet0/0/0/2" id="2"/>
+    </node>
+    <node ipv4="192.168.0.2" location="233,252" subtype="IOS XRv" type="SIMPLE" name="iosxrv-2">
+        <extensions>
+            <entry type="string" key="config">!  IOS-XR Config generated on 2015-02-24 00:06
+! by autonetkit_0.13.3
+!
+hostname iosxrv-2
+service timestamps log datetime msec
+service timestamps debug datetime msec
+telnet vrf default ipv4 server max-servers 10
+domain lookup disable
+line template vty
+timestamp
+exec-timeout 720 0
+!
+line console
+exec-timeout 0 0
+!
+line default
+exec-timeout 720 0
+!
+vty-pool default 0 50
+control-plane
+ management-plane
+  inband
+   interface all
+    allow all
+   !
+  !
+ !
+!
+!
+ssh server v2
+ssh server netconf port 830
+ssh timeout 120
+netconf agent ssh
+!
+!
+interface Loopback0
+  description Loopback
+  ipv4 address 192.168.0.2 255.255.255.255
+!
+interface GigabitEthernet0/0/0/0
+  description to iosxrv-1
+  ipv4 address 10.0.0.22 255.255.255.252
+  no shutdown
+!
+interface GigabitEthernet0/0/0/1
+  description to http-server
+  ipv4 address 10.0.0.18 255.255.255.252
+  no shutdown
+!
+interface mgmteth0/0/CPU0/0
+  description OOB Management
+  ! Configured on launch
+  no ipv4 address
+  no shutdown
+!
+!
+router ospf 1
+  log adjacency changes
+  area 0
+    interface GigabitEthernet0/0/0/0
+      cost 1
+    !
+    interface GigabitEthernet0/0/0/1
+      cost 1
+    !
+    interface Loopback0
+      passive enable
+    !
+  !
+!
+route-policy bgp_in
+  pass
+end-policy
+!
+route-policy bgp_out
+  pass
+end-policy
+!
+router bgp 1
+  bgp router-id 192.168.0.2
+  address-family ipv4 unicast
+    network 192.168.0.2/32
+  !
+! iBGP
+!
+! iBGP peers
+  !
+  neighbor 192.168.0.1
+    description iBGP peer iosxrv-1
+    remote-as 1
+    update-source Loopback0
+    address-family ipv4 unicast
+    !
+    !
+!
+        </entry>
+            <entry type="string" key="AutoNetkit.mgmt_ip"></entry>
+            <entry type="String" key="AutoNetkit.custom_config_global">ssh server v2
+ssh server netconf port 830
+ssh timeout 120
+netconf agent ssh</entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.0.0.22" name="GigabitEthernet0/0/0/0" id="0"/>
+        <interface netPrefixLenV4="30" ipv4="10.0.0.18" name="GigabitEthernet0/0/0/1" id="1"/>
+    </node>
+    <node location="108,131" subtype="server" type="SIMPLE" name="http-client">
+        <extensions>
+            <entry type="string" key="config">#cloud-config
+bootcmd:
+- ln -s -t /etc/rc.d /etc/rc.local
+hostname: http-client
+manage_etc_hosts: true
+runcmd:
+- start ttyS0
+- systemctl start getty@ttyS0.service
+- systemctl start rc-local
+- sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
+- echo &quot;UseDNS no&quot; &gt;&gt; /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: User configured by VIRL Configuration Engine 0.13.7
+  lock-passwd: false
+  name: cisco
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - VIRL-USER-SSH-PUBLIC-KEY
+  sudo: ALL=(ALL) ALL
+write_files:
+- path: /etc/init/ttyS0.conf
+  owner: root:root
+  content: |
+    # ttyS0 - getty
+    # This service maintains a getty on ttyS0 from the point the system is
+    # started until it is shut down again.
+    start on stopped rc or RUNLEVEL=[12345]
+    stop on runlevel [!12345]
+    respawn
+    exec /sbin/getty -L 115200 ttyS0 vt102
+  permissions: '0644'
+- path: /etc/systemd/system/dhclient@.service
+  content: |
+    [Unit]
+    Description=Run dhclient on %i interface
+    After=network.target
+    [Service]
+    Type=oneshot
+    ExecStart=/sbin/dhclient %i -pf /var/run/dhclient.%i.pid -lf /var/lib/dhclient/dhclient.%i.lease
+    RemainAfterExit=yes
+  owner: root:root
+  permissions: '0644'
+- path: /etc/rc.local
+  owner: root:root
+  permissions: '0755'
+  content: |-
+    #!/bin/sh -e
+    ifconfig eth1 up 10.0.0.9 netmask 255.255.255.252
+    route add -host 192.168.0.1 gw 10.0.0.10 dev eth1
+    route add -host 192.168.0.2 gw 10.0.0.10 dev eth1
+    route add -net 10.0.0.0/8 gw 10.0.0.10 dev eth1
+    exit 0
+</entry>
+            <entry type="String" key="AutoNetkit.custom_config_global">#cloud-config
+runcmd:
+- sed -i 's/^#?PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: root
+  lock-passwd: false
+  name: root
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEApkoE2AAe0Toq6ulgFdvDzLlB2YgCWef113NLdsNFLRaylrBB6Oc2FLlfsTARJ3Zmk8jnGKiQVl1ZxbEGHW+Io1efJzjEfgQ2UW/3HoQJ1AzmdklCH/+vbsZPpOsTBugeravILJILzf7JdOTzCZyBZ2L/abibygQrWq4DCZD7ZX0yR4qnSG4wgCXEL2gGmDFLrxCq1Co0smQZhWh29X7F102z95AYyxA9YX0t/Vjh7Xnl1YaVDQYUXEzkRhl7dCnbUu9b4Azxw8qJRfFBf5JQ73Z8mSgVV6EmPXDCjB6Vkcu3dbQYv8nxazIDZwfGdgF0TzDnQMMmjuDcGVSLKGksEQ==</entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.0.0.9" name="eth1" id="0"/>
+    </node>
+    <node location="103,247" subtype="server" type="SIMPLE" name="http-server">
+        <extensions>
+            <entry type="string" key="config">#cloud-config
+bootcmd:
+- ln -s -t /etc/rc.d /etc/rc.local
+hostname: http-server
+manage_etc_hosts: true
+runcmd:
+- start ttyS0
+- systemctl start getty@ttyS0.service
+- systemctl start rc-local
+- sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
+- echo &quot;UseDNS no&quot; &gt;&gt; /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: User configured by VIRL Configuration Engine 0.13.7
+  lock-passwd: false
+  name: cisco
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - VIRL-USER-SSH-PUBLIC-KEY
+  sudo: ALL=(ALL) ALL
+write_files:
+- path: /etc/init/ttyS0.conf
+  owner: root:root
+  content: |
+    # ttyS0 - getty
+    # This service maintains a getty on ttyS0 from the point the system is
+    # started until it is shut down again.
+    start on stopped rc or RUNLEVEL=[12345]
+    stop on runlevel [!12345]
+    respawn
+    exec /sbin/getty -L 115200 ttyS0 vt102
+  permissions: '0644'
+- path: /etc/systemd/system/dhclient@.service
+  content: |
+    [Unit]
+    Description=Run dhclient on %i interface
+    After=network.target
+    [Service]
+    Type=oneshot
+    ExecStart=/sbin/dhclient %i -pf /var/run/dhclient.%i.pid -lf /var/lib/dhclient/dhclient.%i.lease
+    RemainAfterExit=yes
+  owner: root:root
+  permissions: '0644'
+- path: /etc/rc.local
+  owner: root:root
+  permissions: '0755'
+  content: |-
+    #!/bin/sh -e
+    ifconfig eth1 up 10.0.0.17 netmask 255.255.255.252
+    route add -host 192.168.0.1 gw 10.0.0.18 dev eth1
+    route add -host 192.168.0.2 gw 10.0.0.18 dev eth1
+    route add -net 10.0.0.0/8 gw 10.0.0.18 dev eth1
+    exit 0
+</entry>
+            <entry type="String" key="AutoNetkit.custom_config_global">#cloud-config
+runcmd:
+- sed -i 's/^#?PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: root
+  lock-passwd: false
+  name: root
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEApkoE2AAe0Toq6ulgFdvDzLlB2YgCWef113NLdsNFLRaylrBB6Oc2FLlfsTARJ3Zmk8jnGKiQVl1ZxbEGHW+Io1efJzjEfgQ2UW/3HoQJ1AzmdklCH/+vbsZPpOsTBugeravILJILzf7JdOTzCZyBZ2L/abibygQrWq4DCZD7ZX0yR4qnSG4wgCXEL2gGmDFLrxCq1Co0smQZhWh29X7F102z95AYyxA9YX0t/Vjh7Xnl1YaVDQYUXEzkRhl7dCnbUu9b4Azxw8qJRfFBf5JQ73Z8mSgVV6EmPXDCjB6Vkcu3dbQYv8nxazIDZwfGdgF0TzDnQMMmjuDcGVSLKGksEQ==</entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.0.0.17" name="eth1" id="0"/>
+    </node>
+    <node vmFlavor="m1.hobbit" vmImage="server-integration-java+python" location="367,131" subtype="server" type="SIMPLE" name="cosc-server">
+        <extensions>
+            <entry type="string" key="config">#cloud-config
+bootcmd:
+- ln -s -t /etc/rc.d /etc/rc.local
+hostname: cosc-server
+manage_etc_hosts: true
+runcmd:
+- start ttyS0
+- systemctl start getty@ttyS0.service
+- systemctl start rc-local
+- sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
+- echo &quot;UseDNS no&quot; &gt;&gt; /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: User configured by VIRL Configuration Engine 0.13.7
+  lock-passwd: false
+  name: cisco
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - VIRL-USER-SSH-PUBLIC-KEY
+  sudo: ALL=(ALL) ALL
+write_files:
+- path: /etc/init/ttyS0.conf
+  owner: root:root
+  content: |
+    # ttyS0 - getty
+    # This service maintains a getty on ttyS0 from the point the system is
+    # started until it is shut down again.
+    start on stopped rc or RUNLEVEL=[12345]
+    stop on runlevel [!12345]
+    respawn
+    exec /sbin/getty -L 115200 ttyS0 vt102
+  permissions: '0644'
+- path: /etc/systemd/system/dhclient@.service
+  content: |
+    [Unit]
+    Description=Run dhclient on %i interface
+    After=network.target
+    [Service]
+    Type=oneshot
+    ExecStart=/sbin/dhclient %i -pf /var/run/dhclient.%i.pid -lf /var/lib/dhclient/dhclient.%i.lease
+    RemainAfterExit=yes
+  owner: root:root
+  permissions: '0644'
+- path: /etc/rc.local
+  owner: root:root
+  permissions: '0755'
+  content: |-
+    #!/bin/sh -e
+    ifconfig eth1 up 10.0.0.13 netmask 255.255.255.252
+    ifconfig eth2 up 10.0.0.6 netmask 255.255.255.252
+    ifconfig eth3 down
+    route add -host 192.168.0.1 gw 10.0.0.14 dev eth1
+    route add -host 192.168.0.2 gw 10.0.0.14 dev eth1
+    route add -net 10.0.0.0/8 gw 10.0.0.14 dev eth1
+    exit 0
+</entry>
+            <entry type="String" key="AutoNetkit.custom_config_global">#cloud-config
+runcmd:
+- sed -i 's/^#?PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: root
+  lock-passwd: false
+  name: root
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEApkoE2AAe0Toq6ulgFdvDzLlB2YgCWef113NLdsNFLRaylrBB6Oc2FLlfsTARJ3Zmk8jnGKiQVl1ZxbEGHW+Io1efJzjEfgQ2UW/3HoQJ1AzmdklCH/+vbsZPpOsTBugeravILJILzf7JdOTzCZyBZ2L/abibygQrWq4DCZD7ZX0yR4qnSG4wgCXEL2gGmDFLrxCq1Co0smQZhWh29X7F102z95AYyxA9YX0t/Vjh7Xnl1YaVDQYUXEzkRhl7dCnbUu9b4Azxw8qJRfFBf5JQ73Z8mSgVV6EmPXDCjB6Vkcu3dbQYv8nxazIDZwfGdgF0TzDnQMMmjuDcGVSLKGksEQ==</entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.0.0.13" name="eth1" id="0"/>
+        <interface netPrefixLenV4="30" ipv4="10.0.0.6" name="eth2" id="1"/>
+        <interface name="eth3" id="2"/>
+    </node>
+    <node vmFlavor="m1.hobbit" location="510,131" subtype="server" type="SIMPLE" name="cosc-client">
+        <extensions>
+            <entry type="string" key="config">#cloud-config
+bootcmd:
+- ln -s -t /etc/rc.d /etc/rc.local
+hostname: cosc-client
+manage_etc_hosts: true
+runcmd:
+- start ttyS0
+- systemctl start getty@ttyS0.service
+- systemctl start rc-local
+- sed -i '/^\s*PasswordAuthentication\s\+no/d' /etc/ssh/sshd_config
+- echo &quot;UseDNS no&quot; &gt;&gt; /etc/ssh/sshd_config
+- service ssh restart
+- service sshd restart
+users:
+- default
+- gecos: User configured by VIRL Configuration Engine 0.13.7
+  lock-passwd: false
+  name: cisco
+  plain-text-passwd: cisco
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - VIRL-USER-SSH-PUBLIC-KEY
+  sudo: ALL=(ALL) ALL
+write_files:
+- path: /etc/init/ttyS0.conf
+  owner: root:root
+  content: |
+    # ttyS0 - getty
+    # This service maintains a getty on ttyS0 from the point the system is
+    # started until it is shut down again.
+    start on stopped rc or RUNLEVEL=[12345]
+    stop on runlevel [!12345]
+    respawn
+    exec /sbin/getty -L 115200 ttyS0 vt102
+  permissions: '0644'
+- path: /etc/systemd/system/dhclient@.service
+  content: |
+    [Unit]
+    Description=Run dhclient on %i interface
+    After=network.target
+    [Service]
+    Type=oneshot
+    ExecStart=/sbin/dhclient %i -pf /var/run/dhclient.%i.pid -lf /var/lib/dhclient/dhclient.%i.lease
+    RemainAfterExit=yes
+  owner: root:root
+  permissions: '0644'
+- path: /etc/rc.local
+  owner: root:root
+  permissions: '0755'
+  content: |-
+    #!/bin/sh -e
+    ifconfig eth1 up 10.0.0.5 netmask 255.255.255.252
+    exit 0
+</entry>
+        </extensions>
+        <interface netPrefixLenV4="30" ipv4="10.0.0.5" name="eth1" id="0"/>
+    </node>
+    <connection src="/virl:topology/virl:node[1]/virl:interface[1]" dst="/virl:topology/virl:node[2]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[3]/virl:interface[1]" dst="/virl:topology/virl:node[1]/virl:interface[2]"/>
+    <connection src="/virl:topology/virl:node[4]/virl:interface[1]" dst="/virl:topology/virl:node[2]/virl:interface[2]"/>
+    <connection src="/virl:topology/virl:node[1]/virl:interface[3]" dst="/virl:topology/virl:node[5]/virl:interface[1]"/>
+    <connection src="/virl:topology/virl:node[5]/virl:interface[2]" dst="/virl:topology/virl:node[6]/virl:interface[1]"/>
+</topology>

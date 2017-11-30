@@ -1,0 +1,151 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fnil\fcharset0 Calibri;\f1\fswiss\fcharset0 Helvetica;\f2\fmodern\fcharset0 Courier;
+\f3\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red255\green255\blue11;\red0\green0\blue255;\red254\green244\blue139;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720
+
+\f0\b\fs28 \cf0 1. New Topology
+\b0 \
+Create a new topology in Maestro. The following property is required:\
+Management Network: Shared flat network\
+This property can be seen in the Properties window -> Topology tab. Hint: select the background in the design window.\
+\
+
+\b 2. Add XR Devices
+\b0 \
+Add one or more XR devices and name them and link them as desired.\'a0\
+\
+Select the correct image of XR, which is IOS Xrv-5.1.1.53U\
+Set this via Properties window for the node(s) -> Node tab -> VM Image field -> Browse button\
+\
+
+\b 3. Custom Configuration
+\b0 \
+The following configuration is necessary on each XR device in the topology. If you select multiple devices you can apply this configuration to them all.\
+ssh server v2\
+ssh server netconf port 830\
+ssh timeout 120\
+netconf agent ssh\
+The path to the property is Properties window -> AutoNetkit tab -> Custom Configuration group -> Global.\
+\
+\pard\pardeftab720
+
+\f1\fs24 \cf0 {{\NeXTGraphic unknown.png \width12260 \height14000 \noorient
+}¬}\pard\pardeftab720
+
+\f0\fs28 \cf0 \
+\
+
+\b 4. Run Simulation
+\b0 \
+It takes several minutes for each device to start.\
+On the console for each node you can see:\
+\pard\pardeftab720
+
+\f2 \cf0 Cisco IOS XR Software for the Cisco XR IOSXRv, Version 5.1.1.53U
+\f0 \
+
+\f2 Copyright (c) 2014 by Cisco Systems, Inc.
+\f0 \
+\
+Do not enter any keystrokes into the console.\
+Ignore the following message on the console:\
+
+\f2 Press RETURN to get started.
+\f0 \
+\
+\
+Also ignore the following message:\
+
+\f2 Configuration Manager could not find any admin configuration to apply from '/disk0:/config/admin/admin.cfg\'92.
+\f0 \
+\
+When you see the following output on the console press <Enter>.\
+
+\f2 Configuration was applied from file /cd0/iosxr_config.txt.
+\f0 \
+\
+You will see the prompt\
+
+\f2 User Access Verification
+\f0 \
+
+\f2 Username:\'a0
+\f0 \
+Please login with both username and password\'a0
+\f2 test
+\f0 .\
+\
+\pard\pardeftab720
+
+\b \cf0 5. Runtime Configuration
+\b0 \
+\
+Telnet to the console port of each XR device. The username and password are both \'91test\'92.\
+\
+5a. Apply the command:\
+\pard\pardeftab720
+
+\f2 \cf0 crypto key generate dsa
+\f0 \
+And accept the defaults offered.\
+\
+5b. Apply the command\'a0\
+
+\f2 sh ip int br
+\f0 \
+And make note of the IP address of the management interface (highlighted below)\
+\'a0\
+
+\f2 #sh ip int br
+\f0 \
+
+\f2 Thu Oct \'a09 18:14:44.369 UTC
+\f0 \
+
+\f2 Interface \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0IP-Address \'a0 \'a0 \'a0Status \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0Protocol
+\f0 \
+
+\f2 Loopback0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0192.168.0.1 \'a0 \'a0 Up \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0Up \'a0 \'a0 \'a0
+\f0 \
+\pard\pardeftab720
+
+\f2 \cf0 \cb2 MgmtEth0/0/CPU0/0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0172.16.1.62\cb1  \'a0 \'a0 Up \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0Up \'a0 \'a0 \'a0
+\f0 \
+\pard\pardeftab720
+
+\f2 \cf0 GigabitEthernet0/0/0/0 \'a0 \'a0 \'a0 \'a0 10.0.0.1 \'a0 \'a0 \'a0 \'a0Up \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0Up \'a0 \'a0
+\f0 \
+\
+\pard\pardeftab720
+
+\b \cf0 6. Connect to each device
+\b0 \
+From a terminal on your client computer (e.g. Bash shell on OSX), apply the command:\
+\pard\pardeftab720
+
+\f2 \cf0 ssh -p 830 {\field{\*\fldinst{HYPERLINK "mailto:test@172.16.1.62"}}{\fldrslt \cf3 \ul \ulc3 test@172.16.1.62}} -s netconf
+\f0 \
+Use the IP address from step 5b and password 
+\f2 test
+\f0 .\
+\
+The expected response is Netconf/XML.\
+The head of a response from a network device is shown below:\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardeftab720\pardirnatural
+
+\f3\fs22 \cf0 \cb4 \CocoaLigature0 $ ssh -p 830 test@172.16.1.75 -s netconf\
+The authenticity of host '[172.16.1.75]:830 ([172.16.1.75]:830)' can't be established.\
+DSA key fingerprint is 92:8e:db:75:5a:36:e6:0e:63:45:e3:02:8c:14:19:6b.\
+Are you sure you want to continue connecting (yes/no)? yes\
+Warning: Permanently added '[172.16.1.75]:830' (DSA) to the list of known hosts.\
+test@172.16.1.75's password: \
+<hello xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">\
+ <capabilities>\
+  <capability>urn:ietf:params:netconf:base:1.1</capability>\
+  <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-monitoring</capability>\
+  <capability>urn:ietf:params:netconf:capability:candidate:1.0</capability>}

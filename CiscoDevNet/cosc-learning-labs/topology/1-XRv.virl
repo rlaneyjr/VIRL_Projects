@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.9" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.9/virl.xsd">
+    <extensions>
+        <entry key="management_network" type="String">flat</entry>
+        <entry key="AutoNetkit.IGP" type="String">isis</entry>
+        <entry key="AutoNetkit.address_family" type="String">v4</entry>
+    </extensions>
+    <node name="iosxrv-1" type="SIMPLE" subtype="IOS XRv" location="143,77">
+        <extensions>
+            <entry key="static_ip" type="String">172.16.1.11</entry>
+            <entry key="config" type="String">!  IOS-XR Config generated on 2015-05-21 12:03
+! by autonetkit_0.15.1
+!
+hostname iosxrv-1
+service timestamps log datetime msec
+service timestamps debug datetime msec
+telnet vrf default ipv4 server max-servers 10
+domain lookup disable
+line template vty
+timestamp
+exec-timeout 720 0
+!
+line console
+exec-timeout 0 0
+!
+line default
+exec-timeout 720 0
+!
+vty-pool default 0 50
+control-plane
+ management-plane
+  inband
+   interface all
+    allow all
+   !
+  !
+ !
+!
+!
+ssh server v2
+ssh server netconf port 830
+ssh timeout 120
+netconf-yang agent ssh
+
+!
+!
+interface Loopback0
+  description Loopback
+  ipv4 address 192.168.0.1 255.255.255.255
+!
+interface GigabitEthernet0/0/0/0
+  description GigabitEthernet0/0/0/0
+  no ipv4 address
+  no shutdown
+!
+interface GigabitEthernet0/0/0/1
+  description GigabitEthernet0/0/0/1
+  no ipv4 address
+  no shutdown
+!
+interface mgmteth0/0/CPU0/0
+  description OOB Management
+  ! Configured on launch
+  no ipv4 address
+  no shutdown
+!
+!
+!
+router isis 64496
+  net 49.1921.6800.0001.00
+  address-family ipv4 unicast
+    metric-style wide
+  !
+  interface Loopback0
+    passive
+    circuit-type level-2-only
+    address-family ipv4 unicast
+  !
+!
+!
+        </entry>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="AutoNetkit.ASN" type="Integer">64496</entry>
+            <entry key="AutoNetkit.RR_cluster" type="String">64496</entry>
+            <entry key="AutoNetkit.custom_config_global" type="String">ssh server v2
+ssh server netconf port 830
+ssh timeout 120
+netconf-yang agent ssh
+</entry>
+            <entry key="AutoNetkit.ibgp_role" type="String">Peer</entry>
+        </extensions>
+        <interface id="0" name="GigabitEthernet0/0/0/0"/>
+        <interface id="1" name="GigabitEthernet0/0/0/1"/>
+    </node>
+</topology>

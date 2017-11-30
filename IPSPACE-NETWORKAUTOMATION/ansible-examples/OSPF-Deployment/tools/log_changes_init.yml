@@ -1,0 +1,10 @@
+#
+# Create directory for change logging
+#
+---
+- name: Create configuration changes directory
+  file: path={{configs}}/node.changes state=directory
+  delegate_to: localhost
+  run_once: true
+  check_mode: no
+  changed_when: no

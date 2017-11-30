@@ -1,0 +1,7 @@
+{% for name,list in acls.items() %}
+ip access-list extended {{name}}
+{% for line in list %}
+  {% set count = loop.index * 10 %}
+  {{ count }} {{ line }}
+{% endfor %}
+{% endfor %}

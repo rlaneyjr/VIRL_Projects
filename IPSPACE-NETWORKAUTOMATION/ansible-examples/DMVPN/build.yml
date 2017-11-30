@@ -1,0 +1,32 @@
+---
+- name: Prepare for configuration build
+  hosts: all
+  tasks:
+  - file: path={{build_dir}} state=directory
+    check_mode: no
+    run_once: yes
+  - file: path={{config_dir}} state=directory
+    check_mode: no
+    run_once: yes
+  - file: path={{build_dir}}/{{inventory_hostname}} state=absent
+    changed_when: false
+    check_mode: no
+  - file: path={{build_dir}}/{{inventory_hostname}} state=directory
+    changed_when: false
+    check_mode: no
+
+- name: Generate configs
+  hosts: all
+  roles:
+    - routing
+    - base
+    - dmvpn
+    - virl
+
+- name: Assemble configurations
+  hosts: all
+  tasks:
+  - assemble:
+      src: "{{build_dir}}/{{inventory_hostname}}"
+      dest: "{{config_dir}}/{{inventory_hostname}}.conf"
+    check_mode: no

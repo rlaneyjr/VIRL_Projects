@@ -1,0 +1,8 @@
+#
+# Get configuration from managed hosts (change the included
+# playbook to switch between various retrieval mathods)
+# and store it into Git repo in branch Actual
+#
+---
+- include: gc_scp.yml
+- include: git_commit.yml

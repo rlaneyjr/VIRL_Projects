@@ -1,0 +1,1 @@
+Please refer to the [BYOD Guide](guide/byod.md).

@@ -1,0 +1,283 @@
+Building configuration...
+
+Current configuration : 5990 bytes
+!
+! Last configuration change at 14:45:56 UTC Sat Apr 1 2017
+!
+version 16.3
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no platform punt-keepalive disable-kernel-core
+platform console serial
+!
+hostname cpe1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+enable secret 4 tnhtc92DXBhelxjYk8LWJrPV36S2i4ntXrpb4RFmfqY
+enable password cisco
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+
+no ip domain lookup
+ip domain name virl.info
+!
+!
+!
+ipv6 unicast-routing
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-2866806732
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2866806732
+ revocation-check none
+ rsakeypair TP-self-signed-2866806732
+!         
+crypto pki trustpoint TP-self-signed-1223143313
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1223143313
+ revocation-check none
+ rsakeypair TP-self-signed-1223143313
+!
+crypto pki trustpoint TP-self-signed-425434507
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-425434507
+ revocation-check none
+ rsakeypair TP-self-signed-425434507
+!
+crypto pki trustpoint TP-self-signed-2748014365
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2748014365
+ revocation-check none
+ rsakeypair TP-self-signed-2748014365
+!
+crypto pki trustpoint TP-self-signed-1671661528
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1671661528
+ revocation-check none
+ rsakeypair TP-self-signed-1671661528
+!
+!
+crypto pki certificate chain TP-self-signed-2866806732
+ certificate self-signed 01
+  30820330 30820218 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 32383636 38303637 3332301E 170D3137 30343031 30353431 
+  30365A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649 
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D32 38363638 
+  30363733 32308201 22300D06 092A8648 86F70D01 01010500 0382010F 00308201 
+  0A028201 0100A015 B9CAB78E BFA0D970 C06CF729 7256F812 7682589B 69F01F0F 
+  4715869C 8B708304 F7777F5B 58EDF048 A5D7F352 6CEAF306 04BA8873 716D4C07 
+  EE992015 E7FCEADC D0309D96 D8CC787E 338A37A4 79A75A72 0CED4B40 4870E0BF 
+  3773AF48 C46AC384 D27DFA72 F307B3D6 58D42A32 65783323 8B002858 8F211418 
+  465E579A C0067D5C 1527F449 F1F54273 B9B62F6E F866526F 334AB51D F2B8699C 
+  E989C2BB 28D031C6 A6CC5032 72A80C45 6E048A81 977DA7D0 CB8AD4ED 17358D08 
+  12FA923B A53B6AE9 216290B8 D6A276A5 B780BC79 42049F2E EC5773B1 8925F73B 
+  24B3A372 B6C9B5CC DA6CE6F4 D8BB400F B6FCE5BD C8B78CF9 E4DE9841 6D6858D9 
+  7F5BA9A8 741B0203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF 
+  301F0603 551D2304 18301680 1487F9E3 1AD25192 03B448AC 6F099F3B AD8D7583 
+  76301D06 03551D0E 04160414 87F9E31A D2519203 B448AC6F 099F3BAD 8D758376 
+  300D0609 2A864886 F70D0101 05050003 82010100 6C62EBB6 B44EE88B C1072046 
+  D5115E0C A2AA3289 E75FB389 5280F6FB 823C99A1 CB8C407E 11886AC6 050F274F 
+  2DD29BDE 0CAE137C 73BE99B8 DF1CBA4F 8A708BB2 44D389C2 2A15499B 89160EB2 
+  78BE30BF 182567BD A681B2FE B3B082CE 3208ED34 63887B4E E91C473B 1AE4B6C1 
+  49CBFAFC 6ED05068 D1EE2754 920A828A 710782D9 D1429DFB B5679094 44FD6910 
+  FD94F356 3DF83298 78833DA6 986F46EC C8BE2540 CA1DDF2D F803FBC3 B80A0C71 
+  7EC5C73B F5434AE1 64E6340F A5E703E6 7AD5613A CE751FC5 1CBB4D7F B77A1EFB 
+  B3BD70DB A0431219 80E3BA25 7F84D2C3 A001DE83 E2A82576 AAF6B841 5CB35ED9 
+  82784881 C4DD2D31 2264B63A A4D140ED 26FE8937
+        quit
+crypto pki certificate chain TP-self-signed-1223143313
+crypto pki certificate chain TP-self-signed-425434507
+crypto pki certificate chain TP-self-signed-2748014365
+crypto pki certificate chain TP-self-signed-1671661528
+
+
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9XR3HK2HTC7
+license accept end user agreement
+license boot level ax
+diagnostic bootup level minimal
+!
+spanning-tree extend system-id
+!
+!
+username cisco privilege 15 secret 5 $1$7QMQ$.D5I/2foMWm54ah4Qjglx1
+!
+redundancy
+!
+!
+!
+!
+!
+!
+! 
+!
+!
+!
+!
+!
+crypto isakmp policy 10
+ encr aes 
+ authentication pre-share
+crypto isakmp key cisco address 0.0.0.0        
+!
+!
+crypto ipsec transform-set IKEv1 esp-aes esp-sha-hmac 
+ mode transport
+!
+crypto ipsec profile DMVPN_IKEv1
+ set transform-set IKEv1 
+!
+!
+!
+!
+!
+!
+! 
+! 
+! 
+! 
+! 
+! 
+!
+!         
+interface Loopback0
+ description Loopback
+ ip address 192.168.2.1 255.255.255.255
+!
+interface Loopback100
+ ip address 172.18.2.1 255.255.255.255
+!
+interface Tunnel0
+ ip address 10.0.0.2 255.255.255.0
+ no ip redirects
+ ip mtu 1400
+ ip hold-time eigrp 1 35
+ no ip split-horizon eigrp 1
+ ip nhrp authentication cisco
+ ip nhrp map 10.0.0.1 192.168.1.1
+ ip nhrp map multicast 192.168.1.1
+ ip nhrp network-id 1
+ ip nhrp holdtime 900
+ ip nhrp nhs 10.0.0.1
+ load-interval 30
+ tunnel source Loopback0
+ tunnel mode gre multipoint
+ tunnel key 0
+ tunnel protection ipsec profile DMVPN_IKEv1
+!
+interface GigabitEthernet1
+ description OOB Management
+ vrf forwarding Mgmt-intf
+ ip address 10.255.0.58 255.255.0.0
+ load-interval 30
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet2
+ description to vvpn1
+ ip address 10.16.1.2 255.255.255.0
+ load-interval 30
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+router eigrp 1
+ network 10.0.0.0 0.0.0.255
+ network 172.18.2.0 0.0.0.255
+ network 192.168.2.0
+ passive-interface default
+ no passive-interface Tunnel0
+!
+!
+virtual-service csr_mgmt
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip route 172.18.3.0 255.255.255.0 Tunnel0
+ip route 192.168.1.1 255.255.255.255 10.16.1.1
+ip ssh server algorithm authentication password
+!
+!
+!
+!
+!
+!
+control-plane
+!         
+ !
+ !
+ !
+ !
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ password cisco
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ exec-timeout 720 0
+ password cisco
+ login local
+ transport input telnet ssh
+!
+!
+!
+!         
+!
+!
+end
+
+cpe1#

@@ -5,7 +5,7 @@
     </extensions>
     <node name="prod-IOSv-1" type="SIMPLE" subtype="IOSv" location="109,81" vmImage="IOSv" vmFlavor="IOSv" ipv4="192.168.0.1">
         <extensions>
-            <entry key="static_ip" type="String">172.16.30.201</entry>
+            <entry key="static_ip" type="String">172.16.1.201</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
             <entry key="config" type="String">! IOS Config generated on 2017-10-13 02:55&#xD;
@@ -62,17 +62,17 @@ no cdp run&#xD;
 interface GigabitEthernet0/0&#xD;
   description OOB Management&#xD;
   vrf forwarding Mgmt-intf&#xD;
-  ip address 172.16.30.113 255.255.255.0&#xD;
+  ip address 172.16.1.113 255.255.255.0&#xD;
   no shutdown&#xD;
 !&#xD;
-ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 172.16.30.254</entry>
+ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 172.16.1.254</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.5" netPrefixLenV4="30"/>
         <interface id="1" name="GigabitEthernet0/2" ipv4="10.0.0.9" netPrefixLenV4="30"/>
     </node>
     <node name="prod-IOSv-2" type="SIMPLE" subtype="IOSv" location="245,71" vmImage="IOSv" vmFlavor="IOSv" ipv4="192.168.0.2">
         <extensions>
-            <entry key="static_ip" type="String">172.16.30.202</entry>
+            <entry key="static_ip" type="String">172.16.1.202</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
             <entry key="config" type="String">! IOS Config generated on 2017-10-13 02:55&#xD;
 ! by autonetkit_0.23.5&#xD;
@@ -128,10 +128,10 @@ no cdp run&#xD;
 interface GigabitEthernet0/0&#xD;
   description OOB Management&#xD;
   vrf forwarding Mgmt-intf&#xD;
-  ip address 172.16.30.202 255.255.255.0&#xD;
+  ip address 172.16.1.202 255.255.255.0&#xD;
   no shutdown&#xD;
 !&#xD;
-ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 172.16.30.254</entry>
+ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 172.16.1.254</entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.6" netPrefixLenV4="30"/>
@@ -139,7 +139,7 @@ ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 172.16.30.254</entry>
     </node>
     <node name="prod-IOSv-3" type="SIMPLE" subtype="IOSv" location="193,164" vmImage="IOSv" vmFlavor="IOSv" ipv4="192.168.0.3">
         <extensions>
-            <entry key="static_ip" type="String">172.16.30.203</entry>
+            <entry key="static_ip" type="String">172.16.1.203</entry>
             <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
             <entry key="config" type="String">! IOS Config generated on 2017-10-13 02:55&#xD;
 ! by autonetkit_0.23.5&#xD;
@@ -195,10 +195,10 @@ no cdp run&#xD;
 interface GigabitEthernet0/0&#xD;
   description OOB Management&#xD;
   vrf forwarding Mgmt-intf&#xD;
-  ip address 172.16.30.203 255.255.255.0&#xD;
+  ip address 172.16.1.203 255.255.255.0&#xD;
   no shutdown&#xD;
 !&#xD;
-ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 172.16.30.254</entry>
+ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 172.16.1.254</entry>
             <entry key="Auto-generate config" type="Boolean">false</entry>
         </extensions>
         <interface id="0" name="GigabitEthernet0/1" ipv4="10.0.0.10" netPrefixLenV4="30"/>
